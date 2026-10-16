@@ -38,12 +38,11 @@
     
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0b0f17; color: #f1f5f9; }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0b0f17; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        .glow-cian { box-shadow: 0 0 15px -5px rgba(0, 242, 254, 0.2); }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
         .glass-card {
-            background: rgba(19, 27, 46, 0.95);
+            background: #131b2e;
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .menu-item-active {
@@ -65,7 +64,7 @@
                 <img src="logo.png" alt="Logo Vortex" class="w-44 h-14 rounded-2xl object-cover shadow-lg shadow-indigo-500/30">
             </div>
 
-            <div class="flex items-center space-x-2 sm:space-x-3">
+            <div class="flex items-center space-x-2">
                 <input type="file" id="excelFile" accept=".xlsx, .xls" class="hidden" onchange="handleFileUpload(event)">
             </div>
         </div>
@@ -140,7 +139,7 @@
         <main class="flex-1 space-y-6 overflow-hidden">
 
             <!-- Zona de Carga -->
-            <div id="uploadZone" class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 my-4 sm:my-6 shadow-2xl">
+            <div id="uploadZone" class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 my-4 shadow-2xl">
                 <div class="max-w-2xl mx-auto space-y-4 sm:space-y-6 relative z-10">
                     <div id="loadingIconContainer" class="w-16 h-16 sm:w-20 sm:h-20 bg-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-cyan-500/30 animate-pulse">
                         <i class="fa-solid fa-spinner fa-spin"></i>
@@ -148,7 +147,7 @@
                     <div>
                         <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
                         <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Procesando datos. Si estás en iPhone y tarda en cargar, selecciona el archivo manualmente.
+                            Preparando entorno optimizado para iPhone y Web.
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
@@ -245,8 +244,8 @@
                             </div>
                             <span id="totalClientsCountBadge" class="text-[11px] bg-cyan-500/10 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Clientes</span>
                         </div>
-                        <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
-                            <div id="allClientsChartContainer" style="width: 100%; height: 400px;">
+                        <div class="relative w-full overflow-y-auto max-h-[450px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
+                            <div id="allClientsChartContainer" style="width: 100%; height: 380px;">
                                 <canvas id="chartAllClients"></canvas>
                             </div>
                         </div>
@@ -274,7 +273,6 @@
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 border-b border-slate-800 pb-3">
                             <div>
                                 <h4 class="font-extrabold text-base sm:text-lg text-white">Distribución de Choferes por Cliente</h4>
-                                <p class="text-[11px] text-slate-400">Desglose de viajes por conductor</p>
                             </div>
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
                                 <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filtrar Cliente:</label>
@@ -284,8 +282,8 @@
                             </div>
                         </div>
                         
-                        <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
-                            <div id="driverChartContainer" style="width: 100%; height: 400px;">
+                        <div class="relative w-full overflow-y-auto max-h-[450px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
+                            <div id="driverChartContainer" style="width: 100%; height: 380px;">
                                 <canvas id="chartDriverCross"></canvas>
                             </div>
                         </div>
@@ -351,7 +349,7 @@
                     </div>
                 </div>
 
-                <!-- REPORTE: MES A MES -->
+                <!-- MES A MES -->
                 <div id="tabMonthlyContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl">
                         <h4 class="font-extrabold text-base sm:text-lg text-white mb-4"><i class="fa-solid fa-chart-column text-emerald-400 mr-2"></i>Reporte Comparativo: Mes a Mes</h4>
@@ -359,7 +357,7 @@
                     </div>
                 </div>
 
-                <!-- REPORTE: COMPARATIVA DE RANGO POR DÍAS -->
+                <!-- COMPARATIVA DE RANGO -->
                 <div id="tabPartialContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                         <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Comparativa de Rango Temporal</h4>
@@ -440,7 +438,7 @@
                 <!-- TABLA DE REGISTROS -->
                 <section class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros (Primeros 50)</h4>
+                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros (Primeros 30)</h4>
                         <span id="recordCountBadge" class="text-[11px] bg-slate-900 border border-slate-700 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Registros</span>
                     </div>
                     <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-800">
@@ -456,9 +454,16 @@
         </main>
     </div>
 
-    <!-- SCRIPT CORREGIDO Y OPTIMIZADO PARA MEMORIA SAFARI -->
+    <!-- SCRIPT ULTRA OPTIMIZADO PARA PREVENIR OOM (OUT OF MEMORY) EN iPHONE -->
     <script>
+        // Detección automática de dispositivo iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        // Desactivar animaciones y simplificar plugins en iOS para evitar caídas de VRAM
         Chart.register(ChartDataLabels);
+        Chart.defaults.animation = !isIOS; 
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
         
         let globalDataClientes = [];
         let globalDataCaasa = [];
@@ -481,9 +486,9 @@
                         processWorkbook(workbook);
                     })
                     .catch(error => {
-                        console.warn('Carga automática omitida por restricciones de red/memoria.', error);
+                        console.warn('Carga automática omitida.', error);
                         document.getElementById('loadingTitle').innerText = 'Seleccionar Archivo';
-                        document.getElementById('loadingText').innerText = 'Por favor, selecciona tu archivo Excel manualmente con el botón de abajo.';
+                        document.getElementById('loadingText').innerText = 'Por favor, selecciona tu archivo Excel manualmente.';
                     });
             }
         });
@@ -729,7 +734,6 @@
             charts[id] = new Chart(el.getContext('2d'), config);
         }
 
-        // Renderizado adaptativo perezoso (Solo dibuja lo que se está viendo para no saturar memoria RAM)
         function renderActiveTabContent() {
             if (currentTab === 'general') renderGeneralTab();
             if (currentTab === 'drivers') renderDriversTab();
@@ -744,10 +748,11 @@
             const counts = {};
             filteredClientes.forEach(d => counts[d.cliente] = (counts[d.cliente] || 0) + 1);
             let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-            document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes Detectados`;
+            document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes`;
 
-            const isMobile = window.innerWidth < 768;
-            const displayData = isMobile ? sorted.slice(0, 10) : sorted;
+            // Límite estricto de registros en iOS para impedir saturación de memoria RAM
+            const limit = isIOS ? 8 : 15;
+            const displayData = sorted.slice(0, limit);
 
             createChart('chartAllClients', {
                 type: 'bar',
@@ -757,25 +762,23 @@
                 },
                 options: {
                     indexAxis: 'y',
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { weight: 'bold', size: 9 } } },
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { size: 9 } } },
                     scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } } }
                 }
             });
 
             const trailers = {};
             filteredClientes.forEach(d => trailers[d.trailer] = (trailers[d.trailer] || 0) + 1);
+            const topTrailers = Object.entries(trailers).sort((a,b)=>b[1]-a[1]).slice(0, limit);
             createChart('chartTrailerTypes', {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(trailers),
-                    datasets: [{ label: 'Viajes', data: Object.values(trailers), backgroundColor: '#9d4edd', borderRadius: 6 }]
+                    labels: topTrailers.map(t => t[0]),
+                    datasets: [{ label: 'Viajes', data: topTrailers.map(t => t[1]), backgroundColor: '#9d4edd', borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#c084fc', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { display: false }, datalabels: { display: !isIOS } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
                 }
             });
 
@@ -788,14 +791,13 @@
                     datasets: [{ data: [propia, tercero], backgroundColor: ['#10b981', '#f43f5e'], borderWidth: 0 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { color: '#fff', font: { weight: 'bold' } } }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
 
             const routes = {};
             filteredClientes.forEach(d => routes[d.ruta] = (routes[d.ruta] || 0) + 1);
-            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0, 5);
             createChart('chartTopRoutes', {
                 type: 'bar',
                 data: {
@@ -803,9 +805,9 @@
                     datasets: [{ label: 'Viajes', data: topRoutes.map(r => r[1]), backgroundColor: '#f59e0b', borderRadius: 6 }]
                 },
                 options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8' }, grid: { display: false } } }
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { display: false } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 8 } } } }
                 }
             });
         }
@@ -827,7 +829,9 @@
             const clientTotalMap = {};
             filteredClientes.forEach(d => clientTotalMap[d.cliente] = (clientTotalMap[d.cliente] || 0) + 1);
 
-            Object.values(map).sort((a,b) => b.count - a.count).slice(0, 50).forEach(row => {
+            // Reducido a 25 registros visibles en móviles para evitar OOM
+            const rowLimit = isIOS ? 25 : 50;
+            Object.values(map).sort((a,b) => b.count - a.count).slice(0, rowLimit).forEach(row => {
                 const totalClient = clientTotalMap[row.cliente] || 1;
                 const pct = ((row.count / totalClient) * 100).toFixed(1);
                 row.dates.sort((x, y) => x - y);
@@ -865,7 +869,7 @@
                 .filter(d => d.chofer === driverName)
                 .sort((a, b) => (a.date || 0) - (b.date || 0));
 
-            driverTrips.slice(0, 50).forEach((r, idx) => {
+            driverTrips.slice(0, 30).forEach((r, idx) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
                         <td class="p-3 font-mono text-slate-500">${idx + 1}</td>
@@ -886,7 +890,7 @@
 
             const counts = {};
             dataToUse.forEach(d => counts[d.chofer] = (counts[d.chofer] || 0) + 1);
-            let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+            let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, isIOS ? 6 : 10);
 
             createChart('chartDriverCross', {
                 type: 'bar',
@@ -895,9 +899,9 @@
                     datasets: [{ label: 'Viajes Realizados', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
                 },
                 options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold', size: 9 } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } } }
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { display: !isIOS, color: '#fcd34d', font: { size: 9 } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } } } }
                 }
             });
         }
@@ -919,9 +923,7 @@
                     datasets: [{ label: 'Viajes CAASA', data: Object.values(programs), backgroundColor: '#9d4edd', borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#c084fc', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { display: false }, datalabels: { display: false } }
                 }
             });
 
@@ -934,8 +936,7 @@
                     datasets: [{ data: [aplica, noAplica], backgroundColor: ['#f43f5e', '#0284c7'], borderWidth: 0 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { color: '#fff', font: { weight: 'bold' } } }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
 
@@ -948,15 +949,13 @@
                     datasets: [{ label: 'Remolques CAASA', data: Object.values(trailers), backgroundColor: '#00f2fe', borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#00f2fe', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { display: false }, datalabels: { display: false } }
                 }
             });
 
             const routes = {};
             filteredCaasa.forEach(d => routes[d.ruta] = (routes[d.ruta] || 0) + 1);
-            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0, 5);
             createChart('chartCaasaRoutes', {
                 type: 'bar',
                 data: {
@@ -964,9 +963,8 @@
                     datasets: [{ label: 'Rutas CAASA', data: topRoutes.map(r => r[1]), backgroundColor: '#10b981', borderRadius: 6 }]
                 },
                 options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#34d399', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8' }, grid: { display: false } } }
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { display: false } }
                 }
             });
         }
@@ -990,9 +988,7 @@
                     ]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { anchor: 'end', align: 'top', color: '#f1f5f9', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
         }
@@ -1012,34 +1008,13 @@
             const caasaA = filterRange(globalDataCaasa, mA);
             const caasaB = filterRange(globalDataCaasa, mB);
 
-            const totalA = clientesA.length;
-            const totalB = clientesB.length;
-            document.getElementById('compValA').innerText = totalA;
-            document.getElementById('compValB').innerText = totalB;
-
-            const diffPct = totalA > 0 ? (((totalB - totalA) / totalA) * 100).toFixed(1) : (totalB > 0 ? 100 : 0);
-            const badge = document.getElementById('compDiffBadge');
-            if (badge) {
-                badge.innerText = (diffPct >= 0 ? '+' : '') + diffPct + '%';
-                badge.className = `text-xs font-bold px-2.5 py-1 rounded-lg ${diffPct >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`;
-            }
-
-            const cTotalA = caasaA.length;
-            const cTotalB = caasaB.length;
-            document.getElementById('compCaasaA').innerText = cTotalA;
-            document.getElementById('compCaasaB').innerText = cTotalB;
-            const caasaDiff = cTotalA > 0 ? (((cTotalB - cTotalA) / cTotalA) * 100).toFixed(1) : 0;
-            document.getElementById('compCaasaDiffBadge').innerText = (caasaDiff >= 0 ? '+' : '') + caasaDiff + '%';
-
-            const ffA = caasaA.filter(d => d.falsoFlete === 'APLICA').length;
-            const ffB = caasaB.filter(d => d.falsoFlete === 'APLICA').length;
-            document.getElementById('compFfA').innerText = ffA;
-            document.getElementById('compFfB').innerText = ffB;
-            const ffDiff = ffA > 0 ? (((ffB - ffA) / ffA) * 100).toFixed(1) : 0;
-            document.getElementById('compFfDiffBadge').innerText = (ffDiff >= 0 ? '+' : '') + ffDiff + '%';
+            document.getElementById('compValA').innerText = clientesA.length;
+            document.getElementById('compValB').innerText = clientesB.length;
+            document.getElementById('compCaasaA').innerText = caasaA.length;
+            document.getElementById('compCaasaB').innerText = caasaB.length;
 
             const clientsSet = new Set([...clientesA.map(d=>d.cliente), ...clientesB.map(d=>d.cliente)]);
-            const labels = Array.from(clientsSet).slice(0, 10);
+            const labels = Array.from(clientsSet).slice(0, isIOS ? 5 : 10);
             const dataA = labels.map(c => clientesA.filter(d=>d.cliente === c).length);
             const dataB = labels.map(c => clientesB.filter(d=>d.cliente === c).length);
 
@@ -1048,14 +1023,12 @@
                 data: {
                     labels: labels,
                     datasets: [
-                        { label: `Período A (${dayStart}-${dayEnd})`, data: dataA, backgroundColor: '#00f2fe', borderRadius: 4 },
-                        { label: `Período B (${dayStart}-${dayEnd})`, data: dataB, backgroundColor: '#9d4edd', borderRadius: 4 }
+                        { label: `Período A`, data: dataA, backgroundColor: '#00f2fe', borderRadius: 4 },
+                        { label: `Período B`, data: dataB, backgroundColor: '#9d4edd', borderRadius: 4 }
                     ]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { anchor: 'end', align: 'top', color: '#f1f5f9', font: { weight: 'bold', size: 9 } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
         }
@@ -1066,7 +1039,9 @@
             tbody.innerHTML = '';
             document.getElementById('recordCountBadge').innerText = `${filteredClientes.length} Registros`;
 
-            filteredClientes.slice(0, 50).forEach(r => {
+            // Límite estricto de filas en tabla para no agotar la memoria virtual del DOM en iOS
+            const tableLimit = isIOS ? 20 : 50;
+            filteredClientes.slice(0, tableLimit).forEach(r => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
                         <td class="p-3 text-cyan-400 font-semibold whitespace-nowrap">${r.origen}</td>
