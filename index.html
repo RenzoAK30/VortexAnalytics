@@ -66,45 +66,41 @@
     <header class="bg-[#0f172a]/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white text-xl p-2 rounded-xl bg-slate-800 border border-slate-700 transition">
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white text-xl p-2.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition-all flex items-center justify-center">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <img src="logo.png" alt="Logo Vortex" class="w-44 h-14 rounded-2xl object-cover shadow-lg shadow-indigo-500/30">    
-                <div>
-                    <!--h1 class="text-2xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400">
-                        VORTEX <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-bold tracking-wider uppercase ml-1">ANALYTICS</span>
-                    </h1>
-                    <p class="text-xs text-slate-400">Dashboard de Control Logístico & Análisis de Choferes</p-->
-                </div>
+                <img src="logo.png" alt="Logo Vortex" class="w-44 h-14 rounded-2xl object-cover shadow-lg shadow-indigo-500/30">
+                
             </div>
 
-            <div class="flex items-center space-x-3">
-
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                
                 <input type="file" id="excelFile" accept=".xlsx, .xls" class="hidden" onchange="handleFileUpload(event)">
             </div>
         </div>
     </header>
 
     <!-- Main Container with Sidebar + Content -->
-    <div class="flex-1 flex max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6">
+    <div class="flex-1 flex max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 relative">
 
-        <!-- MENÚ LATERAL IZQUIERDO -->
-        <aside id="sidebar" class="w-64 flex-shrink-0 space-y-6">
-            <div class="glass-card rounded-2xl p-4 space-y-6 sticky top-28 shadow-2xl border border-slate-800">
-                <div class="pb-2 border-b border-slate-800">
+        <!-- MENÚ LATERAL IZQUIERDO (OCULTO POR DEFECTO PARA GANAR ESPACIO) -->
+        <aside id="sidebar" class="w-64 flex-shrink-0 space-y-6 hidden fixed lg:sticky top-24 left-4 z-40">
+            <div class="glass-card rounded-2xl p-4 space-y-6 shadow-2xl border border-slate-800">
+                <div class="pb-2 border-b border-slate-800 flex justify-between items-center">
                     <span class="text-xs font-black uppercase text-cyan-400 tracking-wider flex items-center">
                         <i class="fa-solid fa-compass mr-2"></i>Navegación Principal
                     </span>
+                    <button onclick="toggleSidebar()" class="text-slate-500 hover:text-white text-xs p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
 
-                <!-- Botón Resumen Principal -->
                 <div>
                     <button onclick="switchTab('general')" id="navGeneralBtn" class="w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-between text-slate-300 hover:bg-slate-800/60 menu-item-active">
                         <span class="flex items-center"><i class="fa-solid fa-chart-pie mr-2.5 text-cyan-400"></i>Resumen General</span>
                     </button>
                 </div>
 
-                <!-- SECCIÓN REPORTES -->
                 <div class="space-y-1.5">
                     <button onclick="toggleGroup('groupReportes')" class="w-full flex items-center justify-between text-xs font-bold uppercase text-slate-400 px-2 py-1.5 hover:text-slate-200">
                         <span class="flex items-center"><i class="fa-solid fa-folder-open text-amber-400 mr-2"></i>Reportes</span>
@@ -123,7 +119,6 @@
                     </div>
                 </div>
 
-                <!-- SECCIÓN HISTORIAL -->
                 <div class="space-y-1.5">
                     <button onclick="toggleGroup('groupHistorial')" class="w-full flex items-center justify-between text-xs font-bold uppercase text-slate-400 px-2 py-1.5 hover:text-slate-200">
                         <span class="flex items-center"><i class="fa-solid fa-clock-rotate-left text-purple-400 mr-2"></i>Historial</span>
@@ -136,7 +131,6 @@
                     </div>
                 </div>
 
-                <!-- SECCIÓN OPERACIONES -->
                 <div class="space-y-1.5">
                     <button onclick="toggleGroup('groupCaasa')" class="w-full flex items-center justify-between text-xs font-bold uppercase text-slate-400 px-2 py-1.5 hover:text-slate-200">
                         <span class="flex items-center"><i class="fa-solid fa-industry text-indigo-400 mr-2"></i>Operaciones</span>
@@ -155,18 +149,18 @@
         <main class="flex-1 space-y-6 overflow-hidden">
 
             <!-- Upload / Loading Zone -->
-            <div id="uploadZone" class="glass-card rounded-3xl p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 hover:border-cyan-400/60 my-6 shadow-2xl">
-                <div class="max-w-2xl mx-auto space-y-6 relative z-10">
-                    <div class="w-20 h-20 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-3xl border border-cyan-500/30 glow-cian animate-pulse">
+            <div id="uploadZone" class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 hover:border-cyan-400/60 my-4 sm:my-6 shadow-2xl">
+                <div class="max-w-2xl mx-auto space-y-4 sm:space-y-6 relative z-10">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-cyan-500/30 glow-cian animate-pulse">
                         <i class="fa-solid fa-spinner fa-spin"></i>
                     </div>
                     <div>
-                        <h2 class="text-3xl font-black text-white tracking-tight">Cargando 'VIAJES  2026.xlsx'...</h2>
-                        <p class="text-slate-400 text-sm mt-2">
-                            Descargando y analizando los datos más recientes alojados en GitHub. Por favor espera unos segundos.
+                        <h2 class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
+                        <p class="text-slate-400 text-xs sm:text-sm mt-2">
+                            Descargando y procesando los datos. Por favor espera un momento.
                         </p>
                     </div>
-                    <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
 
                     </div>
                 </div>
@@ -174,14 +168,14 @@
 
             <div id="dashboardApp" class="hidden space-y-6">
                 <!-- Filtros Globales -->
-                <section class="glass-card rounded-2xl p-5 shadow-2xl border border-slate-800 relative">
+                <section class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800 relative">
                     <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2.5">
                         <div class="flex items-center space-x-2">
                             <i class="fa-solid fa-sliders text-cyan-400 text-base"></i>
-                            <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Filtros Interactivos Globales</h3>
+                            <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Filtros Globales</h3>
                         </div>
                         <button onclick="resetFilters()" class="text-xs text-slate-400 hover:text-cyan-400 transition-colors flex items-center space-x-1 font-semibold">
-                            <i class="fa-solid fa-rotate-right"></i><span>Restablecer Filtros</span>
+                            <i class="fa-solid fa-rotate-right"></i><span>Restablecer</span>
                         </button>
                     </div>
 
@@ -220,78 +214,76 @@
                 </section>
 
                 <!-- KPIs -->
-                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <div class="glass-card rounded-2xl p-4 glow-cian border-l-4 border-l-cyan-400">
-                        <p class="text-[11px] font-bold uppercase text-slate-400">Total Viajes (Clientes)</p>
-                        <h3 id="kpiTotalViajes" class="text-2xl font-black text-white mt-0.5">0</h3>
-                        <p class="text-[10px] text-cyan-400 font-semibold mt-0.5">DATA CLIENTES</p>
+                <section class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-cian border-l-4 border-l-cyan-400">
+                        <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Total Viajes</p>
+                        <h3 id="kpiTotalViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
+                        <p class="text-[9px] sm:text-[10px] text-cyan-400 font-semibold mt-0.5">DATA CLIENTES</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-4 glow-purple border-l-4 border-l-purple-500">
-                        <p class="text-[11px] font-bold uppercase text-slate-400">Clientes Atendidos</p>
-                        <h3 id="kpiClientesCount" class="text-2xl font-black text-white mt-0.5">0</h3>
-                        <p class="text-[10px] text-purple-400 font-semibold mt-0.5">Empresas</p>
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-purple border-l-4 border-l-purple-500">
+                        <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Clientes</p>
+                        <h3 id="kpiClientesCount" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
+                        <p class="text-[9px] sm:text-[10px] text-purple-400 font-semibold mt-0.5">Empresas</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-4 glow-emerald border-l-4 border-l-emerald-400">
-                        <p class="text-[11px] font-bold uppercase text-slate-400">Ratio Flota Propia</p>
-                        <h3 id="kpiPropiaRatio" class="text-2xl font-black text-white mt-0.5">0%</h3>
-                        <p id="kpiPropiaSub" class="text-[10px] text-emerald-400 font-semibold mt-0.5">0 / 0</p>
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-emerald border-l-4 border-l-emerald-400">
+                        <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Flota Propia</p>
+                        <h3 id="kpiPropiaRatio" class="text-xl sm:text-2xl font-black text-white mt-0.5">0%</h3>
+                        <p id="kpiPropiaSub" class="text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-0.5">0 / 0</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-4 glow-amber border-l-4 border-l-amber-500">
-                        <p class="text-[11px] font-bold uppercase text-slate-400">Viajes CAASA</p>
-                        <h3 id="kpiCaasaViajes" class="text-2xl font-black text-white mt-0.5">0</h3>
-                        <p class="text-[10px] text-amber-400 font-semibold mt-0.5">Operación</p>
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-amber border-l-4 border-l-amber-500">
+                        <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Viajes CAASA</p>
+                        <h3 id="kpiCaasaViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
+                        <p class="text-[9px] sm:text-[10px] text-amber-400 font-semibold mt-0.5">Operación</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-4 glow-rose border-l-4 border-l-rose-500">
-                        <p class="text-[11px] font-bold uppercase text-slate-400">Falso Flete (CAASA)</p>
-                        <h3 id="kpiFalsoFlete" class="text-2xl font-black text-white mt-0.5">0</h3>
-                        <p id="kpiFalsoFletePercent" class="text-[10px] text-rose-400 font-semibold mt-0.5">0%</p>
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-rose border-l-4 border-l-rose-500 col-span-2 sm:col-span-1">
+                        <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Falso Flete</p>
+                        <h3 id="kpiFalsoFlete" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
+                        <p id="kpiFalsoFletePercent" class="text-[9px] sm:text-[10px] text-rose-400 font-semibold mt-0.5">0%</p>
                     </div>
                 </section>
 
-                <!-- TAB RESUMEN GENERAL (PANTALLA PRINCIPAL) -->
+                <!-- TAB RESUMEN GENERAL -->
                 <div id="tabGeneralContent" class="space-y-6">
-                    <div class="glass-card rounded-2xl p-6 flex flex-col w-full shadow-2xl">
-                        <div class="flex justify-between items-center mb-6 border-b border-slate-800 pb-4">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl">
+                        <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
                             <div>
-                                <h4 class="font-extrabold text-lg text-white">Resumen Global: Todos los Viajes y Todos los Clientes</h4>
-                                <p class="text-xs text-slate-400">Consolidado operativo principal tras analizar el archivo de datos</p>
+                                <h4 class="font-extrabold text-base sm:text-lg text-white">Resumen Global por Cliente</h4>
+                                <p class="text-[11px] text-slate-400">Consolidado general de operaciones</p>
                             </div>
-                            <span id="totalClientsCountBadge" class="text-xs bg-cyan-500/10 text-cyan-400 px-3 py-1.5 rounded-xl font-bold">0 Clientes</span>
+                            <span id="totalClientsCountBadge" class="text-[11px] bg-cyan-500/10 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Clientes</span>
                         </div>
-                        
-                        <!-- Contenedor con Scroll Vertical estable para el Resumen Global de Clientes -->
-                        <div class="relative w-full overflow-y-auto max-h-[500px] border border-slate-800/80 rounded-2xl p-2 bg-slate-950/30">
-                            <div id="allClientsChartContainer" style="width: 100%; height: 500px;">
+                        <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
+                            <div id="allClientsChartContainer" style="width: 100%; height: 450px;">
                                 <canvas id="chartAllClients"></canvas>
                             </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="glass-card rounded-2xl p-6 flex flex-col">
-                            <h4 class="font-extrabold text-base text-white mb-4"><i class="fa-solid fa-trailer text-cyan-400 mr-2"></i>Tipos de Remolque</h4>
-                            <div class="relative flex-1 min-h-[280px]"><canvas id="chartTrailerTypes"></canvas></div>
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-trailer text-cyan-400 mr-2"></i>Tipos de Remolque</h4>
+                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartTrailerTypes"></canvas></div>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 flex flex-col">
-                            <h4 class="font-extrabold text-base text-white mb-4"><i class="fa-solid fa-chart-pie text-emerald-400 mr-2"></i>Propia vs Terceros (%)</h4>
-                            <div class="relative flex-1 min-h-[280px]"><canvas id="chartUnitOwnership"></canvas></div>
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-chart-pie text-emerald-400 mr-2"></i>Propia vs Terceros (%)</h4>
+                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartUnitOwnership"></canvas></div>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 flex flex-col">
-                            <h4 class="font-extrabold text-base text-white mb-4"><i class="fa-solid fa-map-location-dot text-purple-400 mr-2"></i>Rutas Más Transitadas</h4>
-                            <div class="relative flex-1 min-h-[280px]"><canvas id="chartTopRoutes"></canvas></div>
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-map-location-dot text-purple-400 mr-2"></i>Rutas Más Transitadas</h4>
+                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartTopRoutes"></canvas></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- REPORTE: CHOFER POR CLIENTE -->
                 <div id="tabDriversContent" class="hidden space-y-6">
-                    <div class="glass-card rounded-2xl p-6 flex flex-col w-full shadow-2xl">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-800 pb-4">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 border-b border-slate-800 pb-3">
                             <div>
-                                <h4 class="font-extrabold text-lg text-white">Reporte: Distribución de Choferes por Cliente</h4>
-                                <p class="text-xs text-slate-400">Lista completa de todos los conductores y la cantidad de viajes realizados</p>
+                                <h4 class="font-extrabold text-base sm:text-lg text-white">Distribución de Choferes por Cliente</h4>
+                                <p class="text-[11px] text-slate-400">Desglose de viajes por conductor</p>
                             </div>
-                            <div class="flex items-center space-x-3 w-full sm:w-auto">
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
                                 <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filtrar Cliente:</label>
                                 <select id="driverClientSelect" onchange="renderDriverCrossChart()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400 w-full sm:w-48">
                                     <option value="ALL">Todos los Clientes</option>
@@ -299,29 +291,28 @@
                             </div>
                         </div>
                         
-                        <!-- Contenedor con Scroll Vertical estable -->
-                        <div class="relative w-full overflow-y-auto max-h-[500px] border border-slate-800/80 rounded-2xl p-2 bg-slate-950/30">
-                            <div id="driverChartContainer" style="width: 100%; height: 500px;">
+                        <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
+                            <div id="driverChartContainer" style="width: 100%; height: 450px;">
                                 <canvas id="chartDriverCross"></canvas>
                             </div>
                         </div>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-6 space-y-4">
-                        <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                            <h4 class="font-extrabold text-base text-white"><i class="fa-solid fa-table text-amber-400 mr-2"></i>Matriz Detallada: Conductor vs Cliente</h4>
-                            <input type="text" id="driverSearchInput" onkeyup="filterDriverTable()" placeholder="Buscar chofer, cliente o fecha..." class="bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none w-64">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-table text-amber-400 mr-2"></i>Matriz Detallada</h4>
+                            <input type="text" id="driverSearchInput" onkeyup="filterDriverTable()" placeholder="Buscar chofer..." class="bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none w-full sm:w-64">
                         </div>
                         <div class="overflow-x-auto max-h-96 rounded-xl border border-slate-800">
                             <table class="w-full text-left text-xs text-slate-300">
                                 <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                     <tr>
-                                        <th class="p-3">Conductor (Chofer)</th>
-                                        <th class="p-3">Cliente Atendido</th>
-                                        <th class="p-3">Fechas de Viaje</th>
-                                        <th class="p-3 text-center">Viajes Realizados</th>
-                                        <th class="p-3 text-center">% Participación</th>
-                                        <th class="p-3">Tipo Unidad Principal</th>
+                                        <th class="p-3">Conductor</th>
+                                        <th class="p-3">Cliente</th>
+                                        <th class="p-3">Fechas</th>
+                                        <th class="p-3 text-center">Viajes</th>
+                                        <th class="p-3 text-center">% Part.</th>
+                                        <th class="p-3">Unidad</th>
                                     </tr>
                                 </thead>
                                 <tbody id="driverTableBody" class="divide-y divide-slate-800/60 bg-slate-950/40"></tbody>
@@ -332,38 +323,37 @@
 
                 <!-- HISTORIAL: VIAJES POR CONDUCTOR -->
                 <div id="tabHistoryContent" class="hidden space-y-6">
-                    <div class="glass-card rounded-2xl p-6 space-y-4 border-l-4 border-l-purple-500 shadow-2xl">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800 pb-4">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 border-l-4 border-l-purple-500 shadow-2xl">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
                             <div>
-                                <h4 class="font-extrabold text-xl text-white flex items-center">
-                                    <i class="fa-solid fa-clock-rotate-left text-purple-400 mr-2.5"></i>
-                                    Historial Cronológico de Viajes por Conductor
+                                <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
+                                    <i class="fa-solid fa-clock-rotate-left text-purple-400 mr-2"></i>
+                                    Historial Cronológico
                                 </h4>
-                                <p class="text-xs text-slate-400 mt-1">Selecciona un conductor para desplegar todos sus servicios registrados en orden cronológico por fecha</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Selecciona un conductor para consultar sus servicios</p>
                             </div>
-                            <div class="flex items-center space-x-3 w-full sm:w-auto">
-                                <label class="text-xs text-slate-300 font-bold whitespace-nowrap">Conductor:</label>
-                                <select id="singleDriverSelect" onchange="renderSingleDriverTimeline()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-4 py-2.5 font-bold focus:outline-none focus:border-purple-400 w-full sm:w-72 shadow-lg">
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <select id="singleDriverSelect" onchange="renderSingleDriverTimeline()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-purple-400 w-full sm:w-72 shadow-lg">
                                     <option value="">-- Seleccionar Conductor --</option>
                                 </select>
                             </div>
                         </div>
                         
-                        <div class="overflow-x-auto max-h-[500px] rounded-xl border border-slate-800">
+                        <div class="overflow-x-auto max-h-[450px] rounded-xl border border-slate-800">
                             <table class="w-full text-left text-xs text-slate-300">
                                 <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                     <tr>
-                                        <th class="p-3.5">#</th>
-                                        <th class="p-3.5">Fecha</th>
-                                        <th class="p-3.5">Cliente</th>
-                                        <th class="p-3.5">Ruta</th>
-                                        <th class="p-3.5">Tracto</th>
-                                        <th class="p-3.5">Remolque</th>
-                                        <th class="p-3.5">Unidad</th>
+                                        <th class="p-3">#</th>
+                                        <th class="p-3">Fecha</th>
+                                        <th class="p-3">Cliente</th>
+                                        <th class="p-3">Ruta</th>
+                                        <th class="p-3">Tracto</th>
+                                        <th class="p-3">Remolque</th>
+                                        <th class="p-3">Unidad</th>
                                     </tr>
                                 </thead>
                                 <tbody id="singleDriverTimelineBody" class="divide-y divide-slate-800/60 bg-slate-950/40">
-                                    <tr><td colspan="7" class="p-8 text-center text-slate-500 italic">Selecciona un conductor en el menú desplegable superior para consultar sus viajes.</td></tr>
+                                    <tr><td colspan="7" class="p-6 text-center text-slate-500 italic">Selecciona un conductor arriba.</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -372,97 +362,97 @@
 
                 <!-- REPORTE: MES A MES -->
                 <div id="tabMonthlyContent" class="hidden space-y-6">
-                    <div class="glass-card rounded-2xl p-6 flex flex-col w-full shadow-2xl">
-                        <h4 class="font-extrabold text-lg text-white mb-4"><i class="fa-solid fa-chart-column text-emerald-400 mr-2"></i>Reporte Comparativo: Mes a Mes (General vs CAASA)</h4>
-                        <div class="relative w-full min-h-[360px]"><canvas id="chartMonthlyComparative"></canvas></div>
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl">
+                        <h4 class="font-extrabold text-base sm:text-lg text-white mb-4"><i class="fa-solid fa-chart-column text-emerald-400 mr-2"></i>Reporte Comparativo: Mes a Mes</h4>
+                        <div class="relative w-full min-h-[300px]"><canvas id="chartMonthlyComparative"></canvas></div>
                     </div>
                 </div>
 
                 <!-- REPORTE: COMPARATIVA DE RANGO POR DÍAS -->
                 <div id="tabPartialContent" class="hidden space-y-6">
-                    <div class="glass-card rounded-2xl p-6 space-y-4">
-                        <h4 class="font-extrabold text-base text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Comparativa de Rango Temporal por Días</h4>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
+                        <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Comparativa de Rango Temporal</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1.5">Mes Base (Período A)</label>
-                                <select id="compMonthA" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 font-bold focus:outline-none"></select>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes Base (A)</label>
+                                <select id="compMonthA" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none"></select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1.5">Mes Contraste (Período B)</label>
-                                <select id="compMonthB" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 font-bold focus:outline-none"></select>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes Contraste (B)</label>
+                                <select id="compMonthB" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none"></select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-slate-400 uppercase mb-1.5">Rango de Días</label>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Días</label>
                                 <div class="flex items-center space-x-2">
-                                    <input type="number" id="compDayStart" value="1" min="1" max="31" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-center text-white font-bold">
-                                    <span class="text-slate-400 text-xs">hasta</span>
-                                    <input type="number" id="compDayEnd" value="13" min="1" max="31" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-center text-white font-bold">
+                                    <input type="number" id="compDayStart" value="1" min="1" max="31" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs text-center text-white font-bold">
+                                    <span class="text-slate-400 text-xs">a</span>
+                                    <input type="number" id="compDayEnd" value="13" min="1" max="31" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs text-center text-white font-bold">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="glass-card rounded-2xl p-5 border-l-4 border-l-cyan-400">
-                            <p class="text-xs font-bold uppercase text-slate-400">Viajes Totales (Rango)</p>
-                            <div class="flex items-baseline justify-between mt-2">
-                                <div><span id="compValA" class="text-2xl font-black text-cyan-400">0</span><span class="text-xs text-slate-500"> vs </span><span id="compValB" class="text-2xl font-black text-purple-400">0</span></div>
-                                <span id="compDiffBadge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-400">+0%</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="glass-card rounded-2xl p-4 border-l-4 border-l-cyan-400">
+                            <p class="text-[11px] font-bold uppercase text-slate-400">Viajes Totales</p>
+                            <div class="flex items-baseline justify-between mt-1">
+                                <div><span id="compValA" class="text-xl font-black text-cyan-400">0</span><span class="text-xs text-slate-500"> vs </span><span id="compValB" class="text-xl font-black text-purple-400">0</span></div>
+                                <span id="compDiffBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">+0%</span>
                             </div>
                         </div>
-                        <div class="glass-card rounded-2xl p-5 border-l-4 border-l-amber-500">
-                            <p class="text-xs font-bold uppercase text-slate-400">Viajes CAASA (Rango)</p>
-                            <div class="flex items-baseline justify-between mt-2">
-                                <div><span id="compCaasaA" class="text-2xl font-black text-amber-400">0</span><span class="text-xs text-slate-500"> vs </span><span id="compCaasaB" class="text-2xl font-black text-amber-300">0</span></div>
-                                <span id="compCaasaDiffBadge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400">0%</span>
+                        <div class="glass-card rounded-2xl p-4 border-l-4 border-l-amber-500">
+                            <p class="text-[11px] font-bold uppercase text-slate-400">Viajes CAASA</p>
+                            <div class="flex items-baseline justify-between mt-1">
+                                <div><span id="compCaasaA" class="text-xl font-black text-amber-400">0</span><span class="text-xs text-slate-500"> vs </span><span id="compCaasaB" class="text-xl font-black text-amber-300">0</span></div>
+                                <span id="compCaasaDiffBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">0%</span>
                             </div>
                         </div>
-                        <div class="glass-card rounded-2xl p-5 border-l-4 border-l-rose-500">
-                            <p class="text-xs font-bold uppercase text-slate-400">Falso Flete CAASA (Rango)</p>
-                            <div class="flex items-baseline justify-between mt-2">
-                                <div><span id="compFfA" class="text-2xl font-black text-rose-400">0</span><span class="text-xs text-slate-500"> vs </span><span id="compFfB" class="text-2xl font-black text-rose-300">0</span></div>
-                                <span id="compFfDiffBadge" class="text-xs font-bold px-2.5 py-1 rounded-lg bg-slate-800 text-slate-400">0%</span>
+                        <div class="glass-card rounded-2xl p-4 border-l-4 border-l-rose-500">
+                            <p class="text-[11px] font-bold uppercase text-slate-400">Falso Flete</p>
+                            <div class="flex items-baseline justify-between mt-1">
+                                <div><span id="compFfA" class="text-xl font-black text-rose-400">0</span><span class="text-xs text-slate-500"> vs </span><span id="compFfB" class="text-xl font-black text-rose-300">0</span></div>
+                                <span id="compFfDiffBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">0%</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="glass-card rounded-2xl p-6 flex flex-col">
-                        <h4 class="font-extrabold text-base text-white mb-4">Comparativa por Cliente (Rango de Días Seleccionado)</h4>
-                        <div class="relative flex-1 min-h-[360px]"><canvas id="chartPartialComparison"></canvas></div>
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                        <h4 class="font-extrabold text-sm sm:text-base text-white mb-4">Comparativa por Cliente</h4>
+                        <div class="relative flex-1 min-h-[300px]"><canvas id="chartPartialComparison"></canvas></div>
                     </div>
                 </div>
 
                 <!-- OPERACIONES: CAASA -->
                 <div id="tabCaasaContent" class="hidden space-y-6">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="glass-card rounded-2xl p-6 lg:col-span-2 flex flex-col">
-                            <h4 class="font-extrabold text-base text-white mb-4"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i>Viajes por Tipo de Programa CAASA</h4>
-                            <div class="relative flex-1 min-h-[300px]"><canvas id="chartCaasaProgram"></canvas></div>
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 lg:col-span-2 flex flex-col">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i>Viajes por Programa CAASA</h4>
+                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartCaasaProgram"></canvas></div>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 flex flex-col">
-                            <h4 class="font-extrabold text-base text-white mb-4"><i class="fa-solid fa-triangle-exclamation text-rose-400 mr-2"></i>Incidencia Falso Flete (%)</h4>
-                            <div class="relative flex-1 min-h-[300px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-triangle-exclamation text-rose-400 mr-2"></i>Incidencia Falso Flete (%)</h4>
+                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="glass-card rounded-2xl p-6 flex flex-col">
-                            <h4 class="font-extrabold text-base text-white mb-4"><i class="fa-solid fa-truck-ramp-box text-cyan-400 mr-2"></i>Remolques Usados en CAASA</h4>
-                            <div class="relative flex-1 min-h-[260px]"><canvas id="chartCaasaTrailers"></canvas></div>
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-truck-ramp-box text-cyan-400 mr-2"></i>Remolques Usados en CAASA</h4>
+                            <div class="relative flex-1 min-h-[240px]"><canvas id="chartCaasaTrailers"></canvas></div>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 flex flex-col">
-                            <h4 class="font-extrabold text-base text-white mb-4"><i class="fa-solid fa-route text-emerald-400 mr-2"></i>Principales Rutas CAASA</h4>
-                            <div class="relative flex-1 min-h-[260px]"><canvas id="chartCaasaRoutes"></canvas></div>
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-route text-emerald-400 mr-2"></i>Principales Rutas CAASA</h4>
+                            <div class="relative flex-1 min-h-[240px]"><canvas id="chartCaasaRoutes"></canvas></div>
                         </div>
                     </div>
                 </div>
 
                 <!-- TABLA DE REGISTROS -->
-                <section class="glass-card rounded-2xl p-6 space-y-4">
-                    <div class="flex justify-between items-center border-b border-slate-800 pb-4">
-                        <h4 class="font-extrabold text-base text-white">Detalle de Registros Filtrados</h4>
-                        <span id="recordCountBadge" class="text-xs bg-slate-900 border border-slate-700 text-cyan-400 px-3 py-1.5 rounded-xl font-bold">0 Registros</span>
+                <section class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros Filtrados</h4>
+                        <span id="recordCountBadge" class="text-[11px] bg-slate-900 border border-slate-700 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Registros</span>
                     </div>
-                    <div class="overflow-x-auto max-h-96 rounded-xl border border-slate-800">
+                    <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-800">
                         <table class="w-full text-left text-xs text-slate-300">
                             <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                 <tr><th class="p-3">Origen</th><th class="p-3">F. Inicio</th><th class="p-3">Tracto</th><th class="p-3">Chofer</th><th class="p-3">Remolque</th><th class="p-3">Ruta</th><th class="p-3">Cliente</th><th class="p-3">Unidad</th></tr>
@@ -475,23 +465,23 @@
         </main>
     </div>
 
+    <!-- SCRIPT CON LÓGICA COMPLETA Y ADAPTATIVA -->
     <script>
         Chart.register(ChartDataLabels);
+        
         let globalDataClientes = [];
         let globalDataCaasa = [];
         let filteredClientes = [];
         let filteredCaasa = [];
         let charts = {};
 
-        // ENLACE DIRECTO RAW DEL ARCHIVO 'VIAJES  2026.xlsx' EN GITHUB
         const EXCEL_URL = 'https://raw.githubusercontent.com/RenzoAK30/VortexAnalytics/main/VIAJES%20%202026.xlsx';
 
-        // Carga automática del Excel desde GitHub al abrir la web
         window.addEventListener('DOMContentLoaded', () => {
             if (EXCEL_URL) {
                 fetch(EXCEL_URL)
                     .then(response => {
-                        if (!response.ok) throw new Error('No se pudo descargar el archivo VIAJES  2026.xlsx desde GitHub');
+                        if (!response.ok) throw new Error('Carga pendiente');
                         return response.arrayBuffer();
                     })
                     .then(data => {
@@ -499,7 +489,7 @@
                         processWorkbook(workbook);
                     })
                     .catch(error => {
-                        console.warn('Carga automática pendiente. Sube el archivo VIAJES  2026.xlsx a GitHub o selecciónalo manualmente.', error);
+                        console.warn('Carga directa no disponible. Puedes subir el archivo manualmente.', error);
                     });
             }
         });
@@ -571,7 +561,7 @@
             globalDataClientes = [
                 { origen: 'DATA CLIENTES', date: new Date(2026, 9, 1), day: 1, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', trailer: 'Plataforma', ruta: 'LIMA - TRUJILLO', cliente: 'CORPORACION ACEROS AREQUIPA S.A.', unidad: 'Propia' },
                 { origen: 'DATA CLIENTES', date: new Date(2026, 9, 5), day: 5, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', trailer: 'Plataforma', ruta: 'LIMA - PIURA', cliente: 'SAN MIGUEL INDUSTRIAS PET S.A.', unidad: 'Propia' },
-                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 2), day: 2, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'DEF-456', chofer: 'JUAN QUISPE', trailer: 'Furgón', ruta: 'LIMA - PIURA', cliente: 'CASA GRANDE SOCIEDAD ANONIMA ABIERTA', unidad: 'Tercero' }
+                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 2), day: 2, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'DEF-456', chofer: 'JUAN QUISPE', trailer: 'Furgón', ruta: 'LIMA - PIURA', cliente: 'CASA GRANDE S.A.A.', unidad: 'Tercero' }
             ];
             globalDataCaasa = [
                 { origen: 'DATA CAASA', date: new Date(2026, 9, 1), day: 1, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', dt: 'DT001', trailer: 'Plataforma', ruta: 'LIMA - TRUJILLO', programa: 'REPARTO', falsoFlete: 'NO APLICA' }
@@ -747,6 +737,9 @@
                 activeBtn.classList.remove('text-slate-400');
             }
 
+            // Oculta automáticamente el menú flotante tras hacer clic
+            document.getElementById('sidebar')?.classList.add('hidden');
+
             renderAllTabContents();
         }
 
@@ -767,28 +760,28 @@
             renderTable();
         }
 
-        // RESUMEN GENERAL ACTUALIZADO: Barras horizontales estables con scroll vertical
         function renderGeneralTab() {
             const counts = {};
             filteredClientes.forEach(d => counts[d.cliente] = (counts[d.cliente] || 0) + 1);
-            const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+            let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
             document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes Detectados`;
 
-            // Ajuste dinámico de altura (35px por cada cliente)
+            const isMobile = window.innerWidth < 768;
+            const displayData = isMobile ? sorted.slice(0, 15) : sorted;
+
             const container = document.getElementById('allClientsChartContainer');
             if (container) {
-                const dynamicHeight = Math.max(400, sorted.length * 35);
-                container.style.height = `${dynamicHeight}px`;
+                container.style.height = isMobile ? `${Math.max(300, displayData.length * 28)}px` : `${Math.max(450, sorted.length * 35)}px`;
             }
 
             createChart('chartAllClients', {
                 type: 'bar',
                 data: {
-                    labels: sorted.map(s => s[0]),
-                    datasets: [{ label: 'Viajes', data: sorted.map(s => s[1]), backgroundColor: '#00f2fe', borderRadius: 4 }]
+                    labels: displayData.map(s => s[0]),
+                    datasets: [{ label: 'Viajes', data: displayData.map(s => s[1]), backgroundColor: '#00f2fe', borderRadius: 4 }]
                 },
                 options: {
-                    indexAxis: 'y', // Convertido a barras horizontales
+                    indexAxis: 'y',
                     responsive: true, 
                     maintainAspectRatio: false,
                     plugins: { 
@@ -796,14 +789,8 @@
                         datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { weight: 'bold', size: 10 } } 
                     },
                     scales: { 
-                        x: { 
-                            ticks: { color: '#94a3b8' }, 
-                            grid: { color: '#1e293b' } 
-                        }, 
-                        y: { 
-                            ticks: { color: '#94a3b8', font: { size: 10 } }, 
-                            grid: { display: false } 
-                        } 
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, 
+                        y: { ticks: { color: '#94a3b8', font: { size: isMobile ? 9 : 11 } }, grid: { display: false } } 
                     }
                 }
             });
@@ -883,12 +870,12 @@
 
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
-                        <td class="p-3 font-semibold text-white">${row.chofer}</td>
-                        <td class="p-3 text-slate-300">${row.cliente}</td>
+                        <td class="p-3 font-semibold text-white whitespace-nowrap">${row.chofer}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${row.cliente}</td>
                         <td class="p-3 text-cyan-300 font-mono text-[11px] max-w-xs truncate" title="${datesStr}">${datesStr}</td>
                         <td class="p-3 text-center font-bold text-amber-400">${row.count}</td>
                         <td class="p-3 text-center font-semibold text-emerald-400">${pct}%</td>
-                        <td class="p-3 text-slate-400">${row.unidad}</td>
+                        <td class="p-3 text-slate-400 whitespace-nowrap">${row.unidad}</td>
                     </tr>
                 `;
             });
@@ -905,7 +892,7 @@
             tbody.innerHTML = '';
 
             if (!driverName) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 italic">Selecciona un conductor en el menú desplegable superior para consultar sus viajes.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 italic">Selecciona un conductor en el menú desplegable.</td></tr>`;
                 return;
             }
 
@@ -914,7 +901,7 @@
                 .sort((a, b) => (a.date || 0) - (b.date || 0));
 
             if (driverTrips.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400 italic">No se encontraron viajes para este conductor con los filtros actuales.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400 italic">Sin registros para este conductor.</td></tr>`;
                 return;
             }
 
@@ -922,12 +909,12 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
                         <td class="p-3.5 font-mono text-slate-500">${idx + 1}</td>
-                        <td class="p-3.5 text-amber-400 font-semibold">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
-                        <td class="p-3.5 text-white font-bold">${r.cliente}</td>
-                        <td class="p-3.5 text-slate-300">${r.ruta}</td>
-                        <td class="p-3.5 text-cyan-400 font-mono">${r.tracto}</td>
-                        <td class="p-3.5 text-slate-400">${r.trailer}</td>
-                        <td class="p-3.5 text-slate-300">${r.unidad}</td>
+                        <td class="p-3.5 text-amber-400 font-semibold whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
+                        <td class="p-3.5 text-white font-bold whitespace-nowrap">${r.cliente}</td>
+                        <td class="p-3.5 text-slate-300 whitespace-nowrap">${r.ruta}</td>
+                        <td class="p-3.5 text-cyan-400 font-mono whitespace-nowrap">${r.tracto}</td>
+                        <td class="p-3.5 text-slate-400 whitespace-nowrap">${r.trailer}</td>
+                        <td class="p-3.5 text-slate-300 whitespace-nowrap">${r.unidad}</td>
                     </tr>
                 `;
             });
@@ -939,20 +926,21 @@
 
             const counts = {};
             dataToUse.forEach(d => counts[d.chofer] = (counts[d.chofer] || 0) + 1);
-            
-            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+            const isMobile = window.innerWidth < 768;
+            const displayData = isMobile ? sorted.slice(0, 15) : sorted;
 
             const container = document.getElementById('driverChartContainer');
             if (container) {
-                const dynamicHeight = Math.max(400, sorted.length * 30);
-                container.style.height = `${dynamicHeight}px`;
+                container.style.height = isMobile ? `${Math.max(300, displayData.length * 28)}px` : `${Math.max(450, sorted.length * 30)}px`;
             }
 
             createChart('chartDriverCross', {
                 type: 'bar',
                 data: {
-                    labels: sorted.map(s => s[0]),
-                    datasets: [{ label: 'Viajes Realizados', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
+                    labels: displayData.map(s => s[0]),
+                    datasets: [{ label: 'Viajes Realizados', data: displayData.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -963,14 +951,8 @@
                         datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold', size: 10 } } 
                     },
                     scales: { 
-                        x: { 
-                            ticks: { color: '#94a3b8' }, 
-                            grid: { color: '#1e293b' } 
-                        }, 
-                        y: { 
-                            ticks: { color: '#94a3b8', font: { size: 10 } }, 
-                            grid: { display: false } 
-                        } 
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, 
+                        y: { ticks: { color: '#94a3b8', font: { size: isMobile ? 9 : 11 } }, grid: { display: false } } 
                     }
                 }
             });
@@ -978,10 +960,8 @@
 
         function filterDriverTable() {
             const query = document.getElementById('driverSearchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#driverTableBody tr');
-            rows.forEach(row => {
-                const text = row.innerText.toLowerCase();
-                row.style.display = text.includes(query) ? '' : 'none';
+            document.querySelectorAll('#driverTableBody tr').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
             });
         }
 
@@ -1127,8 +1107,8 @@
                 data: {
                     labels: labels,
                     datasets: [
-                        { label: `Período A (Días ${dayStart}-${dayEnd})`, data: dataA, backgroundColor: '#00f2fe', borderRadius: 4 },
-                        { label: `Período B (Días ${dayStart}-${dayEnd})`, data: dataB, backgroundColor: '#9d4edd', borderRadius: 4 }
+                        { label: `Período A (${dayStart}-${dayEnd})`, data: dataA, backgroundColor: '#00f2fe', borderRadius: 4 },
+                        { label: `Período B (${dayStart}-${dayEnd})`, data: dataB, backgroundColor: '#9d4edd', borderRadius: 4 }
                     ]
                 },
                 options: {
@@ -1148,14 +1128,14 @@
             filteredClientes.slice(0, 100).forEach(r => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
-                        <td class="p-3 text-cyan-400 font-semibold">${r.origen}</td>
-                        <td class="p-3 text-slate-300">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
-                        <td class="p-3 text-white font-mono">${r.tracto}</td>
-                        <td class="p-3 text-slate-300">${r.chofer}</td>
-                        <td class="p-3 text-slate-400">${r.trailer}</td>
-                        <td class="p-3 text-slate-300">${r.ruta}</td>
-                        <td class="p-3 font-bold text-amber-400">${r.cliente}</td>
-                        <td class="p-3 text-slate-400">${r.unidad}</td>
+                        <td class="p-3 text-cyan-400 font-semibold whitespace-nowrap">${r.origen}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
+                        <td class="p-3 text-white font-mono whitespace-nowrap">${r.tracto}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${r.chofer}</td>
+                        <td class="p-3 text-slate-400 whitespace-nowrap">${r.trailer}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${r.ruta}</td>
+                        <td class="p-3 font-bold text-amber-400 whitespace-nowrap">${r.cliente}</td>
+                        <td class="p-3 text-slate-400 whitespace-nowrap">${r.unidad}</td>
                     </tr>
                 `;
             });
