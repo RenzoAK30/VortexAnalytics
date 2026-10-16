@@ -80,11 +80,11 @@
             </div>
 
             <div class="flex items-center space-x-3">
-                <!--button onclick="loadMockData()" class="px-4 py-2.5 rounded-xl font-semibold text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/35 transition-all flex items-center space-x-2 shadow-lg">
+                <button onclick="loadMockData()" class="px-4 py-2.5 rounded-xl font-semibold text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/35 transition-all flex items-center space-x-2 shadow-lg">
                     <i class="fa-solid fa-bolt"></i><span>Cargar Datos Demo</span>
-                </button-->
+                </button>
                 <label for="excelFile" class="cursor-pointer px-4 py-2.5 rounded-xl font-bold text-xs bg-grad-emerald hover:brightness-110 text-white transition-all shadow-lg flex items-center space-x-2">
-                    <i class="fa-solid fa-file-excel text-lg"></i><span>Subir Excel</span>
+                    <i class="fa-solid fa-file-excel text-lg"></i><span>Subir Excel Manual</span>
                 </label>
                 <input type="file" id="excelFile" accept=".xlsx, .xls" class="hidden" onchange="handleFileUpload(event)">
             </div>
@@ -160,25 +160,25 @@
         <!-- ÁREA DE CONTENIDO PRINCIPAL -->
         <main class="flex-1 space-y-6 overflow-hidden">
 
-            <!-- Upload Zone -->
+            <!-- Upload / Loading Zone -->
             <div id="uploadZone" class="glass-card rounded-3xl p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 hover:border-cyan-400/60 my-6 shadow-2xl">
                 <div class="max-w-2xl mx-auto space-y-6 relative z-10">
-                    <div class="w-20 h-20 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-3xl border border-cyan-500/30 glow-cian">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <div class="w-20 h-20 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-3xl border border-cyan-500/30 glow-cian animate-pulse">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
                     </div>
                     <div>
-                        <h2 class="text-3xl font-black text-white tracking-tight">Cargando datos desde GitHub...</h2>
+                        <h2 class="text-3xl font-black text-white tracking-tight">Cargando 'VIAJES  2026.xlsx'...</h2>
                         <p class="text-slate-400 text-sm mt-2">
-                            Si no se cargan automáticamente, puedes subir tu archivo Excel de forma manual.
+                            Descargando y analizando los datos más recientes alojados en GitHub. Por favor espera unos segundos.
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-4">
                         <label for="excelFile" class="cursor-pointer w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-grad-primary hover:brightness-110 text-white font-bold text-sm transition-all shadow-xl flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-folder-open"></i><span>Seleccionar Archivo</span>
+                            <i class="fa-solid fa-folder-open"></i><span>Subir Otro Excel Manual</span>
                         </label>
-                        <!--button onclick="loadMockData()" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm transition-all flex items-center justify-center space-x-2">
+                        <button onclick="loadMockData()" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm transition-all flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i><span>Probar Demo interactiva</span>
-                    </button-->
+                        </button>
                     </div>
                 </div>
             </div>
@@ -296,7 +296,7 @@
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 border-b border-slate-800 pb-4">
                             <div>
                                 <h4 class="font-extrabold text-lg text-white">Reporte: Distribución de Choferes por Cliente</h4>
-                                <p class="text-xs text-slate-400">Identifica qué conductores atienden mayoritariamente a cada cuenta</p>
+                                <p class="text-xs text-slate-400">Lista completa de todos los conductores y la cantidad de viajes realizados</p>
                             </div>
                             <div class="flex items-center space-x-3 w-full sm:w-auto">
                                 <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filtrar Cliente:</label>
@@ -305,7 +305,12 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="relative w-full min-h-[360px]"><canvas id="chartDriverCross"></canvas></div>
+                        <!-- Contenedor con Scroll Horizontal dinámico para visualizar todos los choferes -->
+                        <div class="relative w-full overflow-x-auto min-h-[380px]">
+                            <div id="driverChartContainer" style="min-width: 100%; height: 380px;">
+                                <canvas id="chartDriverCross"></canvas>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="glass-card rounded-2xl p-6 space-y-4">
@@ -484,15 +489,15 @@
         let filteredCaasa = [];
         let charts = {};
 
-        // ENLACE DIRECTO RAW DE TU EXCEL EN GITHUB (Reemplaza con tu enlace real si cambió el usuario o repositorio)
-        const EXCEL_URL = 'https://github.com/RenzoAK30/VortexAnalytics/raw/refs/heads/main/VIAJES%20%202026.xlsx';
+        // ENLACE DIRECTO RAW DEL ARCHIVO 'VIAJES  2026.xlsx' EN GITHUB
+        const EXCEL_URL = 'https://raw.githubusercontent.com/RenzoAK30/VortexAnalytics/main/VIAJES%20%202026.xlsx';
 
         // Carga automática del Excel desde GitHub al abrir la web
         window.addEventListener('DOMContentLoaded', () => {
             if (EXCEL_URL) {
                 fetch(EXCEL_URL)
                     .then(response => {
-                        if (!response.ok) throw new Error('No se pudo descargar el archivo de Excel desde GitHub');
+                        if (!response.ok) throw new Error('No se pudo descargar el archivo VIAJES  2026.xlsx desde GitHub');
                         return response.arrayBuffer();
                     })
                     .then(data => {
@@ -500,7 +505,7 @@
                         processWorkbook(workbook);
                     })
                     .catch(error => {
-                        console.warn('Carga automática pendiente. Sube el archivo manualmente o verifica el enlace Raw.', error);
+                        console.warn('Carga automática pendiente. Sube el archivo VIAJES  2026.xlsx a GitHub o selecciónalo manualmente.', error);
                     });
             }
         });
@@ -918,7 +923,14 @@
 
             const counts = {};
             dataToUse.forEach(d => counts[d.chofer] = (counts[d.chofer] || 0) + 1);
-            const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,10);
+            
+            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+            const container = document.getElementById('driverChartContainer');
+            if (container) {
+                const minWidth = Math.max(100, sorted.length * 45);
+                container.style.minWidth = `${minWidth}%`;
+            }
 
             createChart('chartDriverCross', {
                 type: 'bar',
@@ -927,9 +939,22 @@
                     datasets: [{ label: 'Viajes por Chofer', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#fcd34d', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false }, 
+                        datalabels: { anchor: 'end', align: 'top', color: '#fcd34d', font: { weight: 'bold', size: 10 } } 
+                    },
+                    scales: { 
+                        x: { 
+                            ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 45, minRotation: 45 }, 
+                            grid: { display: false } 
+                        }, 
+                        y: { 
+                            ticks: { color: '#94a3b8' }, 
+                            grid: { color: '#1e293b' } 
+                        } 
+                    }
                 }
             });
         }
