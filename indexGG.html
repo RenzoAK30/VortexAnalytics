@@ -155,7 +155,7 @@
                     <div>
                         <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
                         <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Descargando y procesando los datos. Si estás en iPhone y demora, selecciona tu archivo manualmente.
+                            Procesando datos. Si estás en iPhone y el archivo no carga automáticamente, selecciónalo manualmente.
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
@@ -465,7 +465,7 @@
         </main>
     </div>
 
-    <!-- SCRIPT CON LÓGICA COMPLETA Y SOPORTE RESILIENTE PARA IPHONE -->
+    <!-- SCRIPT CON LÓGICA COMPLETA Y RUTA RELATIVA LOCAL -->
     <script>
         Chart.register(ChartDataLabels);
         
@@ -475,14 +475,14 @@
         let filteredCaasa = [];
         let charts = {};
 
-        // Utilizando CDN jsDelivr optimizado para evitar bloqueos de CORS y límites en dispositivos móviles
-        const EXCEL_URL = 'https://cdn.jsdelivr.net/gh/RenzoAK30/VortexAnalytics@main/VIAJES%20%202026.xlsx';
+        // Ruta relativa local para evitar bloqueos de CORS/red en Safari e iPhone
+        const EXCEL_URL = './VIAJES_2026.xlsx';
 
         window.addEventListener('DOMContentLoaded', () => {
             if (EXCEL_URL) {
                 fetch(EXCEL_URL)
                     .then(response => {
-                        if (!response.ok) throw new Error('Carga bloqueada o red restringida');
+                        if (!response.ok) throw new Error('Carga restringida o archivo no disponible');
                         return response.arrayBuffer();
                     })
                     .then(data => {
@@ -490,9 +490,9 @@
                         processWorkbook(workbook);
                     })
                     .catch(error => {
-                        console.warn('Carga automática omitida por restricciones del dispositivo o red.', error);
+                        console.warn('Carga automática restringida.', error);
                         document.getElementById('loadingTitle').innerText = 'Carga Automática Restringida';
-                        document.getElementById('loadingText').innerText = 'Tu navegador (como Safari en iOS) bloqueó la descarga directa. Por favor, toca el botón de abajo para seleccionar tu archivo Excel.';
+                        document.getElementById('loadingText').innerText = 'El navegador ha limitado la descarga automática. Usa el botón de abajo para subir tu archivo Excel manualmente.';
                         const iconContainer = document.getElementById('loadingIconContainer');
                         if (iconContainer) {
                             iconContainer.className = 'w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-rose-500/20 to-amber-500/20 text-rose-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-rose-500/30';
