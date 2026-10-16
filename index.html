@@ -80,12 +80,7 @@
             </div>
 
             <div class="flex items-center space-x-3">
-                <!--button onclick="loadMockData()" class="px-4 py-2.5 rounded-xl font-semibold text-xs bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/35 transition-all flex items-center space-x-2 shadow-lg">
-                    <i class="fa-solid fa-bolt"></i><span>Cargar Datos Demo</span>
-            </button-->
-                <!--label for="excelFile" class="cursor-pointer px-4 py-2.5 rounded-xl font-bold text-xs bg-grad-emerald hover:brightness-110 text-white transition-all shadow-lg flex items-center space-x-2">
-                    <i class="fa-solid fa-file-excel text-lg"></i><span>Subir Excel Manual</span>
-            </label-->
+
                 <input type="file" id="excelFile" accept=".xlsx, .xls" class="hidden" onchange="handleFileUpload(event)">
             </div>
         </div>
@@ -173,12 +168,7 @@
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-4">
-                        <!--label for="excelFile" class="cursor-pointer w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-grad-primary hover:brightness-110 text-white font-bold text-sm transition-all shadow-xl flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-folder-open"></i><span>Subir Otro Excel Manual</span>
-                    </label-->
-                        <!--button onclick="loadMockData()" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-sm transition-all flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i><span>Probar Demo interactiva</span>
-                    </button-->
+
                     </div>
                 </div>
             </div>
@@ -269,8 +259,12 @@
                             </div>
                             <span id="totalClientsCountBadge" class="text-xs bg-cyan-500/10 text-cyan-400 px-3 py-1.5 rounded-xl font-bold">0 Clientes</span>
                         </div>
-                        <div class="relative w-full overflow-x-auto min-h-[360px]">
-                            <div style="min-width: 600px; height: 360px;"><canvas id="chartAllClients"></canvas></div>
+                        
+                        <!-- Contenedor con Scroll Vertical estable para el Resumen Global de Clientes -->
+                        <div class="relative w-full overflow-y-auto max-h-[500px] border border-slate-800/80 rounded-2xl p-2 bg-slate-950/30">
+                            <div id="allClientsChartContainer" style="width: 100%; height: 500px;">
+                                <canvas id="chartAllClients"></canvas>
+                            </div>
                         </div>
                     </div>
 
@@ -576,9 +570,9 @@
 
         function loadMockData() {
             globalDataClientes = [
-                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 1), day: 1, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', trailer: 'Plataforma', ruta: 'LIMA - TRUJILLO', cliente: 'ACEROS AREQUIPA', unidad: 'Propia' },
-                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 5), day: 5, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', trailer: 'Plataforma', ruta: 'LIMA - PIURA', cliente: 'ACEROS AREQUIPA', unidad: 'Propia' },
-                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 2), day: 2, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'DEF-456', chofer: 'JUAN QUISPE', trailer: 'Furgón', ruta: 'LIMA - PIURA', cliente: 'MINERA ANTAMINA', unidad: 'Tercero' }
+                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 1), day: 1, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', trailer: 'Plataforma', ruta: 'LIMA - TRUJILLO', cliente: 'CORPORACION ACEROS AREQUIPA S.A.', unidad: 'Propia' },
+                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 5), day: 5, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', trailer: 'Plataforma', ruta: 'LIMA - PIURA', cliente: 'SAN MIGUEL INDUSTRIAS PET S.A.', unidad: 'Propia' },
+                { origen: 'DATA CLIENTES', date: new Date(2026, 9, 2), day: 2, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'DEF-456', chofer: 'JUAN QUISPE', trailer: 'Furgón', ruta: 'LIMA - PIURA', cliente: 'CASA GRANDE SOCIEDAD ANONIMA ABIERTA', unidad: 'Tercero' }
             ];
             globalDataCaasa = [
                 { origen: 'DATA CAASA', date: new Date(2026, 9, 1), day: 1, monthYear: 'Oct 2026', monthKey: '2026-10', tracto: 'ABC-123', chofer: 'CARLOS PEREZ', dt: 'DT001', trailer: 'Plataforma', ruta: 'LIMA - TRUJILLO', programa: 'REPARTO', falsoFlete: 'NO APLICA' }
@@ -774,22 +768,44 @@
             renderTable();
         }
 
+        // RESUMEN GENERAL ACTUALIZADO: Barras horizontales estables con scroll vertical
         function renderGeneralTab() {
             const counts = {};
             filteredClientes.forEach(d => counts[d.cliente] = (counts[d.cliente] || 0) + 1);
             const sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
             document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes Detectados`;
 
+            // Ajuste dinámico de altura (35px por cada cliente)
+            const container = document.getElementById('allClientsChartContainer');
+            if (container) {
+                const dynamicHeight = Math.max(400, sorted.length * 35);
+                container.style.height = `${dynamicHeight}px`;
+            }
+
             createChart('chartAllClients', {
                 type: 'bar',
                 data: {
                     labels: sorted.map(s => s[0]),
-                    datasets: [{ label: 'Viajes', data: sorted.map(s => s[1]), backgroundColor: '#00f2fe', borderRadius: 6 }]
+                    datasets: [{ label: 'Viajes', data: sorted.map(s => s[1]), backgroundColor: '#00f2fe', borderRadius: 4 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#00f2fe', font: { weight: 'bold', size: 10 } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    indexAxis: 'y', // Convertido a barras horizontales
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false }, 
+                        datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { weight: 'bold', size: 10 } } 
+                    },
+                    scales: { 
+                        x: { 
+                            ticks: { color: '#94a3b8' }, 
+                            grid: { color: '#1e293b' } 
+                        }, 
+                        y: { 
+                            ticks: { color: '#94a3b8', font: { size: 10 } }, 
+                            grid: { display: false } 
+                        } 
+                    }
                 }
             });
 
@@ -918,7 +934,6 @@
             });
         }
 
-        // FUNCIÓN OPTIMIZADA: Barras horizontales estables con scroll vertical
         function renderDriverCrossChart() {
             const selClient = document.getElementById('driverClientSelect')?.value || 'ALL';
             const dataToUse = selClient === 'ALL' ? filteredClientes : filteredClientes.filter(d => d.cliente === selClient);
@@ -928,10 +943,9 @@
             
             const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
 
-            // Ajustar la altura dinámica según el número de choferes para no sobrecargar la memoria
             const container = document.getElementById('driverChartContainer');
             if (container) {
-                const dynamicHeight = Math.max(400, sorted.length * 30); // 30px por cada chofer
+                const dynamicHeight = Math.max(400, sorted.length * 30);
                 container.style.height = `${dynamicHeight}px`;
             }
 
@@ -942,7 +956,7 @@
                     datasets: [{ label: 'Viajes Realizados', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
                 },
                 options: {
-                    indexAxis: 'y', // Barras horizontales de arriba hacia abajo
+                    indexAxis: 'y',
                     responsive: true, 
                     maintainAspectRatio: false,
                     plugins: { 
