@@ -41,18 +41,11 @@
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: #0b0f17; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        .glow-cian { box-shadow: 0 0 20px -5px rgba(0, 242, 254, 0.25); }
-        .glow-purple { box-shadow: 0 0 20px -5px rgba(157, 78, 221, 0.25); }
-        .glow-emerald { box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.25); }
-        .glow-amber { box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.25); }
-        .glow-rose { box-shadow: 0 0 20px -5px rgba(244, 63, 94, 0.25); }
+        .glow-cian { box-shadow: 0 0 15px -5px rgba(0, 242, 254, 0.2); }
         .glass-card {
-            background: linear-gradient(135deg, rgba(19, 27, 46, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+            background: rgba(19, 27, 46, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
         }
-        .bg-grad-primary { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%); }
-        .bg-grad-emerald { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
         .menu-item-active {
             background: rgba(0, 242, 254, 0.1);
             color: #00f2fe;
@@ -63,10 +56,10 @@
 <body class="min-h-screen flex flex-col antialiased">
 
     <!-- Top Header -->
-    <header class="bg-[#0f172a]/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
+    <header class="bg-[#0f172a] border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white text-xl p-2.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition-all flex items-center justify-center">
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white text-xl p-2.5 rounded-xl bg-slate-800 border border-slate-700 transition-all flex items-center justify-center">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <img src="logo.png" alt="Logo Vortex" class="w-44 h-14 rounded-2xl object-cover shadow-lg shadow-indigo-500/30">
@@ -78,10 +71,10 @@
         </div>
     </header>
 
-    <!-- Main Container with Sidebar + Content -->
+    <!-- Main Container -->
     <div class="flex-1 flex max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 relative">
 
-        <!-- MENÚ LATERAL IZQUIERDO -->
+        <!-- MENÚ LATERAL -->
         <aside id="sidebar" class="w-64 flex-shrink-0 space-y-6 hidden fixed lg:sticky top-24 left-4 z-40">
             <div class="glass-card rounded-2xl p-4 space-y-6 shadow-2xl border border-slate-800">
                 <div class="pb-2 border-b border-slate-800 flex justify-between items-center">
@@ -143,24 +136,24 @@
             </div>
         </aside>
 
-        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+        <!-- ÁREA DE CONTENIDO -->
         <main class="flex-1 space-y-6 overflow-hidden">
 
-            <!-- Upload / Loading Zone con Soporte Resiliente para iOS -->
-            <div id="uploadZone" class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 hover:border-cyan-400/60 my-4 sm:my-6 shadow-2xl">
+            <!-- Zona de Carga -->
+            <div id="uploadZone" class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 my-4 sm:my-6 shadow-2xl">
                 <div class="max-w-2xl mx-auto space-y-4 sm:space-y-6 relative z-10">
-                    <div id="loadingIconContainer" class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-cyan-500/30 glow-cian animate-pulse">
+                    <div id="loadingIconContainer" class="w-16 h-16 sm:w-20 sm:h-20 bg-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-cyan-500/30 animate-pulse">
                         <i class="fa-solid fa-spinner fa-spin"></i>
                     </div>
                     <div>
                         <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
                         <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Procesando datos. Si estás en iPhone y el archivo no carga automáticamente, selecciónalo manualmente.
+                            Procesando datos. Si estás en iPhone y tarda en cargar, selecciona el archivo manualmente.
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
                         <label for="excelFile" class="cursor-pointer bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg flex items-center space-x-2">
-                            <i class="fa-solid fa-file-excel mr-1"></i> Seleccionar Archivo Excel Manualmente
+                            <i class="fa-solid fa-file-excel mr-1"></i> Seleccionar Archivo Excel
                         </label>
                     </div>
                 </div>
@@ -168,7 +161,7 @@
 
             <div id="dashboardApp" class="hidden space-y-6">
                 <!-- Filtros Globales -->
-                <section class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800 relative">
+                <section class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
                     <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2.5">
                         <div class="flex items-center space-x-2">
                             <i class="fa-solid fa-sliders text-cyan-400 text-base"></i>
@@ -182,31 +175,31 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes / Periodo</label>
-                            <select id="filterMonth" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterMonth" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Meses</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Cliente</label>
-                            <select id="filterClient" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterClient" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Clientes</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Tipo de Unidad</label>
-                            <select id="filterUnitType" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterUnitType" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todas (Propia/Tercero)</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Tipo de Remolque</label>
-                            <select id="filterTrailer" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterTrailer" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Remolques</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Conductor / Chofer</label>
-                            <select id="filterChofer" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterChofer" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Choferes</option>
                             </select>
                         </div>
@@ -215,27 +208,27 @@
 
                 <!-- KPIs -->
                 <section class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-cian border-l-4 border-l-cyan-400">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-cyan-400">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Total Viajes</p>
                         <h3 id="kpiTotalViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p class="text-[9px] sm:text-[10px] text-cyan-400 font-semibold mt-0.5">DATA CLIENTES</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-purple border-l-4 border-l-purple-500">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-purple-500">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Clientes</p>
                         <h3 id="kpiClientesCount" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p class="text-[9px] sm:text-[10px] text-purple-400 font-semibold mt-0.5">Empresas</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-emerald border-l-4 border-l-emerald-400">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-emerald-400">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Flota Propia</p>
                         <h3 id="kpiPropiaRatio" class="text-xl sm:text-2xl font-black text-white mt-0.5">0%</h3>
                         <p id="kpiPropiaSub" class="text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-0.5">0 / 0</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-amber border-l-4 border-l-amber-500">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-amber-500">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Viajes CAASA</p>
                         <h3 id="kpiCaasaViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p class="text-[9px] sm:text-[10px] text-amber-400 font-semibold mt-0.5">Operación</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-rose border-l-4 border-l-rose-500 col-span-2 sm:col-span-1">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-rose-500 col-span-2 sm:col-span-1">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Falso Flete</p>
                         <h3 id="kpiFalsoFlete" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p id="kpiFalsoFletePercent" class="text-[9px] sm:text-[10px] text-rose-400 font-semibold mt-0.5">0%</p>
@@ -253,7 +246,7 @@
                             <span id="totalClientsCountBadge" class="text-[11px] bg-cyan-500/10 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Clientes</span>
                         </div>
                         <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
-                            <div id="allClientsChartContainer" style="width: 100%; height: 450px;">
+                            <div id="allClientsChartContainer" style="width: 100%; height: 400px;">
                                 <canvas id="chartAllClients"></canvas>
                             </div>
                         </div>
@@ -262,15 +255,15 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-trailer text-cyan-400 mr-2"></i>Tipos de Remolque</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartTrailerTypes"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartTrailerTypes"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-chart-pie text-emerald-400 mr-2"></i>Propia vs Terceros (%)</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartUnitOwnership"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartUnitOwnership"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-map-location-dot text-purple-400 mr-2"></i>Rutas Más Transitadas</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartTopRoutes"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartTopRoutes"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -285,14 +278,14 @@
                             </div>
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
                                 <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filtrar Cliente:</label>
-                                <select id="driverClientSelect" onchange="renderDriverCrossChart()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400 w-full sm:w-48">
+                                <select id="driverClientSelect" onchange="renderDriverCrossChart()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 w-full sm:w-48">
                                     <option value="ALL">Todos los Clientes</option>
                                 </select>
                             </div>
                         </div>
                         
                         <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
-                            <div id="driverChartContainer" style="width: 100%; height: 450px;">
+                            <div id="driverChartContainer" style="width: 100%; height: 400px;">
                                 <canvas id="chartDriverCross"></canvas>
                             </div>
                         </div>
@@ -301,11 +294,11 @@
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
                             <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-table text-amber-400 mr-2"></i>Matriz Detallada</h4>
-                            <input type="text" id="driverSearchInput" onkeyup="filterDriverTable()" placeholder="Buscar chofer..." class="bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none w-full sm:w-64">
+                            <input type="text" id="driverSearchInput" onkeyup="filterDriverTable()" placeholder="Buscar chofer..." class="bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 w-full sm:w-64">
                         </div>
                         <div class="overflow-x-auto max-h-96 rounded-xl border border-slate-800">
                             <table class="w-full text-left text-xs text-slate-300">
-                                <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                                <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                     <tr>
                                         <th class="p-3">Conductor</th>
                                         <th class="p-3">Cliente</th>
@@ -321,19 +314,17 @@
                     </div>
                 </div>
 
-                <!-- HISTORIAL: VIAJES POR CONDUCTOR -->
+                <!-- HISTORIAL -->
                 <div id="tabHistoryContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 border-l-4 border-l-purple-500 shadow-2xl">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
                             <div>
                                 <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
-                                    <i class="fa-solid fa-clock-rotate-left text-purple-400 mr-2"></i>
-                                    Historial Cronológico
+                                    <i class="fa-solid fa-clock-rotate-left text-purple-400 mr-2"></i>Historial Cronológico
                                 </h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Selecciona un conductor para consultar sus servicios</p>
                             </div>
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
-                                <select id="singleDriverSelect" onchange="renderSingleDriverTimeline()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-purple-400 w-full sm:w-72 shadow-lg">
+                                <select id="singleDriverSelect" onchange="renderSingleDriverTimeline()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold w-full sm:w-72 shadow-lg">
                                     <option value="">-- Seleccionar Conductor --</option>
                                 </select>
                             </div>
@@ -341,7 +332,7 @@
                         
                         <div class="overflow-x-auto max-h-[450px] rounded-xl border border-slate-800">
                             <table class="w-full text-left text-xs text-slate-300">
-                                <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                                <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                     <tr>
                                         <th class="p-3">#</th>
                                         <th class="p-3">Fecha</th>
@@ -375,11 +366,11 @@
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes Base (A)</label>
-                                <select id="compMonthA" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none"></select>
+                                <select id="compMonthA" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold"></select>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes Contraste (B)</label>
-                                <select id="compMonthB" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none"></select>
+                                <select id="compMonthB" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold"></select>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Días</label>
@@ -418,7 +409,7 @@
 
                     <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                         <h4 class="font-extrabold text-sm sm:text-base text-white mb-4">Comparativa por Cliente</h4>
-                        <div class="relative flex-1 min-h-[300px]"><canvas id="chartPartialComparison"></canvas></div>
+                        <div class="relative flex-1 min-h-[250px]"><canvas id="chartPartialComparison"></canvas></div>
                     </div>
                 </div>
 
@@ -427,21 +418,21 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="glass-card rounded-2xl p-4 sm:p-6 lg:col-span-2 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i>Viajes por Programa CAASA</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartCaasaProgram"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaProgram"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-triangle-exclamation text-rose-400 mr-2"></i>Incidencia Falso Flete (%)</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-truck-ramp-box text-cyan-400 mr-2"></i>Remolques Usados en CAASA</h4>
-                            <div class="relative flex-1 min-h-[240px]"><canvas id="chartCaasaTrailers"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaTrailers"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-route text-emerald-400 mr-2"></i>Principales Rutas CAASA</h4>
-                            <div class="relative flex-1 min-h-[240px]"><canvas id="chartCaasaRoutes"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaRoutes"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -449,12 +440,12 @@
                 <!-- TABLA DE REGISTROS -->
                 <section class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros Filtrados</h4>
+                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros (Primeros 50)</h4>
                         <span id="recordCountBadge" class="text-[11px] bg-slate-900 border border-slate-700 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Registros</span>
                     </div>
                     <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-800">
                         <table class="w-full text-left text-xs text-slate-300">
-                            <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                            <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                 <tr><th class="p-3">Origen</th><th class="p-3">F. Inicio</th><th class="p-3">Tracto</th><th class="p-3">Chofer</th><th class="p-3">Remolque</th><th class="p-3">Ruta</th><th class="p-3">Cliente</th><th class="p-3">Unidad</th></tr>
                             </thead>
                             <tbody id="dataTableBody" class="divide-y divide-slate-800/60 bg-slate-950/40"></tbody>
@@ -465,7 +456,7 @@
         </main>
     </div>
 
-    <!-- SCRIPT CON LÓGICA COMPLETA Y RUTA RELATIVA LOCAL -->
+    <!-- SCRIPT CORREGIDO Y OPTIMIZADO PARA MEMORIA SAFARI -->
     <script>
         Chart.register(ChartDataLabels);
         
@@ -474,15 +465,15 @@
         let filteredClientes = [];
         let filteredCaasa = [];
         let charts = {};
+        let currentTab = 'general';
 
-        // Ruta relativa local para evitar bloqueos de CORS/red en Safari e iPhone
         const EXCEL_URL = './VIAJES_2026.xlsx';
 
         window.addEventListener('DOMContentLoaded', () => {
             if (EXCEL_URL) {
                 fetch(EXCEL_URL)
                     .then(response => {
-                        if (!response.ok) throw new Error('Carga restringida o archivo no disponible');
+                        if (!response.ok) throw new Error('Archivo no disponible');
                         return response.arrayBuffer();
                     })
                     .then(data => {
@@ -490,30 +481,20 @@
                         processWorkbook(workbook);
                     })
                     .catch(error => {
-                        console.warn('Carga automática restringida.', error);
-                        document.getElementById('loadingTitle').innerText = 'Carga Automática Restringida';
-                        document.getElementById('loadingText').innerText = 'El navegador ha limitado la descarga automática. Usa el botón de abajo para subir tu archivo Excel manualmente.';
-                        const iconContainer = document.getElementById('loadingIconContainer');
-                        if (iconContainer) {
-                            iconContainer.className = 'w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-rose-500/20 to-amber-500/20 text-rose-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-rose-500/30';
-                            iconContainer.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
-                        }
+                        console.warn('Carga automática omitida por restricciones de red/memoria.', error);
+                        document.getElementById('loadingTitle').innerText = 'Seleccionar Archivo';
+                        document.getElementById('loadingText').innerText = 'Por favor, selecciona tu archivo Excel manualmente con el botón de abajo.';
                     });
             }
         });
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('hidden');
+            document.getElementById('sidebar')?.classList.toggle('hidden');
         }
 
         function toggleGroup(id) {
             const el = document.getElementById(id);
-            const icon = document.getElementById(`icon${id.charAt(0).toUpperCase() + id.slice(1)}`);
-            if (el) {
-                el.classList.toggle('hidden');
-                if (icon) icon.classList.toggle('rotate-180');
-            }
+            if (el) el.classList.toggle('hidden');
         }
 
         function getRowValue(row, possibleKeys) {
@@ -695,7 +676,7 @@
             });
 
             updateKPIs();
-            renderAllTabContents();
+            renderActiveTabContent();
         }
 
         function updateKPIs() {
@@ -715,6 +696,7 @@
         }
 
         function switchTab(tab) {
+            currentTab = tab;
             const tabs = ['General', 'Drivers', 'History', 'Caasa', 'Monthly', 'Partial'];
             tabs.forEach(t => {
                 document.getElementById(`tab${t}Content`)?.classList.add('hidden');
@@ -734,23 +716,27 @@
             }
 
             document.getElementById('sidebar')?.classList.add('hidden');
-            renderAllTabContents();
+            renderActiveTabContent();
         }
 
         function createChart(id, config) {
-            if (charts[id]) charts[id].destroy();
+            if (charts[id]) {
+                charts[id].destroy();
+                delete charts[id];
+            }
             const el = document.getElementById(id);
             if (!el) return;
             charts[id] = new Chart(el.getContext('2d'), config);
         }
 
-        function renderAllTabContents() {
-            renderGeneralTab();
-            renderDriversTab();
-            renderHistoryTab();
-            renderCaasaTab();
-            renderMonthlyTab();
-            renderPartialComparison();
+        // Renderizado adaptativo perezoso (Solo dibuja lo que se está viendo para no saturar memoria RAM)
+        function renderActiveTabContent() {
+            if (currentTab === 'general') renderGeneralTab();
+            if (currentTab === 'drivers') renderDriversTab();
+            if (currentTab === 'history') renderHistoryTab();
+            if (currentTab === 'caasa') renderCaasaTab();
+            if (currentTab === 'monthly') renderMonthlyTab();
+            if (currentTab === 'partial') renderPartialComparison();
             renderTable();
         }
 
@@ -761,12 +747,7 @@
             document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes Detectados`;
 
             const isMobile = window.innerWidth < 768;
-            const displayData = isMobile ? sorted.slice(0, 15) : sorted;
-
-            const container = document.getElementById('allClientsChartContainer');
-            if (container) {
-                container.style.height = isMobile ? `${Math.max(300, displayData.length * 28)}px` : `${Math.max(450, sorted.length * 35)}px`;
-            }
+            const displayData = isMobile ? sorted.slice(0, 10) : sorted;
 
             createChart('chartAllClients', {
                 type: 'bar',
@@ -778,14 +759,8 @@
                     indexAxis: 'y',
                     responsive: true, 
                     maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false }, 
-                        datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { weight: 'bold', size: 10 } } 
-                    },
-                    scales: { 
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, 
-                        y: { ticks: { color: '#94a3b8', font: { size: isMobile ? 9 : 11 } }, grid: { display: false } } 
-                    }
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { weight: 'bold', size: 9 } } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } } }
                 }
             });
 
@@ -814,10 +789,7 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#f1f5f9' } },
-                        datalabels: { color: '#fff', font: { weight: 'bold' }, formatter: (v, ctx) => { const sum = ctx.dataset.data.reduce((a,b)=>a+b,0); return sum === 0 ? '0%' : ((v/sum)*100).toFixed(1)+'%'; } }
-                    }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { color: '#fff', font: { weight: 'bold' } } }
                 }
             });
 
@@ -855,10 +827,9 @@
             const clientTotalMap = {};
             filteredClientes.forEach(d => clientTotalMap[d.cliente] = (clientTotalMap[d.cliente] || 0) + 1);
 
-            Object.values(map).sort((a,b) => b.count - a.count).forEach(row => {
+            Object.values(map).sort((a,b) => b.count - a.count).slice(0, 50).forEach(row => {
                 const totalClient = clientTotalMap[row.cliente] || 1;
                 const pct = ((row.count / totalClient) * 100).toFixed(1);
-                
                 row.dates.sort((x, y) => x - y);
                 const datesStr = row.dates.length > 0 ? row.dates.map(d => d.toLocaleDateString()).join(', ') : 'Sin Fecha';
 
@@ -866,7 +837,7 @@
                     <tr class="hover:bg-slate-900/60 transition">
                         <td class="p-3 font-semibold text-white whitespace-nowrap">${row.chofer}</td>
                         <td class="p-3 text-slate-300 whitespace-nowrap">${row.cliente}</td>
-                        <td class="p-3 text-cyan-300 font-mono text-[11px] max-w-xs truncate" title="${datesStr}">${datesStr}</td>
+                        <td class="p-3 text-cyan-300 font-mono text-[11px] max-w-xs truncate">${datesStr}</td>
                         <td class="p-3 text-center font-bold text-amber-400">${row.count}</td>
                         <td class="p-3 text-center font-semibold text-emerald-400">${pct}%</td>
                         <td class="p-3 text-slate-400 whitespace-nowrap">${row.unidad}</td>
@@ -886,7 +857,7 @@
             tbody.innerHTML = '';
 
             if (!driverName) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 italic">Selecciona un conductor en el menú desplegable.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 italic">Selecciona un conductor arriba.</td></tr>`;
                 return;
             }
 
@@ -894,21 +865,16 @@
                 .filter(d => d.chofer === driverName)
                 .sort((a, b) => (a.date || 0) - (b.date || 0));
 
-            if (driverTrips.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400 italic">Sin registros para este conductor.</td></tr>`;
-                return;
-            }
-
-            driverTrips.forEach((r, idx) => {
+            driverTrips.slice(0, 50).forEach((r, idx) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
-                        <td class="p-3.5 font-mono text-slate-500">${idx + 1}</td>
-                        <td class="p-3.5 text-amber-400 font-semibold whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
-                        <td class="p-3.5 text-white font-bold whitespace-nowrap">${r.cliente}</td>
-                        <td class="p-3.5 text-slate-300 whitespace-nowrap">${r.ruta}</td>
-                        <td class="p-3.5 text-cyan-400 font-mono whitespace-nowrap">${r.tracto}</td>
-                        <td class="p-3.5 text-slate-400 whitespace-nowrap">${r.trailer}</td>
-                        <td class="p-3.5 text-slate-300 whitespace-nowrap">${r.unidad}</td>
+                        <td class="p-3 font-mono text-slate-500">${idx + 1}</td>
+                        <td class="p-3 text-amber-400 font-semibold whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
+                        <td class="p-3 text-white font-bold whitespace-nowrap">${r.cliente}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${r.ruta}</td>
+                        <td class="p-3 text-cyan-400 font-mono whitespace-nowrap">${r.tracto}</td>
+                        <td class="p-3 text-slate-400 whitespace-nowrap">${r.trailer}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${r.unidad}</td>
                     </tr>
                 `;
             });
@@ -920,34 +886,18 @@
 
             const counts = {};
             dataToUse.forEach(d => counts[d.chofer] = (counts[d.chofer] || 0) + 1);
-            let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-
-            const isMobile = window.innerWidth < 768;
-            const displayData = isMobile ? sorted.slice(0, 15) : sorted;
-
-            const container = document.getElementById('driverChartContainer');
-            if (container) {
-                container.style.height = isMobile ? `${Math.max(300, displayData.length * 28)}px` : `${Math.max(450, sorted.length * 30)}px`;
-            }
+            let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10);
 
             createChart('chartDriverCross', {
                 type: 'bar',
                 data: {
-                    labels: displayData.map(s => s[0]),
-                    datasets: [{ label: 'Viajes Realizados', data: displayData.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
+                    labels: sorted.map(s => s[0]),
+                    datasets: [{ label: 'Viajes Realizados', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
                 },
                 options: {
-                    indexAxis: 'y',
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false }, 
-                        datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold', size: 10 } } 
-                    },
-                    scales: { 
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, 
-                        y: { ticks: { color: '#94a3b8', font: { size: isMobile ? 9 : 11 } }, grid: { display: false } } 
-                    }
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold', size: 9 } } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } } }
                 }
             });
         }
@@ -985,10 +935,7 @@
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#f1f5f9' } },
-                        datalabels: { color: '#fff', font: { weight: 'bold' }, formatter: (v, ctx) => { const sum = ctx.dataset.data.reduce((a,b)=>a+b,0); return sum === 0 ? '0%' : ((v/sum)*100).toFixed(1)+'%'; } }
-                    }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { color: '#fff', font: { weight: 'bold' } } }
                 }
             });
 
@@ -1092,7 +1039,7 @@
             document.getElementById('compFfDiffBadge').innerText = (ffDiff >= 0 ? '+' : '') + ffDiff + '%';
 
             const clientsSet = new Set([...clientesA.map(d=>d.cliente), ...clientesB.map(d=>d.cliente)]);
-            const labels = Array.from(clientsSet);
+            const labels = Array.from(clientsSet).slice(0, 10);
             const dataA = labels.map(c => clientesA.filter(d=>d.cliente === c).length);
             const dataB = labels.map(c => clientesB.filter(d=>d.cliente === c).length);
 
@@ -1119,7 +1066,7 @@
             tbody.innerHTML = '';
             document.getElementById('recordCountBadge').innerText = `${filteredClientes.length} Registros`;
 
-            filteredClientes.slice(0, 100).forEach(r => {
+            filteredClientes.slice(0, 50).forEach(r => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
                         <td class="p-3 text-cyan-400 font-semibold whitespace-nowrap">${r.origen}</td>
