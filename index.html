@@ -305,9 +305,10 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- Contenedor con Scroll Horizontal dinámico para visualizar todos los choferes -->
-                        <div class="relative w-full overflow-x-auto min-h-[380px]">
-                            <div id="driverChartContainer" style="min-width: 100%; height: 380px;">
+                        
+                        <!-- Contenedor con Scroll Vertical estable -->
+                        <div class="relative w-full overflow-y-auto max-h-[500px] border border-slate-800/80 rounded-2xl p-2 bg-slate-950/30">
+                            <div id="driverChartContainer" style="width: 100%; height: 500px;">
                                 <canvas id="chartDriverCross"></canvas>
                             </div>
                         </div>
@@ -917,6 +918,7 @@
             });
         }
 
+        // FUNCIÓN OPTIMIZADA: Barras horizontales estables con scroll vertical
         function renderDriverCrossChart() {
             const selClient = document.getElementById('driverClientSelect')?.value || 'ALL';
             const dataToUse = selClient === 'ALL' ? filteredClientes : filteredClientes.filter(d => d.cliente === selClient);
@@ -926,33 +928,35 @@
             
             const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
 
+            // Ajustar la altura dinámica según el número de choferes para no sobrecargar la memoria
             const container = document.getElementById('driverChartContainer');
             if (container) {
-                const minWidth = Math.max(100, sorted.length * 45);
-                container.style.minWidth = `${minWidth}%`;
+                const dynamicHeight = Math.max(400, sorted.length * 30); // 30px por cada chofer
+                container.style.height = `${dynamicHeight}px`;
             }
 
             createChart('chartDriverCross', {
                 type: 'bar',
                 data: {
                     labels: sorted.map(s => s[0]),
-                    datasets: [{ label: 'Viajes por Chofer', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 6 }]
+                    datasets: [{ label: 'Viajes Realizados', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
                 },
                 options: {
+                    indexAxis: 'y', // Barras horizontales de arriba hacia abajo
                     responsive: true, 
                     maintainAspectRatio: false,
                     plugins: { 
                         legend: { display: false }, 
-                        datalabels: { anchor: 'end', align: 'top', color: '#fcd34d', font: { weight: 'bold', size: 10 } } 
+                        datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold', size: 10 } } 
                     },
                     scales: { 
                         x: { 
-                            ticks: { color: '#94a3b8', font: { size: 10 }, maxRotation: 45, minRotation: 45 }, 
-                            grid: { display: false } 
-                        }, 
-                        y: { 
                             ticks: { color: '#94a3b8' }, 
                             grid: { color: '#1e293b' } 
+                        }, 
+                        y: { 
+                            ticks: { color: '#94a3b8', font: { size: 10 } }, 
+                            grid: { display: false } 
                         } 
                     }
                 }
