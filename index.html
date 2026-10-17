@@ -254,6 +254,21 @@
                         </div>
                     </div>
 
+                    <!-- NUEVO GRÁFICO DE LÍNEAS TENDENCIA: Programadores (Eje X: Meses, Líneas: Programadores) -->
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl border-l-4 border-l-cyan-400">
+                        <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                            <div>
+                                <h4 class="font-extrabold text-base sm:text-lg text-white flex items-center">
+                                    <i class="fa-solid fa-chart-line text-cyan-400 mr-2"></i>Evolución de Producción por Programador (Mes a Mes)
+                                </h4>
+                                <p class="text-[11px] text-slate-400">Comportamiento mensual de cada programador en formato de líneas múltiples</p>
+                            </div>
+                        </div>
+                        <div class="relative w-full h-[360px]">
+                            <canvas id="chartProgramadoresLines"></canvas>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-trailer text-cyan-400 mr-2"></i>Tipos de Remolque</h4>
@@ -477,7 +492,7 @@
                     </div>
                 </div>
 
-                <!-- TABLA DE REGISTROS (OCULTA POR DEFECTO CON BOTÓN DESPLEGABLE) -->
+                <!-- TABLA DE REGISTROS (OCULTA POR DEFECTO) -->
                 <section class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                         <div class="flex items-center space-x-3">
@@ -504,7 +519,7 @@
         </main>
     </div>
 
-    <!-- SCRIPT CORREGIDO -->
+    <!-- SCRIPT -->
     <script>
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
@@ -686,7 +701,6 @@
             const choferes = [...new Set([...globalDataClientes.map(d => d.chofer), ...globalDataCaasa.map(d => d.chofer)])].filter(Boolean);
             const programadores = [...new Set(globalDataClientes.map(d => d.programador))].filter(Boolean);
 
-            // Poblar meses únicos ordenados cronológicamente
             const monthObj = {};
             globalDataClientes.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
             globalDataCaasa.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
@@ -805,7 +819,10 @@
         }
 
         function renderActiveTabContent() {
-            if (currentTab === 'general') renderGeneralTab();
+            if (currentTab === 'general') {
+                renderGeneralTab();
+                renderProgramadoresLineChart();
+            }
             if (currentTab === 'drivers') renderDriversTab();
             if (currentTab === 'programadores') renderProgramadorReport();
             if (currentTab === 'history') renderHistoryTab();
@@ -813,6 +830,75 @@
             if (currentTab === 'monthly') renderMonthlyTab();
             if (currentTab === 'partial') renderPartialComparison();
             renderTable();
+        }
+
+        // Función para renderizar el gráfico de líneas con todos los programadores (Eje X: Meses, Líneas: Programadores)
+        function renderProgramadoresLineChart() {
+            // 1. Obtener meses únicos ordenados cronológicamente
+            const monthObj = {};
+            const monthLabelMap = {};
+            filteredClientes.forEach(d => {
+                if (d.monthKey && d.monthKey !== '9999-99') {
+                    monthObj[d.monthKey] = true;
+                    monthLabelMap[d.monthKey] = d.monthYear;
+                }
+            });
+            const sortedKeys = Object.keys(monthObj).sort();
+            const sortedMonthsLabels = sortedKeys.map(k => monthLabelMap[k]);
+
+            // 2. Obtener lista de todos los programadores únicos
+            const programadores = [...new Set(filteredClientes.map(d => d.programador))].filter(Boolean).sort();
+
+            // 3. Colores predefinidos para las líneas de los programadores
+            const palette = ['#00f2fe', '#9d4edd', '#f59e0b', '#10b981', '#f43f5e', '#3b82f6', '#ec4899', '#8b5cf6'];
+
+            // 4. Construir los datasets (una línea por cada programador)
+            const datasets = programadores.map((prog, index) => {
+                const color = palette[index % palette.length];
+                const dataCounts = sortedKeys.map(mKey => {
+                    return filteredClientes.filter(d => d.programador === prog && d.monthKey === mKey).length;
+                });
+
+                return {
+                    label: prog,
+                    data: dataCounts,
+                    borderColor: color,
+                    backgroundColor: color,
+                    borderWidth: 2.5,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    tension: 0.2 // Línea ligeramente curva y elegante
+                };
+            });
+
+            createChart('chartProgramadoresLines', {
+                type: 'line',
+                data: {
+                    labels: sortedMonthsLabels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#f1f5f9', font: { size: 10 } }
+                        },
+                        datalabels: { display: false } // Desactivar etiquetas numéricas directas para no saturar las líneas
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: '#1e293b' }
+                        },
+                        y: {
+                            ticks: { color: '#94a3b8', precision: 0 },
+                            grid: { color: '#1e293b' }
+                        }
+                    }
+                }
+            });
         }
 
         function renderGeneralTab() {
@@ -925,7 +1011,6 @@
 
             const progData = filteredClientes.filter(d => d.programador === progName);
 
-            // Ordenamiento cronológico estricto por monthKey (YYYY-MM)
             const monthMap = {};
             const monthLabelMap = {};
             progData.forEach(d => {
@@ -1098,7 +1183,6 @@
         }
 
         function renderMonthlyTab() {
-            // Uso de filteredClientes y filteredCaasa para respetar los filtros globales superiores
             const monthsObj = {};
             const monthLabelMap = {};
             
