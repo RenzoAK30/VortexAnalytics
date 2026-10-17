@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex - Dashboard</title>
+    <title>Vortex-Dashboard</title>
     <link rel="icon" type="image/x-icon" href="vortex.ico">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,21 +38,13 @@
     
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0b0f17; color: #f1f5f9; }
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0b0f17; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-        .glow-cian { box-shadow: 0 0 20px -5px rgba(0, 242, 254, 0.25); }
-        .glow-purple { box-shadow: 0 0 20px -5px rgba(157, 78, 221, 0.25); }
-        .glow-emerald { box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.25); }
-        .glow-amber { box-shadow: 0 0 20px -5px rgba(245, 158, 11, 0.25); }
-        .glow-rose { box-shadow: 0 0 20px -5px rgba(244, 63, 94, 0.25); }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
         .glass-card {
-            background: linear-gradient(135deg, rgba(19, 27, 46, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+            background: #131b2e;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
         }
-        .bg-grad-primary { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #9333ea 100%); }
-        .bg-grad-emerald { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
         .menu-item-active {
             background: rgba(0, 242, 254, 0.1);
             color: #00f2fe;
@@ -63,25 +55,25 @@
 <body class="min-h-screen flex flex-col antialiased">
 
     <!-- Top Header -->
-    <header class="bg-[#0f172a]/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
+    <header class="bg-[#0f172a] border-b border-slate-800 sticky top-0 z-50 shadow-2xl">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white text-xl p-2.5 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-400 transition-all flex items-center justify-center">
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white text-xl p-2.5 rounded-xl bg-slate-800 border border-slate-700 transition-all flex items-center justify-center">
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <img src="logo.png" alt="Logo Vortex" class="w-44 h-14 rounded-2xl object-cover shadow-lg shadow-indigo-500/30">
             </div>
 
-            <div class="flex items-center space-x-2 sm:space-x-3">
+            <div class="flex items-center space-x-2">
                 <input type="file" id="excelFile" accept=".xlsx, .xls" class="hidden" onchange="handleFileUpload(event)">
             </div>
         </div>
     </header>
 
-    <!-- Main Container with Sidebar + Content -->
+    <!-- Main Container -->
     <div class="flex-1 flex max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 relative">
 
-        <!-- MENÚ LATERAL IZQUIERDO -->
+        <!-- MENÚ LATERAL -->
         <aside id="sidebar" class="w-64 flex-shrink-0 space-y-6 hidden fixed lg:sticky top-24 left-4 z-40">
             <div class="glass-card rounded-2xl p-4 space-y-6 shadow-2xl border border-slate-800">
                 <div class="pb-2 border-b border-slate-800 flex justify-between items-center">
@@ -108,14 +100,14 @@
                         <button onclick="switchTab('drivers')" id="navDriversBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
                             <i class="fa-solid fa-users-viewfinder mr-2 text-amber-400"></i>Chofer por cliente
                         </button>
+                        <button onclick="switchTab('programadores')" id="navProgramadoresBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
+                            <i class="fa-solid fa-user-tie mr-2 text-cyan-400"></i>Análisis Programador
+                        </button>
                         <button onclick="switchTab('monthly')" id="navMonthlyBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
                             <i class="fa-solid fa-calendar-days mr-2 text-emerald-400"></i>Mes a Mes
                         </button>
                         <button onclick="switchTab('partial')" id="navPartialBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
                             <i class="fa-solid fa-sliders mr-2 text-cyan-400"></i>Comparativa de Rango
-                        </button>
-                        <button onclick="switchTab('programadores')" id="navProgramadoresBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
-                            <i class="fa-solid fa-user-gear mr-2 text-cyan-400"></i>Gestión Programadores
                         </button>
                     </div>
                 </div>
@@ -146,28 +138,32 @@
             </div>
         </aside>
 
-        <!-- ÁREA DE CONTENIDO PRINCIPAL -->
+        <!-- ÁREA DE CONTENIDO -->
         <main class="flex-1 space-y-6 overflow-hidden">
 
-            <!-- Upload / Loading Zone -->
-            <div id="uploadZone" class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 hover:border-cyan-400/60 my-4 sm:my-6 shadow-2xl">
+            <!-- Zona de Carga -->
+            <div id="uploadZone" class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden transition-all duration-300 border-2 border-dashed border-indigo-500/30 my-4 shadow-2xl">
                 <div class="max-w-2xl mx-auto space-y-4 sm:space-y-6 relative z-10">
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-tr from-indigo-500/20 to-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-cyan-500/30 glow-cian animate-pulse">
+                    <div id="loadingIconContainer" class="w-16 h-16 sm:w-20 sm:h-20 bg-cyan-500/20 text-cyan-400 rounded-3xl flex items-center justify-center mx-auto text-2xl sm:text-3xl border border-cyan-500/30 animate-pulse">
                         <i class="fa-solid fa-spinner fa-spin"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
-                        <p class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Descargando y procesando los datos. Por favor espera un momento.
+                        <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
+                        <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
+                            Preparando entorno optimizado con módulo de Programadores.
                         </p>
                     </div>
-                    <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3"></div>
+                    <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
+                        <label for="excelFile" class="cursor-pointer bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-xs uppercase tracking-wider transition shadow-lg flex items-center space-x-2">
+                            <i class="fa-solid fa-file-excel mr-1"></i> Seleccionar Archivo Excel
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <div id="dashboardApp" class="hidden space-y-6">
                 <!-- Filtros Globales -->
-                <section class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800 relative">
+                <section class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
                     <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2.5">
                         <div class="flex items-center space-x-2">
                             <i class="fa-solid fa-sliders text-cyan-400 text-base"></i>
@@ -181,31 +177,31 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes / Periodo</label>
-                            <select id="filterMonth" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterMonth" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Meses</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Cliente</label>
-                            <select id="filterClient" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterClient" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Clientes</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Tipo de Unidad</label>
-                            <select id="filterUnitType" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterUnitType" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todas (Propia/Tercero)</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Tipo de Remolque</label>
-                            <select id="filterTrailer" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterTrailer" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Remolques</option>
                             </select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Conductor / Chofer</label>
-                            <select id="filterChofer" onchange="applyFilters()" class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <select id="filterChofer" onchange="applyFilters()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200">
                                 <option value="">Todos los Choferes</option>
                             </select>
                         </div>
@@ -214,27 +210,27 @@
 
                 <!-- KPIs -->
                 <section class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-cian border-l-4 border-l-cyan-400">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-cyan-400">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Total Viajes</p>
                         <h3 id="kpiTotalViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p class="text-[9px] sm:text-[10px] text-cyan-400 font-semibold mt-0.5">DATA CLIENTES</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-purple border-l-4 border-l-purple-500">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-purple-500">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Clientes</p>
                         <h3 id="kpiClientesCount" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p class="text-[9px] sm:text-[10px] text-purple-400 font-semibold mt-0.5">Empresas</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-emerald border-l-4 border-l-emerald-400">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-emerald-400">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Flota Propia</p>
                         <h3 id="kpiPropiaRatio" class="text-xl sm:text-2xl font-black text-white mt-0.5">0%</h3>
                         <p id="kpiPropiaSub" class="text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-0.5">0 / 0</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-amber border-l-4 border-l-amber-500">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-amber-500">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Viajes CAASA</p>
                         <h3 id="kpiCaasaViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p class="text-[9px] sm:text-[10px] text-amber-400 font-semibold mt-0.5">Operación</p>
                     </div>
-                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 glow-rose border-l-4 border-l-rose-500 col-span-2 sm:col-span-1">
+                    <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-rose-500 col-span-2 sm:col-span-1">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Falso Flete</p>
                         <h3 id="kpiFalsoFlete" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
                         <p id="kpiFalsoFletePercent" class="text-[9px] sm:text-[10px] text-rose-400 font-semibold mt-0.5">0%</p>
@@ -251,8 +247,8 @@
                             </div>
                             <span id="totalClientsCountBadge" class="text-[11px] bg-cyan-500/10 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Clientes</span>
                         </div>
-                        <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
-                            <div id="allClientsChartContainer" style="width: 100%; height: 450px;">
+                        <div class="relative w-full overflow-y-auto max-h-[450px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
+                            <div id="allClientsChartContainer" style="width: 100%; height: 380px;">
                                 <canvas id="chartAllClients"></canvas>
                             </div>
                         </div>
@@ -261,15 +257,15 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-trailer text-cyan-400 mr-2"></i>Tipos de Remolque</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartTrailerTypes"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartTrailerTypes"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-chart-pie text-emerald-400 mr-2"></i>Propia vs Terceros (%)</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartUnitOwnership"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartUnitOwnership"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-map-location-dot text-purple-400 mr-2"></i>Rutas Más Transitadas</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartTopRoutes"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartTopRoutes"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -280,18 +276,17 @@
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 border-b border-slate-800 pb-3">
                             <div>
                                 <h4 class="font-extrabold text-base sm:text-lg text-white">Distribución de Choferes por Cliente</h4>
-                                <p class="text-[11px] text-slate-400">Desglose de viajes por conductor</p>
                             </div>
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
                                 <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filtrar Cliente:</label>
-                                <select id="driverClientSelect" onchange="renderDriverCrossChart()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 focus:outline-none focus:border-amber-400 w-full sm:w-48">
+                                <select id="driverClientSelect" onchange="renderDriverCrossChart()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 w-full sm:w-48">
                                     <option value="ALL">Todos los Clientes</option>
                                 </select>
                             </div>
                         </div>
                         
-                        <div class="relative w-full overflow-y-auto max-h-[500px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
-                            <div id="driverChartContainer" style="width: 100%; height: 450px;">
+                        <div class="relative w-full overflow-y-auto max-h-[450px] rounded-xl border border-slate-800/60 p-2 bg-slate-950/20">
+                            <div id="driverChartContainer" style="width: 100%; height: 380px;">
                                 <canvas id="chartDriverCross"></canvas>
                             </div>
                         </div>
@@ -300,11 +295,11 @@
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
                             <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-table text-amber-400 mr-2"></i>Matriz Detallada</h4>
-                            <input type="text" id="driverSearchInput" onkeyup="filterDriverTable()" placeholder="Buscar chofer..." class="bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 focus:outline-none w-full sm:w-64">
+                            <input type="text" id="driverSearchInput" onkeyup="filterDriverTable()" placeholder="Buscar chofer..." class="bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-200 w-full sm:w-64">
                         </div>
                         <div class="overflow-x-auto max-h-96 rounded-xl border border-slate-800">
                             <table class="w-full text-left text-xs text-slate-300">
-                                <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                                <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                     <tr>
                                         <th class="p-3">Conductor</th>
                                         <th class="p-3">Cliente</th>
@@ -320,19 +315,47 @@
                     </div>
                 </div>
 
-                <!-- HISTORIAL: VIAJES POR CONDUCTOR -->
+                <!-- REPORTE: ANÁLISIS POR PROGRAMADOR (NUEVO) -->
+                <div id="tabProgramadoresContent" class="hidden space-y-6">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xl border-l-4 border-l-cyan-400">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
+                            <div>
+                                <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
+                                    <i class="fa-solid fa-user-tie text-cyan-400 mr-2"></i>Desempeño de Programadores (Mes a Mes)
+                                </h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Selecciona un programador para ver sus viajes por cliente y comparativa mensual</p>
+                            </div>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <select id="selectProgramador" onchange="renderProgramadorReport()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold w-full sm:w-64 shadow-lg">
+                                    <option value="">-- Seleccionar Programador --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                            <div class="glass-card rounded-xl p-4 flex flex-col">
+                                <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-chart-bar text-cyan-400 mr-2"></i>Evolución Mensual del Programador</h5>
+                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartProgramadorMonthly"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-xl p-4 flex flex-col">
+                                <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-building text-amber-400 mr-2"></i>Distribución de Clientes</h5>
+                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartProgramadorClients"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HISTORIAL -->
                 <div id="tabHistoryContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 border-l-4 border-l-purple-500 shadow-2xl">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
                             <div>
                                 <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
-                                    <i class="fa-solid fa-clock-rotate-left text-purple-400 mr-2"></i>
-                                    Historial Cronológico
+                                    <i class="fa-solid fa-clock-rotate-left text-purple-400 mr-2"></i>Historial Cronológico
                                 </h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Selecciona un conductor para consultar sus servicios</p>
                             </div>
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
-                                <select id="singleDriverSelect" onchange="renderSingleDriverTimeline()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-purple-400 w-full sm:w-72 shadow-lg">
+                                <select id="singleDriverSelect" onchange="renderSingleDriverTimeline()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold w-full sm:w-72 shadow-lg">
                                     <option value="">-- Seleccionar Conductor --</option>
                                 </select>
                             </div>
@@ -340,7 +363,7 @@
                         
                         <div class="overflow-x-auto max-h-[450px] rounded-xl border border-slate-800">
                             <table class="w-full text-left text-xs text-slate-300">
-                                <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                                <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
                                     <tr>
                                         <th class="p-3">#</th>
                                         <th class="p-3">Fecha</th>
@@ -359,7 +382,7 @@
                     </div>
                 </div>
 
-                <!-- REPORTE: MES A MES -->
+                <!-- MES A MES -->
                 <div id="tabMonthlyContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl">
                         <h4 class="font-extrabold text-base sm:text-lg text-white mb-4"><i class="fa-solid fa-chart-column text-emerald-400 mr-2"></i>Reporte Comparativo: Mes a Mes</h4>
@@ -367,25 +390,34 @@
                     </div>
                 </div>
 
-                <!-- REPORTE: COMPARATIVA DE RANGO POR DÍAS -->
+                <!-- COMPARATIVA DE RANGO (CON FILTRO DE CLIENTE) -->
                 <div id="tabPartialContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
-                        <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Comparativa de Rango Temporal</h4>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Comparativa de Rango Temporal</h4>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filtrar Cliente:</label>
+                                <select id="compClientFilter" onchange="renderPartialComparison()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 w-full sm:w-48 font-bold">
+                                    <option value="ALL">Todos los Clientes</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes Base (A)</label>
-                                <select id="compMonthA" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none"></select>
+                                <select id="compMonthA" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold"></select>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes Contraste (B)</label>
-                                <select id="compMonthB" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none"></select>
+                                <select id="compMonthB" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold"></select>
                             </div>
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Días</label>
                                 <div class="flex items-center space-x-2">
                                     <input type="number" id="compDayStart" value="1" min="1" max="31" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs text-center text-white font-bold">
                                     <span class="text-slate-400 text-xs">a</span>
-                                    <input type="number" id="compDayEnd" value="15" min="1" max="31" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs text-center text-white font-bold">
+                                    <input type="number" id="compDayEnd" value="13" min="1" max="31" onchange="renderPartialComparison()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-xs text-center text-white font-bold">
                                 </div>
                             </div>
                         </div>
@@ -417,74 +449,7 @@
 
                     <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                         <h4 class="font-extrabold text-sm sm:text-base text-white mb-4">Comparativa por Cliente</h4>
-                        <div class="relative flex-1 min-h-[300px]"><canvas id="chartPartialComparison"></canvas></div>
-                    </div>
-                </div>
-
-                <!-- MÓDULO: GESTIÓN DE PROGRAMADORES -->
-                <div id="tabProgramadoresContent" class="hidden space-y-6">
-                    <!-- Configuración y Asignación -->
-                    <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 border-l-4 border-l-cyan-400">
-                        <h4 class="font-extrabold text-base sm:text-lg text-white flex items-center">
-                            <i class="fa-solid fa-user-gear text-cyan-400 mr-2"></i>Asignación de Clientes a Programadores
-                        </h4>
-                        <p class="text-xs text-slate-400">Registra un programador y asígnale los clientes cuyas operaciones deseas monitorear y comparar mes a mes.</p>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                            <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Nombre del Programador</label>
-                                <input type="text" id="inputProgrammerName" placeholder="Ej. Juan Pérez" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Seleccionar Cliente</label>
-                                <select id="selectProgrammerClient" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
-                                    <option value="">Selecciona un cliente</option>
-                                </select>
-                            </div>
-                            <div class="flex items-end">
-                                <button onclick="assignClientToProgrammer()" class="w-full py-2 px-4 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition shadow-lg flex items-center justify-center space-x-2">
-                                    <i class="fa-solid fa-plus"></i><span>Asignar Cliente</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Selector de Programador para ver Análisis -->
-                    <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-center gap-3">
-                        <div class="flex items-center space-x-2 w-full sm:w-auto">
-                            <i class="fa-solid fa-chart-line text-purple-400"></i>
-                            <span class="text-xs font-bold text-white uppercase">Ver Rendimiento de:</span>
-                        </div>
-                        <select id="filterActiveProgrammer" onchange="renderProgrammerAnalytics()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold focus:outline-none focus:border-purple-400 w-full sm:w-72">
-                            <option value="">-- Seleccionar Programador --</option>
-                        </select>
-                    </div>
-
-                    <!-- Resultados y Gráfica Comparativa -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="glass-card rounded-2xl p-4 sm:p-6 lg:col-span-2 flex flex-col">
-                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-2">Comparativa Mes a Mes (Clientes a Cargo)</h4>
-                            <p class="text-[11px] text-slate-400 mb-4">Evolución de viajes de los clientes asignados</p>
-                            <div class="relative flex-1 min-h-[300px]"><canvas id="chartProgrammerMonthly"></canvas></div>
-                        </div>
-
-                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col space-y-3">
-                            <h4 class="font-extrabold text-sm sm:text-base text-white">Detalle por Cliente</h4>
-                            <div class="overflow-x-auto max-h-[320px] rounded-xl border border-slate-800">
-                                <table class="w-full text-left text-xs text-slate-300">
-                                    <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
-                                        <tr>
-                                            <th class="p-2.5">Cliente</th>
-                                            <th class="p-2.5 text-center">Viajes</th>
-                                            <th class="p-2.5 text-center">Acción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="programmerClientsTableBody" class="divide-y divide-slate-800/60 bg-slate-950/40">
-                                        <tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Selecciona un programador.</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <div class="relative flex-1 min-h-[250px]"><canvas id="chartPartialComparison"></canvas></div>
                     </div>
                 </div>
 
@@ -493,21 +458,21 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="glass-card rounded-2xl p-4 sm:p-6 lg:col-span-2 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i>Viajes por Programa CAASA</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartCaasaProgram"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaProgram"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-triangle-exclamation text-rose-400 mr-2"></i>Incidencia Falso Flete (%)</h4>
-                            <div class="relative flex-1 min-h-[250px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-truck-ramp-box text-cyan-400 mr-2"></i>Remolques Usados en CAASA</h4>
-                            <div class="relative flex-1 min-h-[240px]"><canvas id="chartCaasaTrailers"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaTrailers"></canvas></div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-route text-emerald-400 mr-2"></i>Principales Rutas CAASA</h4>
-                            <div class="relative flex-1 min-h-[240px]"><canvas id="chartCaasaRoutes"></canvas></div>
+                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaRoutes"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -515,13 +480,13 @@
                 <!-- TABLA DE REGISTROS -->
                 <section class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros Filtrados</h4>
+                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros</h4>
                         <span id="recordCountBadge" class="text-[11px] bg-slate-900 border border-slate-700 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Registros</span>
                     </div>
                     <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-800">
                         <table class="w-full text-left text-xs text-slate-300">
-                            <thead class="bg-slate-900/90 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
-                                <tr><th class="p-3">Origen</th><th class="p-3">F. Inicio</th><th class="p-3">Tracto</th><th class="p-3">Chofer</th><th class="p-3">Remolque</th><th class="p-3">Ruta</th><th class="p-3">Cliente</th><th class="p-3">Unidad</th></tr>
+                            <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                                <tr><th class="p-3">Origen</th><th class="p-3">F. Inicio</th><th class="p-3">Tracto</th><th class="p-3">Chofer</th><th class="p-3">Programador</th><th class="p-3">Remolque</th><th class="p-3">Ruta</th><th class="p-3">Cliente</th><th class="p-3">Unidad</th></tr>
                             </thead>
                             <tbody id="dataTableBody" class="divide-y divide-slate-800/60 bg-slate-950/40"></tbody>
                         </table>
@@ -531,26 +496,29 @@
         </main>
     </div>
 
-    <!-- SCRIPT CON TODA LA LÓGICA INTEGRA -->
+    <!-- SCRIPT COMPLETO CON SOPORTE DE PROGRAMADOR Y FILTRO DE CLIENTE -->
     <script>
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
         Chart.register(ChartDataLabels);
+        Chart.defaults.animation = !isIOS; 
+        Chart.defaults.responsive = true;
+        Chart.defaults.maintainAspectRatio = false;
         
         let globalDataClientes = [];
         let globalDataCaasa = [];
         let filteredClientes = [];
         let filteredCaasa = [];
         let charts = {};
-        
-        // Memoria local para asignaciones de programadores
-        let programmerAssignments = JSON.parse(localStorage.getItem('vortex_programmer_assignments')) || {};
+        let currentTab = 'general';
 
-       const EXCEL_URL = './VIAJES_2026.xlsx';
+        const EXCEL_URL = './VIAJES_2026.xlsx';
 
         window.addEventListener('DOMContentLoaded', () => {
             if (EXCEL_URL) {
                 fetch(EXCEL_URL)
                     .then(response => {
-                        if (!response.ok) throw new Error('Carga pendiente');
+                        if (!response.ok) throw new Error('Archivo no disponible');
                         return response.arrayBuffer();
                     })
                     .then(data => {
@@ -558,23 +526,20 @@
                         processWorkbook(workbook);
                     })
                     .catch(error => {
-                        console.warn('Carga directa no disponible. Puedes subir el archivo manualmente.', error);
+                        console.warn('Carga automática omitida.', error);
+                        document.getElementById('loadingTitle').innerText = 'Seleccionar Archivo';
+                        document.getElementById('loadingText').innerText = 'Por favor, selecciona tu archivo Excel manualmente.';
                     });
             }
         });
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('hidden');
+            document.getElementById('sidebar')?.classList.toggle('hidden');
         }
 
         function toggleGroup(id) {
             const el = document.getElementById(id);
-            const icon = document.getElementById(`icon${id.charAt(0).toUpperCase() + id.slice(1)}`);
-            if (el) {
-                el.classList.toggle('hidden');
-                if (icon) icon.classList.toggle('rotate-180');
-            }
+            if (el) el.classList.toggle('hidden');
         }
 
         function getRowValue(row, possibleKeys) {
@@ -647,6 +612,7 @@
                         monthKey: d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : 'Sin Fecha',
                         tracto: getRowValue(r, ['Tracto', 'PLACA']) || 'SIN PLACA',
                         chofer: getRowValue(r, ['Chofer', 'CONDUCTOR']) || 'SIN CHOFER',
+                        programador: getRowValue(r, ['Programador', 'PROGRAMADOR']) || 'SIN PROGRAMADOR',
                         trailer: getRowValue(r, ['Tipo Remolque', 'REMOLQUE']) || 'NO ESPECIFICADO',
                         ruta: getRowValue(r, ['RUTA', 'Ruta']) || 'SIN RUTA',
                         cliente: getRowValue(r, ['Cliente', 'CLIENTE']) || 'SIN CLIENTE',
@@ -686,7 +652,6 @@
             document.getElementById('uploadZone').classList.add('hidden');
             document.getElementById('dashboardApp').classList.remove('hidden');
             populateFilterDropdowns();
-            initProgrammerModule();
             applyFilters();
             switchTab('general');
         }
@@ -697,6 +662,7 @@
             const units = [...new Set(globalDataClientes.map(d => d.unidad))].filter(Boolean);
             const trailers = [...new Set([...globalDataClientes.map(d => d.trailer), ...globalDataCaasa.map(d => d.trailer)])].filter(Boolean);
             const choferes = [...new Set([...globalDataClientes.map(d => d.chofer), ...globalDataCaasa.map(d => d.chofer)])].filter(Boolean);
+            const programadores = [...new Set(globalDataClientes.map(d => d.programador))].filter(Boolean);
 
             fillSelect('filterMonth', months, 'Todos los Meses');
             fillSelect('filterClient', clients, 'Todos los Clientes');
@@ -704,49 +670,22 @@
             fillSelect('filterTrailer', trailers, 'Todos los Remolques');
             fillSelect('filterChofer', choferes, 'Todos los Choferes');
             fillSelect('driverClientSelect', clients, 'Todos los Clientes');
+            fillSelect('compClientFilter', clients, 'Todos los Clientes');
             fillSelect('singleDriverSelect', choferes, '-- Seleccionar Conductor --');
-
-            // AUTO-DETECCIÓN DE LA ÚLTIMA FECHA DE VIAJE REGISTRADA
-            let maxDate = null;
-            globalDataClientes.forEach(d => {
-                if (d.date && (!maxDate || d.date > maxDate)) maxDate = d.date;
-            });
-            globalDataCaasa.forEach(d => {
-                if (d.date && (!maxDate || d.date > maxDate)) maxDate = d.date;
-            });
+            fillSelect('selectProgramador', programadores, '-- Seleccionar Programador --');
 
             const monthMap = {};
             globalDataClientes.forEach(d => { if(d.monthKey !== 'Sin Fecha' && d.monthYear) monthMap[d.monthKey] = d.monthYear; });
             const keys = Object.keys(monthMap).sort();
             const selA = document.getElementById('compMonthA');
             const selB = document.getElementById('compMonthB');
-
             if (selA && selB) {
                 selA.innerHTML = ''; selB.innerHTML = '';
                 keys.forEach(k => {
                     selA.innerHTML += `<option value="${k}">${monthMap[k]}</option>`;
                     selB.innerHTML += `<option value="${k}">${monthMap[k]}</option>`;
                 });
-
-                if (maxDate) {
-                    const latestMonthKey = `${maxDate.getFullYear()}-${String(maxDate.getMonth()+1).padStart(2,'0')}`;
-                    const latestDay = maxDate.getDate();
-
-                    document.getElementById('compDayStart').value = 1;
-                    document.getElementById('compDayEnd').value = latestDay;
-
-                    const latestIndex = keys.indexOf(latestMonthKey);
-                    if (latestIndex !== -1) {
-                        selB.selectedIndex = latestIndex;
-                        selA.selectedIndex = latestIndex > 0 ? latestIndex - 1 : 0;
-                    } else if (keys.length > 1) {
-                        selA.selectedIndex = keys.length - 2;
-                        selB.selectedIndex = keys.length - 1;
-                    }
-                } else if (keys.length > 1) {
-                    selA.selectedIndex = keys.length - 2;
-                    selB.selectedIndex = keys.length - 1;
-                }
+                if (keys.length > 1) { selA.selectedIndex = keys.length - 2; selB.selectedIndex = keys.length - 1; }
             }
         }
 
@@ -786,7 +725,7 @@
             });
 
             updateKPIs();
-            renderAllTabContents();
+            renderActiveTabContent();
         }
 
         function updateKPIs() {
@@ -806,7 +745,8 @@
         }
 
         function switchTab(tab) {
-            const tabs = ['General', 'Drivers', 'History', 'Caasa', 'Monthly', 'Partial', 'Programadores'];
+            currentTab = tab;
+            const tabs = ['General', 'Drivers', 'Programadores', 'History', 'Caasa', 'Monthly', 'Partial'];
             tabs.forEach(t => {
                 document.getElementById(`tab${t}Content`)?.classList.add('hidden');
                 const btn = document.getElementById(`nav${t}Btn`);
@@ -825,24 +765,27 @@
             }
 
             document.getElementById('sidebar')?.classList.add('hidden');
-            renderAllTabContents();
+            renderActiveTabContent();
         }
 
         function createChart(id, config) {
-            if (charts[id]) charts[id].destroy();
+            if (charts[id]) {
+                charts[id].destroy();
+                delete charts[id];
+            }
             const el = document.getElementById(id);
             if (!el) return;
             charts[id] = new Chart(el.getContext('2d'), config);
         }
 
-        function renderAllTabContents() {
-            renderGeneralTab();
-            renderDriversTab();
-            renderHistoryTab();
-            renderCaasaTab();
-            renderMonthlyTab();
-            renderPartialComparison();
-            renderProgrammerAnalytics();
+        function renderActiveTabContent() {
+            if (currentTab === 'general') renderGeneralTab();
+            if (currentTab === 'drivers') renderDriversTab();
+            if (currentTab === 'programadores') renderProgramadorReport();
+            if (currentTab === 'history') renderHistoryTab();
+            if (currentTab === 'caasa') renderCaasaTab();
+            if (currentTab === 'monthly') renderMonthlyTab();
+            if (currentTab === 'partial') renderPartialComparison();
             renderTable();
         }
 
@@ -850,15 +793,10 @@
             const counts = {};
             filteredClientes.forEach(d => counts[d.cliente] = (counts[d.cliente] || 0) + 1);
             let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-            document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes Detectados`;
+            document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes`;
 
-            const isMobile = window.innerWidth < 768;
-            const displayData = isMobile ? sorted.slice(0, 15) : sorted;
-
-            const container = document.getElementById('allClientsChartContainer');
-            if (container) {
-                container.style.height = isMobile ? `${Math.max(300, displayData.length * 28)}px` : `${Math.max(450, sorted.length * 35)}px`;
-            }
+            const limit = isIOS ? 8 : 15;
+            const displayData = sorted.slice(0, limit);
 
             createChart('chartAllClients', {
                 type: 'bar',
@@ -868,31 +806,23 @@
                 },
                 options: {
                     indexAxis: 'y',
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false }, 
-                        datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { weight: 'bold', size: 10 } } 
-                    },
-                    scales: { 
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, 
-                        y: { ticks: { color: '#94a3b8', font: { size: isMobile ? 9 : 11 } }, grid: { display: false } } 
-                    }
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#00f2fe', font: { size: 9 } } },
+                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } } }
                 }
             });
 
             const trailers = {};
             filteredClientes.forEach(d => trailers[d.trailer] = (trailers[d.trailer] || 0) + 1);
+            const topTrailers = Object.entries(trailers).sort((a,b)=>b[1]-a[1]).slice(0, limit);
             createChart('chartTrailerTypes', {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(trailers),
-                    datasets: [{ label: 'Viajes', data: Object.values(trailers), backgroundColor: '#9d4edd', borderRadius: 6 }]
+                    labels: topTrailers.map(t => t[0]),
+                    datasets: [{ label: 'Viajes', data: topTrailers.map(t => t[1]), backgroundColor: '#9d4edd', borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#c084fc', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { display: false }, datalabels: { display: !isIOS } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
                 }
             });
 
@@ -905,17 +835,13 @@
                     datasets: [{ data: [propia, tercero], backgroundColor: ['#10b981', '#f43f5e'], borderWidth: 0 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#f1f5f9' } },
-                        datalabels: { color: '#fff', font: { weight: 'bold' }, formatter: (v, ctx) => { const sum = ctx.dataset.data.reduce((a,b)=>a+b,0); return sum === 0 ? '0%' : ((v/sum)*100).toFixed(1)+'%'; } }
-                    }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
 
             const routes = {};
             filteredClientes.forEach(d => routes[d.ruta] = (routes[d.ruta] || 0) + 1);
-            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0, 5);
             createChart('chartTopRoutes', {
                 type: 'bar',
                 data: {
@@ -923,9 +849,9 @@
                     datasets: [{ label: 'Viajes', data: topRoutes.map(r => r[1]), backgroundColor: '#f59e0b', borderRadius: 6 }]
                 },
                 options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8' }, grid: { display: false } } }
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { display: false } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 8 } } } }
                 }
             });
         }
@@ -947,10 +873,10 @@
             const clientTotalMap = {};
             filteredClientes.forEach(d => clientTotalMap[d.cliente] = (clientTotalMap[d.cliente] || 0) + 1);
 
-            Object.values(map).sort((a,b) => b.count - a.count).forEach(row => {
+            const rowLimit = isIOS ? 25 : 50;
+            Object.values(map).sort((a,b) => b.count - a.count).slice(0, rowLimit).forEach(row => {
                 const totalClient = clientTotalMap[row.cliente] || 1;
                 const pct = ((row.count / totalClient) * 100).toFixed(1);
-                
                 row.dates.sort((x, y) => x - y);
                 const datesStr = row.dates.length > 0 ? row.dates.map(d => d.toLocaleDateString()).join(', ') : 'Sin Fecha';
 
@@ -958,12 +884,69 @@
                     <tr class="hover:bg-slate-900/60 transition">
                         <td class="p-3 font-semibold text-white whitespace-nowrap">${row.chofer}</td>
                         <td class="p-3 text-slate-300 whitespace-nowrap">${row.cliente}</td>
-                        <td class="p-3 text-cyan-300 font-mono text-[11px] max-w-xs truncate" title="${datesStr}">${datesStr}</td>
+                        <td class="p-3 text-cyan-300 font-mono text-[11px] max-w-xs truncate">${datesStr}</td>
                         <td class="p-3 text-center font-bold text-amber-400">${row.count}</td>
                         <td class="p-3 text-center font-semibold text-emerald-400">${pct}%</td>
                         <td class="p-3 text-slate-400 whitespace-nowrap">${row.unidad}</td>
                     </tr>
                 `;
+            });
+        }
+
+        // Lógica de reporte para el nuevo módulo de Programadores
+        function renderProgramadorReport() {
+            const progName = document.getElementById('selectProgramador')?.value;
+            if (!progName) return;
+
+            const progData = filteredClientes.filter(d => d.programador === progName);
+
+            // 1. Gráfico Mes a Mes del Programador
+            const monthMap = {};
+            progData.forEach(d => {
+                if (d.monthYear && d.monthYear !== 'Sin Fecha') {
+                    monthMap[d.monthYear] = (monthMap[d.monthYear] || 0) + 1;
+                }
+            });
+            const sortedMonths = Object.keys(monthMap).sort();
+
+            createChart('chartProgramadorMonthly', {
+                type: 'bar',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [{
+                        label: 'Viajes Programados',
+                        data: sortedMonths.map(m => monthMap[m]),
+                        backgroundColor: '#00f2fe',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false }, datalabels: { color: '#00f2fe', font: { weight: 'bold' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
+                }
+            });
+
+            // 2. Gráfico por Clientes del Programador
+            const clientMap = {};
+            progData.forEach(d => { clientMap[d.cliente] = (clientMap[d.cliente] || 0) + 1; });
+            const sortedClients = Object.entries(clientMap).sort((a,b) => b[1] - a[1]).slice(0, 8);
+
+            createChart('chartProgramadorClients', {
+                type: 'bar',
+                data: {
+                    labels: sortedClients.map(c => c[0]),
+                    datasets: [{
+                        label: 'Viajes por Cliente',
+                        data: sortedClients.map(c => c[1]),
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { size: 9 } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 8 } }, grid: { display: false } } }
+                }
             });
         }
 
@@ -978,7 +961,7 @@
             tbody.innerHTML = '';
 
             if (!driverName) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 italic">Selecciona un conductor en el menú desplegable.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 italic">Selecciona un conductor arriba.</td></tr>`;
                 return;
             }
 
@@ -986,21 +969,16 @@
                 .filter(d => d.chofer === driverName)
                 .sort((a, b) => (a.date || 0) - (b.date || 0));
 
-            if (driverTrips.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400 italic">Sin registros para este conductor.</td></tr>`;
-                return;
-            }
-
-            driverTrips.forEach((r, idx) => {
+            driverTrips.slice(0, 30).forEach((r, idx) => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
-                        <td class="p-3.5 font-mono text-slate-500">${idx + 1}</td>
-                        <td class="p-3.5 text-amber-400 font-semibold whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
-                        <td class="p-3.5 text-white font-bold whitespace-nowrap">${r.cliente}</td>
-                        <td class="p-3.5 text-slate-300 whitespace-nowrap">${r.ruta}</td>
-                        <td class="p-3.5 text-cyan-400 font-mono whitespace-nowrap">${r.tracto}</td>
-                        <td class="p-3.5 text-slate-400 whitespace-nowrap">${r.trailer}</td>
-                        <td class="p-3.5 text-slate-300 whitespace-nowrap">${r.unidad}</td>
+                        <td class="p-3 font-mono text-slate-500">${idx + 1}</td>
+                        <td class="p-3 text-amber-400 font-semibold whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
+                        <td class="p-3 text-white font-bold whitespace-nowrap">${r.cliente}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${r.ruta}</td>
+                        <td class="p-3 text-cyan-400 font-mono whitespace-nowrap">${r.tracto}</td>
+                        <td class="p-3 text-slate-400 whitespace-nowrap">${r.trailer}</td>
+                        <td class="p-3 text-slate-300 whitespace-nowrap">${r.unidad}</td>
                     </tr>
                 `;
             });
@@ -1012,34 +990,18 @@
 
             const counts = {};
             dataToUse.forEach(d => counts[d.chofer] = (counts[d.chofer] || 0) + 1);
-            let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-
-            const isMobile = window.innerWidth < 768;
-            const displayData = isMobile ? sorted.slice(0, 15) : sorted;
-
-            const container = document.getElementById('driverChartContainer');
-            if (container) {
-                container.style.height = isMobile ? `${Math.max(300, displayData.length * 28)}px` : `${Math.max(450, sorted.length * 30)}px`;
-            }
+            let sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, isIOS ? 6 : 10);
 
             createChart('chartDriverCross', {
                 type: 'bar',
                 data: {
-                    labels: displayData.map(s => s[0]),
-                    datasets: [{ label: 'Viajes Realizados', data: displayData.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
+                    labels: sorted.map(s => s[0]),
+                    datasets: [{ label: 'Viajes Realizados', data: sorted.map(s => s[1]), backgroundColor: '#f59e0b', borderRadius: 4 }]
                 },
                 options: {
                     indexAxis: 'y',
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { display: false }, 
-                        datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { weight: 'bold', size: 10 } } 
-                    },
-                    scales: { 
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, 
-                        y: { ticks: { color: '#94a3b8', font: { size: isMobile ? 9 : 11 } }, grid: { display: false } } 
-                    }
+                    plugins: { legend: { display: false }, datalabels: { display: !isIOS, color: '#ffffff', font: { size: 11 } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } } } }
                 }
             });
         }
@@ -1061,9 +1023,7 @@
                     datasets: [{ label: 'Viajes CAASA', data: Object.values(programs), backgroundColor: '#9d4edd', borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#c084fc', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { display: false }, datalabels: { display: false } }
                 }
             });
 
@@ -1076,11 +1036,7 @@
                     datasets: [{ data: [aplica, noAplica], backgroundColor: ['#f43f5e', '#0284c7'], borderWidth: 0 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#f1f5f9' } },
-                        datalabels: { color: '#fff', font: { weight: 'bold' }, formatter: (v, ctx) => { const sum = ctx.dataset.data.reduce((a,b)=>a+b,0); return sum === 0 ? '0%' : ((v/sum)*100).toFixed(1)+'%'; } }
-                    }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
 
@@ -1093,15 +1049,13 @@
                     datasets: [{ label: 'Remolques CAASA', data: Object.values(trailers), backgroundColor: '#00f2fe', borderRadius: 6 }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#00f2fe', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { display: false }, datalabels: { display: false } }
                 }
             });
 
             const routes = {};
             filteredCaasa.forEach(d => routes[d.ruta] = (routes[d.ruta] || 0) + 1);
-            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0,5);
+            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0, 5);
             createChart('chartCaasaRoutes', {
                 type: 'bar',
                 data: {
@@ -1109,9 +1063,8 @@
                     datasets: [{ label: 'Rutas CAASA', data: topRoutes.map(r => r[1]), backgroundColor: '#10b981', borderRadius: 6 }]
                 },
                 options: {
-                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#34d399', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }, y: { ticks: { color: '#94a3b8' }, grid: { display: false } } }
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { display: false } }
                 }
             });
         }
@@ -1135,9 +1088,7 @@
                     ]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { anchor: 'end', align: 'top', color: '#f1f5f9', font: { weight: 'bold' } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
         }
@@ -1145,46 +1096,31 @@
         function renderPartialComparison() {
             const mA = document.getElementById('compMonthA')?.value;
             const mB = document.getElementById('compMonthB')?.value;
+            const compClient = document.getElementById('compClientFilter')?.value || 'ALL';
             const dayStart = parseInt(document.getElementById('compDayStart')?.value) || 1;
             const dayEnd = parseInt(document.getElementById('compDayEnd')?.value) || 31;
 
             if (!mA || !mB) return;
 
+            let baseClientes = globalDataClientes;
+            if (compClient !== 'ALL') {
+                baseClientes = baseClientes.filter(d => d.cliente === compClient);
+            }
+
             const filterRange = (arr, monthKey) => arr.filter(d => d.monthKey === monthKey && d.day >= dayStart && d.day <= dayEnd);
 
-            const clientesA = filterRange(globalDataClientes, mA);
-            const clientesB = filterRange(globalDataClientes, mB);
+            const clientesA = filterRange(baseClientes, mA);
+            const clientesB = filterRange(baseClientes, mB);
             const caasaA = filterRange(globalDataCaasa, mA);
             const caasaB = filterRange(globalDataCaasa, mB);
 
-            const totalA = clientesA.length;
-            const totalB = clientesB.length;
-            document.getElementById('compValA').innerText = totalA;
-            document.getElementById('compValB').innerText = totalB;
-
-            const diffPct = totalA > 0 ? (((totalB - totalA) / totalA) * 100).toFixed(1) : (totalB > 0 ? 100 : 0);
-            const badge = document.getElementById('compDiffBadge');
-            if (badge) {
-                badge.innerText = (diffPct >= 0 ? '+' : '') + diffPct + '%';
-                badge.className = `text-xs font-bold px-2.5 py-1 rounded-lg ${diffPct >= 0 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`;
-            }
-
-            const cTotalA = caasaA.length;
-            const cTotalB = caasaB.length;
-            document.getElementById('compCaasaA').innerText = cTotalA;
-            document.getElementById('compCaasaB').innerText = cTotalB;
-            const caasaDiff = cTotalA > 0 ? (((cTotalB - cTotalA) / cTotalA) * 100).toFixed(1) : 0;
-            document.getElementById('compCaasaDiffBadge').innerText = (caasaDiff >= 0 ? '+' : '') + caasaDiff + '%';
-
-            const ffA = caasaA.filter(d => d.falsoFlete === 'APLICA').length;
-            const ffB = caasaB.filter(d => d.falsoFlete === 'APLICA').length;
-            document.getElementById('compFfA').innerText = ffA;
-            document.getElementById('compFfB').innerText = ffB;
-            const ffDiff = ffA > 0 ? (((ffB - ffA) / ffA) * 100).toFixed(1) : 0;
-            document.getElementById('compFfDiffBadge').innerText = (ffDiff >= 0 ? '+' : '') + ffDiff + '%';
+            document.getElementById('compValA').innerText = clientesA.length;
+            document.getElementById('compValB').innerText = clientesB.length;
+            document.getElementById('compCaasaA').innerText = caasaA.length;
+            document.getElementById('compCaasaB').innerText = caasaB.length;
 
             const clientsSet = new Set([...clientesA.map(d=>d.cliente), ...clientesB.map(d=>d.cliente)]);
-            const labels = Array.from(clientsSet);
+            const labels = Array.from(clientsSet).slice(0, isIOS ? 5 : 10);
             const dataA = labels.map(c => clientesA.filter(d=>d.cliente === c).length);
             const dataB = labels.map(c => clientesB.filter(d=>d.cliente === c).length);
 
@@ -1193,128 +1129,12 @@
                 data: {
                     labels: labels,
                     datasets: [
-                        { label: `Período A (${dayStart}-${dayEnd})`, data: dataA, backgroundColor: '#00f2fe', borderRadius: 4 },
-                        { label: `Período B (${dayStart}-${dayEnd})`, data: dataB, backgroundColor: '#9d4edd', borderRadius: 4 }
+                        { label: `Período A`, data: dataA, backgroundColor: '#00f2fe', borderRadius: 4 },
+                        { label: `Período B`, data: dataB, backgroundColor: '#9d4edd', borderRadius: 4 }
                     ]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { anchor: 'end', align: 'top', color: '#f1f5f9', font: { weight: 'bold', size: 9 } } },
-                    scales: { x: { ticks: { color: '#94a3b8' }, grid: { display: false } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } } }
-                }
-            });
-        }
-
-        /* --- FUNCIONES DEL MÓDULO DE PROGRAMADORES --- */
-        function initProgrammerModule() {
-            const clients = [...new Set(globalDataClientes.map(d => d.cliente))].filter(Boolean);
-            fillSelect('selectProgrammerClient', clients, 'Selecciona un cliente');
-            updateProgrammerDropdowns();
-        }
-
-        function updateProgrammerDropdowns() {
-            const progSelect = document.getElementById('filterActiveProgrammer');
-            if (!progSelect) return;
-            const currentVal = progSelect.value;
-            progSelect.innerHTML = '<option value="">-- Seleccionar Programador --</option>';
-            Object.keys(programmerAssignments).sort().forEach(prog => {
-                progSelect.innerHTML += `<option value="${prog}" ${prog === currentVal ? 'selected' : ''}>${prog}</option>`;
-            });
-            renderProgrammerAnalytics();
-        }
-
-        function assignClientToProgrammer() {
-            const name = document.getElementById('inputProgrammerName').value.trim();
-            const client = document.getElementById('selectProgrammerClient').value;
-
-            if (!name) { alert('Por favor ingresa el nombre del programador.'); return; }
-            if (!client) { alert('Por favor selecciona un cliente.'); return; }
-
-            if (!programmerAssignments[name]) programmerAssignments[name] = [];
-
-            if (!programmerAssignments[name].includes(client)) {
-                programmerAssignments[name].push(client);
-                localStorage.setItem('vortex_programmer_assignments', JSON.stringify(programmerAssignments));
-                document.getElementById('inputProgrammerName').value = '';
-                updateProgrammerDropdowns();
-            } else {
-                alert('Este cliente ya está asignado a este programador.');
-            }
-        }
-
-        function removeProgrammerClient(progName, clientName) {
-            if (programmerAssignments[progName]) {
-                programmerAssignments[progName] = programmerAssignments[progName].filter(c => c !== clientName);
-                if (programmerAssignments[progName].length === 0) {
-                    delete programmerAssignments[progName];
-                }
-                localStorage.setItem('vortex_programmer_assignments', JSON.stringify(programmerAssignments));
-                updateProgrammerDropdowns();
-            }
-        }
-
-        function renderProgrammerAnalytics() {
-            const progName = document.getElementById('filterActiveProgrammer')?.value;
-            const tbody = document.getElementById('programmerClientsTableBody');
-            if (!tbody) return;
-
-            tbody.innerHTML = '';
-
-            if (!progName || !programmerAssignments[progName] || programmerAssignments[progName].length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-500 italic">Sin clientes asignados o programador no seleccionado.</td></tr>`;
-                createChart('chartProgrammerMonthly', {
-                    type: 'bar',
-                    data: { labels: [], datasets: [] },
-                    options: { responsive: true, maintainAspectRatio: false }
-                });
-                return;
-            }
-
-            const assignedClients = programmerAssignments[progName];
-
-            assignedClients.forEach(client => {
-                const totalTrips = globalDataClientes.filter(d => d.cliente === client).length;
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-900/60 transition">
-                        <td class="p-2.5 text-white font-medium">${client}</td>
-                        <td class="p-2.5 text-center font-bold text-cyan-400">${totalTrips}</td>
-                        <td class="p-2.5 text-center">
-                            <button onclick="removeProgrammerClient('${progName}', '${client}')" class="text-rose-400 hover:text-rose-300 text-xs"><i class="fa-solid fa-trash"></i></button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            const monthsMap = {};
-            globalDataClientes.forEach(d => { if(d.monthYear && d.monthYear !== 'Sin Fecha') monthsMap[d.monthYear] = true; });
-            const months = Object.keys(monthsMap);
-
-            const monthlyData = months.map(m => {
-                return globalDataClientes.filter(d => d.monthYear === m && assignedClients.includes(d.cliente)).length;
-            });
-
-            createChart('chartProgrammerMonthly', {
-                type: 'bar',
-                data: {
-                    labels: months,
-                    datasets: [{
-                        label: `Viajes de ${progName}`,
-                        data: monthlyData,
-                        backgroundColor: '#00f2fe',
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#f1f5f9' } },
-                        datalabels: { anchor: 'end', align: 'top', color: '#00f2fe', font: { weight: 'bold' } }
-                    },
-                    scales: {
-                        x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
-                    }
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
                 }
             });
         }
@@ -1325,13 +1145,15 @@
             tbody.innerHTML = '';
             document.getElementById('recordCountBadge').innerText = `${filteredClientes.length} Registros`;
 
-            filteredClientes.slice(0, 100).forEach(r => {
+            const tableLimit = isIOS ? 20 : 50;
+            filteredClientes.slice(0, tableLimit).forEach(r => {
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-900/60 transition">
                         <td class="p-3 text-cyan-400 font-semibold whitespace-nowrap">${r.origen}</td>
                         <td class="p-3 text-slate-300 whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
                         <td class="p-3 text-white font-mono whitespace-nowrap">${r.tracto}</td>
                         <td class="p-3 text-slate-300 whitespace-nowrap">${r.chofer}</td>
+                        <td class="p-3 text-purple-300 whitespace-nowrap font-semibold">${r.programador}</td>
                         <td class="p-3 text-slate-400 whitespace-nowrap">${r.trailer}</td>
                         <td class="p-3 text-slate-300 whitespace-nowrap">${r.ruta}</td>
                         <td class="p-3 font-bold text-amber-400 whitespace-nowrap">${r.cliente}</td>
