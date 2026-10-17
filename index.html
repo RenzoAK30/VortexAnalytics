@@ -100,6 +100,9 @@
                         <button onclick="switchTab('drivers')" id="navDriversBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
                             <i class="fa-solid fa-users-viewfinder mr-2 text-amber-400"></i>Chofer por cliente
                         </button>
+                        <button onclick="switchTab('programadores')" id="navProgramadoresBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
+                            <i class="fa-solid fa-user-tie mr-2 text-cyan-400"></i>Análisis Programador
+                        </button>
                         <button onclick="switchTab('monthly')" id="navMonthlyBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
                             <i class="fa-solid fa-calendar-days mr-2 text-emerald-400"></i>Mes a Mes
                         </button>
@@ -147,7 +150,7 @@
                     <div>
                         <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
                         <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Preparando entorno optimizado para iPhone y Web.
+                            Preparando entorno optimizado.
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
@@ -312,6 +315,36 @@
                     </div>
                 </div>
 
+                <!-- REPORTE: ANÁLISIS POR PROGRAMADOR -->
+                <div id="tabProgramadoresContent" class="hidden space-y-6">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xl border-l-4 border-l-cyan-400">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
+                            <div>
+                                <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
+                                    <i class="fa-solid fa-user-tie text-cyan-400 mr-2"></i>Desempeño de Programadores (Mes a Mes)
+                                </h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Selecciona un programador para ver sus viajes por cliente y comparativa mensual</p>
+                            </div>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <select id="selectProgramador" onchange="renderProgramadorReport()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold w-full sm:w-64 shadow-lg">
+                                    <option value="">-- Seleccionar Programador --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                            <div class="glass-card rounded-xl p-4 flex flex-col">
+                                <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-chart-bar text-cyan-400 mr-2"></i>Evolución Mensual del Programador</h5>
+                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartProgramadorMonthly"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-xl p-4 flex flex-col">
+                                <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-building text-amber-400 mr-2"></i>Distribución de Clientes</h5>
+                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartProgramadorClients"></canvas></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- HISTORIAL -->
                 <div id="tabHistoryContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 border-l-4 border-l-purple-500 shadow-2xl">
@@ -360,7 +393,16 @@
                 <!-- COMPARATIVA DE RANGO -->
                 <div id="tabPartialContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
-                        <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Comparativa de Rango Temporal</h4>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-sliders text-cyan-400 mr-2"></i>Comparativa de Rango Temporal</h4>
+                            <div class="flex items-center space-x-2 w-full sm:w-auto">
+                                <label class="text-xs text-slate-400 font-semibold whitespace-nowrap">Filtrar Cliente:</label>
+                                <select id="compClientFilter" onchange="renderPartialComparison()" class="bg-slate-900 border border-slate-700 text-xs text-slate-200 rounded-xl px-3 py-2 w-full sm:w-48 font-bold">
+                                    <option value="ALL">Todos los Clientes</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Mes Base (A)</label>
@@ -435,31 +477,37 @@
                     </div>
                 </div>
 
-                <!-- TABLA DE REGISTROS -->
+                <!-- TABLA DE REGISTROS (OCULTA POR DEFECTO CON BOTÓN DESPLEGABLE) -->
                 <section class="glass-card rounded-2xl p-4 sm:p-6 space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                        <h4 class="font-extrabold text-xs sm:text-base text-white">Detalle de Registros (Primeros 30)</h4>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="toggleRecordTable()" class="text-cyan-400 hover:text-white bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-2">
+                                <i id="tableToggleIcon" class="fa-solid fa-chevron-right"></i>
+                                <span id="tableToggleText">Ver Detalle de Registros</span>
+                            </button>
+                        </div>
                         <span id="recordCountBadge" class="text-[11px] bg-slate-900 border border-slate-700 text-cyan-400 px-2.5 py-1 rounded-xl font-bold">0 Registros</span>
                     </div>
-                    <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-800">
-                        <table class="w-full text-left text-xs text-slate-300">
-                            <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
-                                <tr><th class="p-3">Origen</th><th class="p-3">F. Inicio</th><th class="p-3">Tracto</th><th class="p-3">Chofer</th><th class="p-3">Remolque</th><th class="p-3">Ruta</th><th class="p-3">Cliente</th><th class="p-3">Unidad</th></tr>
-                            </thead>
-                            <tbody id="dataTableBody" class="divide-y divide-slate-800/60 bg-slate-950/40"></tbody>
-                        </table>
+                    
+                    <div id="recordTableContainer" class="hidden space-y-3">
+                        <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-800">
+                            <table class="w-full text-left text-xs text-slate-300">
+                                <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                                    <tr><th class="p-3">Origen</th><th class="p-3">F. Inicio</th><th class="p-3">Tracto</th><th class="p-3">Chofer</th><th class="p-3">Programador</th><th class="p-3">Remolque</th><th class="p-3">Ruta</th><th class="p-3">Cliente</th><th class="p-3">Unidad</th></tr>
+                                </thead>
+                                <tbody id="dataTableBody" class="divide-y divide-slate-800/60 bg-slate-950/40"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </section>
             </div>
         </main>
     </div>
 
-    <!-- SCRIPT ULTRA OPTIMIZADO PARA PREVENIR OOM (OUT OF MEMORY) EN iPHONE -->
+    <!-- SCRIPT CORREGIDO -->
     <script>
-        // Detección automática de dispositivo iOS
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-        // Desactivar animaciones y simplificar plugins en iOS para evitar caídas de VRAM
         Chart.register(ChartDataLabels);
         Chart.defaults.animation = !isIOS; 
         Chart.defaults.responsive = true;
@@ -500,6 +548,21 @@
         function toggleGroup(id) {
             const el = document.getElementById(id);
             if (el) el.classList.toggle('hidden');
+        }
+
+        function toggleRecordTable() {
+            const container = document.getElementById('recordTableContainer');
+            const icon = document.getElementById('tableToggleIcon');
+            const text = document.getElementById('tableToggleText');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                icon.className = 'fa-solid fa-chevron-down';
+                text.innerText = 'Ocultar Detalle de Registros';
+            } else {
+                container.classList.add('hidden');
+                icon.className = 'fa-solid fa-chevron-right';
+                text.innerText = 'Ver Detalle de Registros';
+            }
         }
 
         function getRowValue(row, possibleKeys) {
@@ -569,9 +632,10 @@
                         date: d,
                         day: d ? d.getDate() : null,
                         monthYear: formatMonthYear(d),
-                        monthKey: d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : 'Sin Fecha',
+                        monthKey: d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : '9999-99',
                         tracto: getRowValue(r, ['Tracto', 'PLACA']) || 'SIN PLACA',
                         chofer: getRowValue(r, ['Chofer', 'CONDUCTOR']) || 'SIN CHOFER',
+                        programador: getRowValue(r, ['Programador', 'PROGRAMADOR']) || 'SIN PROGRAMADOR',
                         trailer: getRowValue(r, ['Tipo Remolque', 'REMOLQUE']) || 'NO ESPECIFICADO',
                         ruta: getRowValue(r, ['RUTA', 'Ruta']) || 'SIN RUTA',
                         cliente: getRowValue(r, ['Cliente', 'CLIENTE']) || 'SIN CLIENTE',
@@ -592,7 +656,7 @@
                         date: d,
                         day: d ? d.getDate() : null,
                         monthYear: formatMonthYear(d),
-                        monthKey: d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : 'Sin Fecha',
+                        monthKey: d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : '9999-99',
                         tracto: getRowValue(r, ['Tracto', 'PLACA']) || 'SIN PLACA',
                         chofer: getRowValue(r, ['Chofer', 'CONDUCTOR']) || 'SIN CHOFER',
                         dt: getRowValue(r, ['DT']),
@@ -616,32 +680,38 @@
         }
 
         function populateFilterDropdowns() {
-            const months = [...new Set(globalDataClientes.map(d => d.monthYear))].filter(Boolean);
             const clients = [...new Set(globalDataClientes.map(d => d.cliente))].filter(Boolean);
             const units = [...new Set(globalDataClientes.map(d => d.unidad))].filter(Boolean);
             const trailers = [...new Set([...globalDataClientes.map(d => d.trailer), ...globalDataCaasa.map(d => d.trailer)])].filter(Boolean);
             const choferes = [...new Set([...globalDataClientes.map(d => d.chofer), ...globalDataCaasa.map(d => d.chofer)])].filter(Boolean);
+            const programadores = [...new Set(globalDataClientes.map(d => d.programador))].filter(Boolean);
 
-            fillSelect('filterMonth', months, 'Todos los Meses');
+            // Poblar meses únicos ordenados cronológicamente
+            const monthObj = {};
+            globalDataClientes.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
+            globalDataCaasa.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
+            const sortedKeys = Object.keys(monthObj).sort();
+            const sortedMonths = sortedKeys.map(k => monthObj[k]);
+
+            fillSelect('filterMonth', sortedMonths, 'Todos los Meses');
             fillSelect('filterClient', clients, 'Todos los Clientes');
             fillSelect('filterUnitType', units, 'Todas (Propia/Tercero)');
             fillSelect('filterTrailer', trailers, 'Todos los Remolques');
             fillSelect('filterChofer', choferes, 'Todos los Choferes');
             fillSelect('driverClientSelect', clients, 'Todos los Clientes');
+            fillSelect('compClientFilter', clients, 'Todos los Clientes');
             fillSelect('singleDriverSelect', choferes, '-- Seleccionar Conductor --');
+            fillSelect('selectProgramador', programadores, '-- Seleccionar Programador --');
 
-            const monthMap = {};
-            globalDataClientes.forEach(d => { if(d.monthKey !== 'Sin Fecha' && d.monthYear) monthMap[d.monthKey] = d.monthYear; });
-            const keys = Object.keys(monthMap).sort();
             const selA = document.getElementById('compMonthA');
             const selB = document.getElementById('compMonthB');
             if (selA && selB) {
                 selA.innerHTML = ''; selB.innerHTML = '';
-                keys.forEach(k => {
-                    selA.innerHTML += `<option value="${k}">${monthMap[k]}</option>`;
-                    selB.innerHTML += `<option value="${k}">${monthMap[k]}</option>`;
+                sortedKeys.forEach(k => {
+                    selA.innerHTML += `<option value="${k}">${monthObj[k]}</option>`;
+                    selB.innerHTML += `<option value="${k}">${monthObj[k]}</option>`;
                 });
-                if (keys.length > 1) { selA.selectedIndex = keys.length - 2; selB.selectedIndex = keys.length - 1; }
+                if (sortedKeys.length > 1) { selA.selectedIndex = sortedKeys.length - 2; selB.selectedIndex = sortedKeys.length - 1; }
             }
         }
 
@@ -649,7 +719,7 @@
             const el = document.getElementById(id);
             if (!el) return;
             el.innerHTML = `<option value="">${defaultText}</option>`;
-            items.sort().forEach(i => { el.innerHTML += `<option value="${i}">${i}</option>`; });
+            items.forEach(i => { el.innerHTML += `<option value="${i}">${i}</option>`; });
         }
 
         function resetFilters() {
@@ -702,7 +772,7 @@
 
         function switchTab(tab) {
             currentTab = tab;
-            const tabs = ['General', 'Drivers', 'History', 'Caasa', 'Monthly', 'Partial'];
+            const tabs = ['General', 'Drivers', 'Programadores', 'History', 'Caasa', 'Monthly', 'Partial'];
             tabs.forEach(t => {
                 document.getElementById(`tab${t}Content`)?.classList.add('hidden');
                 const btn = document.getElementById(`nav${t}Btn`);
@@ -737,6 +807,7 @@
         function renderActiveTabContent() {
             if (currentTab === 'general') renderGeneralTab();
             if (currentTab === 'drivers') renderDriversTab();
+            if (currentTab === 'programadores') renderProgramadorReport();
             if (currentTab === 'history') renderHistoryTab();
             if (currentTab === 'caasa') renderCaasaTab();
             if (currentTab === 'monthly') renderMonthlyTab();
@@ -750,7 +821,6 @@
             let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
             document.getElementById('totalClientsCountBadge').innerText = `${sorted.length} Clientes`;
 
-            // Límite estricto de registros en iOS para impedir saturación de memoria RAM
             const limit = isIOS ? 8 : 15;
             const displayData = sorted.slice(0, limit);
 
@@ -829,7 +899,6 @@
             const clientTotalMap = {};
             filteredClientes.forEach(d => clientTotalMap[d.cliente] = (clientTotalMap[d.cliente] || 0) + 1);
 
-            // Reducido a 25 registros visibles en móviles para evitar OOM
             const rowLimit = isIOS ? 25 : 50;
             Object.values(map).sort((a,b) => b.count - a.count).slice(0, rowLimit).forEach(row => {
                 const totalClient = clientTotalMap[row.cliente] || 1;
@@ -847,6 +916,65 @@
                         <td class="p-3 text-slate-400 whitespace-nowrap">${row.unidad}</td>
                     </tr>
                 `;
+            });
+        }
+
+        function renderProgramadorReport() {
+            const progName = document.getElementById('selectProgramador')?.value;
+            if (!progName) return;
+
+            const progData = filteredClientes.filter(d => d.programador === progName);
+
+            // Ordenamiento cronológico estricto por monthKey (YYYY-MM)
+            const monthMap = {};
+            const monthLabelMap = {};
+            progData.forEach(d => {
+                if (d.monthKey && d.monthKey !== '9999-99') {
+                    monthMap[d.monthKey] = (monthMap[d.monthKey] || 0) + 1;
+                    monthLabelMap[d.monthKey] = d.monthYear;
+                }
+            });
+            const sortedKeys = Object.keys(monthMap).sort();
+            const sortedLabels = sortedKeys.map(k => monthLabelMap[k]);
+            const sortedValues = sortedKeys.map(k => monthMap[k]);
+
+            createChart('chartProgramadorMonthly', {
+                type: 'bar',
+                data: {
+                    labels: sortedLabels,
+                    datasets: [{
+                        label: 'Viajes Programados',
+                        data: sortedValues,
+                        backgroundColor: '#00f2fe',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    plugins: { legend: { display: false }, datalabels: { color: '#00f2fe', font: { weight: 'bold' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
+                }
+            });
+
+            const clientMap = {};
+            progData.forEach(d => { clientMap[d.cliente] = (clientMap[d.cliente] || 0) + 1; });
+            const sortedClients = Object.entries(clientMap).sort((a,b) => b[1] - a[1]).slice(0, 8);
+
+            createChart('chartProgramadorClients', {
+                type: 'bar',
+                data: {
+                    labels: sortedClients.map(c => c[0]),
+                    datasets: [{
+                        label: 'Viajes por Cliente',
+                        data: sortedClients.map(c => c[1]),
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { size: 9 } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 8 } }, grid: { display: false } } }
+                }
             });
         }
 
@@ -970,13 +1098,18 @@
         }
 
         function renderMonthlyTab() {
-            const monthsMap = {};
-            globalDataClientes.forEach(d => { if(d.monthYear && d.monthYear !== 'Sin Fecha') monthsMap[d.monthYear] = true; });
-            globalDataCaasa.forEach(d => { if(d.monthYear && d.monthYear !== 'Sin Fecha') monthsMap[d.monthYear] = true; });
-            const months = Object.keys(monthsMap);
+            // Uso de filteredClientes y filteredCaasa para respetar los filtros globales superiores
+            const monthsObj = {};
+            const monthLabelMap = {};
+            
+            filteredClientes.forEach(d => { if(d.monthKey && d.monthKey !== '9999-99') { monthsObj[d.monthKey] = true; monthLabelMap[d.monthKey] = d.monthYear; } });
+            filteredCaasa.forEach(d => { if(d.monthKey && d.monthKey !== '9999-99') { monthsObj[d.monthKey] = true; monthLabelMap[d.monthKey] = d.monthYear; } });
+            
+            const sortedKeys = Object.keys(monthsObj).sort();
+            const months = sortedKeys.map(k => monthLabelMap[k]);
 
-            const genCounts = months.map(m => globalDataClientes.filter(d => d.monthYear === m).length);
-            const caasaCounts = months.map(m => globalDataCaasa.filter(d => d.monthYear === m).length);
+            const genCounts = sortedKeys.map(k => filteredClientes.filter(d => d.monthKey === k).length);
+            const caasaCounts = sortedKeys.map(k => filteredCaasa.filter(d => d.monthKey === k).length);
 
             createChart('chartMonthlyComparative', {
                 type: 'bar',
@@ -996,15 +1129,21 @@
         function renderPartialComparison() {
             const mA = document.getElementById('compMonthA')?.value;
             const mB = document.getElementById('compMonthB')?.value;
+            const compClient = document.getElementById('compClientFilter')?.value || 'ALL';
             const dayStart = parseInt(document.getElementById('compDayStart')?.value) || 1;
             const dayEnd = parseInt(document.getElementById('compDayEnd')?.value) || 31;
 
             if (!mA || !mB) return;
 
+            let baseClientes = globalDataClientes;
+            if (compClient !== 'ALL') {
+                baseClientes = baseClientes.filter(d => d.cliente === compClient);
+            }
+
             const filterRange = (arr, monthKey) => arr.filter(d => d.monthKey === monthKey && d.day >= dayStart && d.day <= dayEnd);
 
-            const clientesA = filterRange(globalDataClientes, mA);
-            const clientesB = filterRange(globalDataClientes, mB);
+            const clientesA = filterRange(baseClientes, mA);
+            const clientesB = filterRange(baseClientes, mB);
             const caasaA = filterRange(globalDataCaasa, mA);
             const caasaB = filterRange(globalDataCaasa, mB);
 
@@ -1039,7 +1178,6 @@
             tbody.innerHTML = '';
             document.getElementById('recordCountBadge').innerText = `${filteredClientes.length} Registros`;
 
-            // Límite estricto de filas en tabla para no agotar la memoria virtual del DOM en iOS
             const tableLimit = isIOS ? 20 : 50;
             filteredClientes.slice(0, tableLimit).forEach(r => {
                 tbody.innerHTML += `
@@ -1048,6 +1186,7 @@
                         <td class="p-3 text-slate-300 whitespace-nowrap">${r.date ? r.date.toLocaleDateString() : 'Sin Fecha'}</td>
                         <td class="p-3 text-white font-mono whitespace-nowrap">${r.tracto}</td>
                         <td class="p-3 text-slate-300 whitespace-nowrap">${r.chofer}</td>
+                        <td class="p-3 text-purple-300 whitespace-nowrap font-semibold">${r.programador}</td>
                         <td class="p-3 text-slate-400 whitespace-nowrap">${r.trailer}</td>
                         <td class="p-3 text-slate-300 whitespace-nowrap">${r.ruta}</td>
                         <td class="p-3 font-bold text-amber-400 whitespace-nowrap">${r.cliente}</td>
@@ -1059,3 +1198,4 @@
     </script>
 </body>
 </html>
+
