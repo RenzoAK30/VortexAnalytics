@@ -97,6 +97,9 @@
                         <i id="iconGroupReportes" class="fa-solid fa-chevron-down text-[10px] transition-transform"></i>
                     </button>
                     <div id="groupReportes" class="pl-3 space-y-1 border-l-2 border-slate-800 ml-2">
+                        <button onclick="switchTab('carga')" id="navCargaBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
+                            <i class="fa-solid fa-truck-fast mr-2 text-cyan-400"></i>Análisis de Carga
+                        </button>
                         <button onclick="switchTab('drivers')" id="navDriversBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
                             <i class="fa-solid fa-users-viewfinder mr-2 text-amber-400"></i>Chofer por cliente
                         </button>
@@ -150,7 +153,7 @@
                     <div>
                         <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
                         <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Preparando entorno optimizado.
+                            Preparando entorno optimizado con módulo de Análisis de Carga.
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
@@ -254,7 +257,6 @@
                         </div>
                     </div>
 
-                    <!-- NUEVO GRÁFICO DE LÍNEAS TENDENCIA: Programadores (Eje X: Meses, Líneas: Programadores) -->
                     <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl border-l-4 border-l-cyan-400">
                         <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
                             <div>
@@ -281,6 +283,60 @@
                         <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
                             <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-map-location-dot text-purple-400 mr-2"></i>Rutas Más Transitadas</h4>
                             <div class="relative flex-1 min-h-[220px]"><canvas id="chartTopRoutes"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUEVO MÓDULO: ANÁLISIS DE CARGA (Unidades Propias vs Terceros por Cliente con Rango de Fechas / Diario) -->
+                <div id="tabCargaContent" class="hidden space-y-6">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xl border-l-4 border-l-cyan-400">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
+                            <div>
+                                <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
+                                    <i class="fa-solid fa-truck-fast text-cyan-400 mr-2"></i>Análisis de Unidades por Cliente (Propias vs Terceros)
+                                </h4>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Consulta la cantidad de unidades que cargaron para cada cliente filtrando por rango de fechas o de forma diaria.</p>
+                            </div>
+                        </div>
+
+                        <!-- Filtros específicos del módulo de carga -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Cliente</label>
+                                <select id="cargaClientFilter" onchange="renderCargaReport()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                    <option value="ALL">Todos los Clientes</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Fecha Desde</label>
+                                <input type="date" id="cargaDateStart" onchange="renderCargaReport()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-bold">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Fecha Hasta</label>
+                                <input type="date" id="cargaDateEnd" onchange="renderCargaReport()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-bold">
+                            </div>
+                        </div>
+
+                        <!-- KPIs de Carga -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Cargas Totales Seleccionadas</p>
+                                <h3 id="cargaKpiTotal" class="text-xl font-black text-cyan-400 mt-0.5">0</h3>
+                            </div>
+                            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Unidades Propias</p>
+                                <h3 id="cargaKpiPropias" class="text-xl font-black text-emerald-400 mt-0.5">0</h3>
+                            </div>
+                            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Unidades Terceros</p>
+                                <h3 id="cargaKpiTerceros" class="text-xl font-black text-rose-400 mt-0.5">0</h3>
+                            </div>
+                        </div>
+
+                        <!-- Gráfico de Carga -->
+                        <div class="glass-card rounded-xl p-4 flex flex-col pt-4">
+                            <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-chart-column text-cyan-400 mr-2"></i>Distribución de Carga (Propias vs Terceros)</h5>
+                            <div class="relative flex-1 min-h-[300px]"><canvas id="chartCargaPropiasTerceros"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -713,6 +769,7 @@
             fillSelect('filterTrailer', trailers, 'Todos los Remolques');
             fillSelect('filterChofer', choferes, 'Todos los Choferes');
             fillSelect('driverClientSelect', clients, 'Todos los Clientes');
+            fillSelect('cargaClientFilter', clients, 'Todos los Clientes');
             fillSelect('compClientFilter', clients, 'Todos los Clientes');
             fillSelect('singleDriverSelect', choferes, '-- Seleccionar Conductor --');
             fillSelect('selectProgramador', programadores, '-- Seleccionar Programador --');
@@ -786,7 +843,7 @@
 
         function switchTab(tab) {
             currentTab = tab;
-            const tabs = ['General', 'Drivers', 'Programadores', 'History', 'Caasa', 'Monthly', 'Partial'];
+            const tabs = ['General', 'Carga', 'Drivers', 'Programadores', 'History', 'Caasa', 'Monthly', 'Partial'];
             tabs.forEach(t => {
                 document.getElementById(`tab${t}Content`)?.classList.add('hidden');
                 const btn = document.getElementById(`nav${t}Btn`);
@@ -823,6 +880,7 @@
                 renderGeneralTab();
                 renderProgramadoresLineChart();
             }
+            if (currentTab === 'carga') renderCargaReport();
             if (currentTab === 'drivers') renderDriversTab();
             if (currentTab === 'programadores') renderProgramadorReport();
             if (currentTab === 'history') renderHistoryTab();
@@ -832,9 +890,81 @@
             renderTable();
         }
 
-        // Función para renderizar el gráfico de líneas con todos los programadores (Eje X: Meses, Líneas: Programadores)
+        // Lógica del nuevo módulo de Análisis de Carga
+        function renderCargaReport() {
+            const clientVal = document.getElementById('cargaClientFilter')?.value || 'ALL';
+            const dateStartVal = document.getElementById('cargaDateStart')?.value;
+            const dateEndVal = document.getElementById('cargaDateEnd')?.value;
+
+            let dataToUse = filteredClientes;
+
+            // Filtrar por cliente seleccionado en el módulo
+            if (clientVal !== 'ALL') {
+                dataToUse = dataToUse.filter(d => d.cliente === clientVal);
+            }
+
+            // Filtrar por rango de fechas (diario / rango)
+            if (dateStartVal) {
+                const startD = new Date(dateStartVal + 'T00:00:00');
+                dataToUse = dataToUse.filter(d => d.date && d.date >= startD);
+            }
+            if (dateEndVal) {
+                const endD = new Date(dateEndVal + 'T23:59:59');
+                dataToUse = dataToUse.filter(d => d.date && d.date <= endD);
+            }
+
+            // Actualizar KPIs de carga
+            const totalCargas = dataToUse.length;
+            const propiasCount = dataToUse.filter(d => d.unidad.toLowerCase().includes('propia')).length;
+            const tercerosCount = dataToUse.filter(d => d.unidad.toLowerCase().includes('tercero')).length;
+
+            document.getElementById('cargaKpiTotal').innerText = totalCargas.toLocaleString();
+            document.getElementById('cargaKpiPropias').innerText = propiasCount.toLocaleString();
+            document.getElementById('cargaKpiTerceros').innerText = tercerosCount.toLocaleString();
+
+            // Preparar datos para el gráfico (agrupado por día o mes según la cantidad de registros / rango)
+            const timelineMap = {};
+            dataToUse.forEach(d => {
+                if (!d.date) return;
+                const dateStr = d.date.toISOString().split('T')[0]; // Formato YYYY-MM-DD para vista diaria
+                if (!timelineMap[dateStr]) timelineMap[dateStr] = { propias: 0, terceros: 0 };
+                
+                if (d.unidad.toLowerCase().includes('propia')) {
+                    timelineMap[dateStr].propias++;
+                } else {
+                    timelineMap[dateStr].terceros++;
+                }
+            });
+
+            const sortedDates = Object.keys(timelineMap).sort();
+            const propiasSeries = sortedDates.map(dt => timelineMap[dt].propias);
+            const tercerosSeries = sortedDates.map(dt => timelineMap[dt].terceros);
+
+            createChart('chartCargaPropiasTerceros', {
+                type: 'bar',
+                data: {
+                    labels: sortedDates,
+                    datasets: [
+                        { label: 'Unidades Propias', data: propiasSeries, backgroundColor: '#10b981', borderRadius: 4 },
+                        { label: 'Unidades Terceros', data: tercerosSeries, backgroundColor: '#f43f5e', borderRadius: 4 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#f1f5f9' } },
+                        datalabels: { display: false }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+        }
+
         function renderProgramadoresLineChart() {
-            // 1. Obtener meses únicos ordenados cronológicamente
             const monthObj = {};
             const monthLabelMap = {};
             filteredClientes.forEach(d => {
@@ -846,13 +976,9 @@
             const sortedKeys = Object.keys(monthObj).sort();
             const sortedMonthsLabels = sortedKeys.map(k => monthLabelMap[k]);
 
-            // 2. Obtener lista de todos los programadores únicos
             const programadores = [...new Set(filteredClientes.map(d => d.programador))].filter(Boolean).sort();
-
-            // 3. Colores predefinidos para las líneas de los programadores
             const palette = ['#00f2fe', '#9d4edd', '#f59e0b', '#10b981', '#f43f5e', '#3b82f6', '#ec4899', '#8b5cf6'];
 
-            // 4. Construir los datasets (una línea por cada programador)
             const datasets = programadores.map((prog, index) => {
                 const color = palette[index % palette.length];
                 const dataCounts = sortedKeys.map(mKey => {
@@ -867,35 +993,23 @@
                     borderWidth: 2.5,
                     pointRadius: 4,
                     pointHoverRadius: 6,
-                    tension: 0.2 // Línea ligeramente curva y elegante
+                    tension: 0.2
                 };
             });
 
             createChart('chartProgramadoresLines', {
                 type: 'line',
-                data: {
-                    labels: sortedMonthsLabels,
-                    datasets: datasets
-                },
+                data: { labels: sortedMonthsLabels, datasets: datasets },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: { color: '#f1f5f9', font: { size: 10 } }
-                        },
-                        datalabels: { display: false } // Desactivar etiquetas numéricas directas para no saturar las líneas
+                        legend: { position: 'bottom', labels: { color: '#f1f5f9', font: { size: 10 } } },
+                        datalabels: { display: false }
                     },
                     scales: {
-                        x: {
-                            ticks: { color: '#94a3b8' },
-                            grid: { color: '#1e293b' }
-                        },
-                        y: {
-                            ticks: { color: '#94a3b8', precision: 0 },
-                            grid: { color: '#1e293b' }
-                        }
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#1e293b' } }
                     }
                 }
             });
@@ -1260,7 +1374,7 @@
             const tbody = document.getElementById('dataTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            document.getElementById('recordCountBadge').innerText = `${filteredClientes.length} Registros`;
+            document.getElementById('recordCountBadge',).innerText = `${filteredClientes.length} Registros`;
 
             const tableLimit = isIOS ? 20 : 50;
             filteredClientes.slice(0, tableLimit).forEach(r => {
