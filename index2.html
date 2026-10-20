@@ -287,7 +287,7 @@
                     </div>
                 </div>
 
-                <!-- MÓDULO: ANÁLISIS DE CARGA (Unidades Propias vs Terceros por Cliente) -->
+                <!-- MÓDULO: ANÁLISIS DE CARGA -->
                 <div id="tabCargaContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xl border-l-4 border-l-cyan-400">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
@@ -299,7 +299,6 @@
                             </div>
                         </div>
 
-                        <!-- Filtros específicos del módulo de carga -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Cliente</label>
@@ -317,7 +316,6 @@
                             </div>
                         </div>
 
-                        <!-- KPIs de Carga -->
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
                             <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-3">
                                 <p class="text-[10px] font-bold uppercase text-slate-400">Cargas Totales Seleccionadas</p>
@@ -333,7 +331,6 @@
                             </div>
                         </div>
 
-                        <!-- Gráfico de Carga -->
                         <div class="glass-card rounded-xl p-4 flex flex-col pt-4">
                             <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-chart-column text-cyan-400 mr-2"></i>Distribución de Carga (Propias vs Terceros)</h5>
                             <div class="relative flex-1 min-h-[380px]"><canvas id="chartCargaPropiasTerceros"></canvas></div>
@@ -386,7 +383,7 @@
                     </div>
                 </div>
 
-                <!-- REPORTE: ANÁLISIS POR PROGRAMADOR -->
+                <!-- REPORTE: ANÁLISIS POR PROGRAMADOR (Actualizado con 4 gráficos) -->
                 <div id="tabProgramadoresContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xl border-l-4 border-l-cyan-400">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
@@ -394,7 +391,7 @@
                                 <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
                                     <i class="fa-solid fa-user-tie text-cyan-400 mr-2"></i>Desempeño de Programadores (Mes a Mes)
                                 </h4>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Selecciona un programador para ver sus viajes por cliente y comparativa mensual</p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Selecciona un programador para ver su desempeño detallado</p>
                             </div>
                             <div class="flex items-center space-x-2 w-full sm:w-auto">
                                 <select id="selectProgramador" onchange="renderProgramadorReport()" class="bg-slate-900 border border-slate-700 text-xs text-slate-100 rounded-xl px-3 py-2 font-bold w-full sm:w-64 shadow-lg">
@@ -403,14 +400,23 @@
                             </div>
                         </div>
 
+                        <!-- Cuadrícula de 4 gráficos -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
                             <div class="glass-card rounded-xl p-4 flex flex-col">
                                 <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-chart-bar text-cyan-400 mr-2"></i>Evolución Mensual del Programador</h5>
-                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartProgramadorMonthly"></canvas></div>
+                                <div class="relative flex-1 min-h-[280px]"><canvas id="chartProgramadorMonthly"></canvas></div>
                             </div>
                             <div class="glass-card rounded-xl p-4 flex flex-col">
                                 <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-building text-amber-400 mr-2"></i>Distribución de Clientes</h5>
-                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartProgramadorClients"></canvas></div>
+                                <div class="relative flex-1 min-h-[280px]"><canvas id="chartProgramadorClients"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-xl p-4 flex flex-col">
+                                <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-chart-pie text-emerald-400 mr-2"></i>Unidades Propias vs Terceros (%)</h5>
+                                <div class="relative flex-1 min-h-[280px]"><canvas id="chartProgramadorOwnership"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-xl p-4 flex flex-col">
+                                <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-trailer text-purple-400 mr-2"></i>Cantidad por Tipo de Unidad / Remolque</h5>
+                                <div class="relative flex-1 min-h-[280px]"><canvas id="chartProgramadorUnits"></canvas></div>
                             </div>
                         </div>
                     </div>
@@ -453,7 +459,7 @@
                     </div>
                 </div>
 
-                <!-- MES A MES (Ajustado: solo muestra viajes generales de clientes sin comparar con CAASA) -->
+                <!-- MES A MES -->
                 <div id="tabMonthlyContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl">
                         <h4 class="font-extrabold text-base sm:text-lg text-white mb-4"><i class="fa-solid fa-calendar-days text-emerald-400 mr-2"></i>Reporte de Evolución: Mes a Mes</h4>
@@ -524,7 +530,7 @@
                     </div>
                 </div>
 
-                <!-- OPERACIONES: ACEROS AREQUIPA (CAASA) - Módulo Exclusivo y Personalizado -->
+                <!-- OPERACIONES: ACEROS AREQUIPA (CAASA) -->
                 <div id="tabCaasaContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 border-l-4 border-l-indigo-500 shadow-2xl">
                         <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
@@ -901,7 +907,6 @@
             renderTable();
         }
 
-        // Lógica del módulo de Carga
         function renderCargaReport() {
             const clientVal = document.getElementById('cargaClientFilter')?.value || 'ALL';
             const dateStartVal = document.getElementById('cargaDateStart')?.value;
@@ -1133,12 +1138,14 @@
             });
         }
 
+        // Lógica actualizada del reporte de Programador con 4 gráficos y etiquetas personalizadas (Blanco, Negrita, Tamaño 14)
         function renderProgramadorReport() {
             const progName = document.getElementById('selectProgramador')?.value;
             if (!progName) return;
 
             const progData = filteredClientes.filter(d => d.programador === progName);
 
+            // 1. Evolución Mensual
             const monthMap = {};
             const monthLabelMap = {};
             progData.forEach(d => {
@@ -1163,11 +1170,21 @@
                     }]
                 },
                 options: {
-                    plugins: { legend: { display: false }, datalabels: { color: '#00f2fe', font: { weight: 'bold' } } },
+                    layout: { padding: { top: 25 } },
+                    plugins: { 
+                        legend: { display: false }, 
+                        datalabels: { 
+                            anchor: 'end', 
+                            align: 'top', 
+                            color: '#ffffff', 
+                            font: { weight: 'bold', size: 14 } 
+                        } 
+                    },
                     scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
                 }
             });
 
+            // 2. Distribución de Clientes
             const clientMap = {};
             progData.forEach(d => { clientMap[d.cliente] = (clientMap[d.cliente] || 0) + 1; });
             const sortedClients = Object.entries(clientMap).sort((a,b) => b[1] - a[1]).slice(0, 8);
@@ -1185,8 +1202,73 @@
                 },
                 options: {
                     indexAxis: 'y',
-                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#fcd34d', font: { size: 9 } } },
-                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 8 } }, grid: { display: false } } }
+                    plugins: { 
+                        legend: { display: false }, 
+                        datalabels: { 
+                            anchor: 'end', 
+                            align: 'right', 
+                            color: '#ffffff', 
+                            font: { size: 14, weight: 'bold' } 
+                        } 
+                    },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } } }
+                }
+            });
+
+            // 3. Unidades Propias vs Terceros (%)
+            const propia = progData.filter(d => d.unidad.toLowerCase().includes('propia')).length;
+            const tercero = progData.filter(d => d.unidad.toLowerCase().includes('tercero')).length;
+            createChart('chartProgramadorOwnership', {
+                type: 'doughnut',
+                data: {
+                    labels: ['Propia', 'Tercero'],
+                    datasets: [{ data: [propia, tercero], backgroundColor: ['#10b981', '#f43f5e'], borderWidth: 0 }]
+                },
+                options: {
+                    plugins: { 
+                        legend: { labels: { color: '#f1f5f9' } }, 
+                        datalabels: { 
+                            formatter: (value, ctx) => {
+                                let sum = ctx.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                let percentage = sum > 0 ? ((value * 100) / sum).toFixed(1) + "%" : "0%";
+                                return `${value} (${percentage})`;
+                            },
+                            color: '#ffffff',
+                            font: { size: 14, weight: 'bold' }
+                        } 
+                    }
+                }
+            });
+
+            // 4. Cantidad por Tipo de Unidad / Remolque
+            const trailerMap = {};
+            progData.forEach(d => { trailerMap[d.trailer] = (trailerMap[d.trailer] || 0) + 1; });
+            const sortedTrailers = Object.entries(trailerMap).sort((a,b) => b[1] - a[1]).slice(0, 8);
+
+            createChart('chartProgramadorUnits', {
+                type: 'bar',
+                data: {
+                    labels: sortedTrailers.map(t => t[0]),
+                    datasets: [{
+                        label: 'Cantidad',
+                        data: sortedTrailers.map(t => t[1]),
+                        backgroundColor: '#9d4edd',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    layout: { padding: { top: 25 } },
+                    plugins: { 
+                        legend: { display: false }, 
+                        datalabels: { 
+                            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+                            anchor: 'end',
+                            align: 'top',
+                            color: '#ffffff', 
+                            font: { size: 14, weight: 'bold' } 
+                        } 
+                    },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
                 }
             });
         }
@@ -1310,7 +1392,6 @@
             });
         }
 
-        // Función ajustada para el reporte 'Mes a Mes': Muestra solo los viajes de clientes sin comparar con DATA CAASA
         function renderMonthlyTab() {
             const monthsObj = {};
             const monthLabelMap = {};
@@ -1344,7 +1425,7 @@
                             anchor: 'end',
                             align: 'top',
                             color: '#ffffff',
-                            font: { size: 13, weight: 'bold' }
+                            font: { size: 14, weight: 'bold' }
                         }
                     },
                     scales: {
