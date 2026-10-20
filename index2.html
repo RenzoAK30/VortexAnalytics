@@ -153,7 +153,7 @@
                     <div>
                         <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
                         <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Preparando entorno optimizado con módulo de Análisis de Carga.
+                            Preparando entorno optimizado.
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
@@ -287,7 +287,7 @@
                     </div>
                 </div>
 
-                <!-- NUEVO MÓDULO: ANÁLISIS DE CARGA (Unidades Propias vs Terceros por Cliente con Rango de Fechas / Diario) -->
+                <!-- MÓDULO: ANÁLISIS DE CARGA (Unidades Propias vs Terceros por Cliente) -->
                 <div id="tabCargaContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xl border-l-4 border-l-cyan-400">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
@@ -336,7 +336,7 @@
                         <!-- Gráfico de Carga -->
                         <div class="glass-card rounded-xl p-4 flex flex-col pt-4">
                             <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-chart-column text-cyan-400 mr-2"></i>Distribución de Carga (Propias vs Terceros)</h5>
-                            <div class="relative flex-1 min-h-[300px]"><canvas id="chartCargaPropiasTerceros"></canvas></div>
+                            <div class="relative flex-1 min-h-[380px]"><canvas id="chartCargaPropiasTerceros"></canvas></div>
                         </div>
                     </div>
                 </div>
@@ -890,7 +890,7 @@
             renderTable();
         }
 
-        // Lógica del nuevo módulo de Análisis de Carga
+        // Lógica del módulo de Análisis de Carga con etiquetas de números blancos, negrita y tamaño 14
         function renderCargaReport() {
             const clientVal = document.getElementById('cargaClientFilter')?.value || 'ALL';
             const dateStartVal = document.getElementById('cargaDateStart')?.value;
@@ -922,11 +922,11 @@
             document.getElementById('cargaKpiPropias').innerText = propiasCount.toLocaleString();
             document.getElementById('cargaKpiTerceros').innerText = tercerosCount.toLocaleString();
 
-            // Preparar datos para el gráfico (agrupado por día o mes según la cantidad de registros / rango)
+            // Preparar datos para el gráfico
             const timelineMap = {};
             dataToUse.forEach(d => {
                 if (!d.date) return;
-                const dateStr = d.date.toISOString().split('T')[0]; // Formato YYYY-MM-DD para vista diaria
+                const dateStr = d.date.toISOString().split('T')[0];
                 if (!timelineMap[dateStr]) timelineMap[dateStr] = { propias: 0, terceros: 0 };
                 
                 if (d.unidad.toLowerCase().includes('propia')) {
@@ -952,9 +952,26 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 25 // Espacio extra superior para que no se corten los números altos
+                        }
+                    },
                     plugins: {
                         legend: { position: 'bottom', labels: { color: '#f1f5f9' } },
-                        datalabels: { display: false }
+                        datalabels: {
+                            display: function(context) {
+                                // Ocultar etiquetas si el valor es 0
+                                return context.dataset.data[context.dataIndex] > 0;
+                            },
+                            anchor: 'end',
+                            align: 'top',
+                            color: '#ffffff', // Blanco
+                            font: {
+                                size: 14,     // Tamaño 14
+                                weight: 'bold' // Negrita
+                            }
+                        }
                     },
                     scales: {
                         x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
@@ -1374,7 +1391,7 @@
             const tbody = document.getElementById('dataTableBody');
             if (!tbody) return;
             tbody.innerHTML = '';
-            document.getElementById('recordCountBadge',).innerText = `${filteredClientes.length} Registros`;
+            document.getElementById('recordCountBadge').innerText = `${filteredClientes.length} Registros`;
 
             const tableLimit = isIOS ? 20 : 50;
             filteredClientes.slice(0, tableLimit).forEach(r => {
