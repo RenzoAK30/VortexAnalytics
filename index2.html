@@ -134,7 +134,7 @@
                     </button>
                     <div id="groupCaasa" class="pl-3 space-y-1 border-l-2 border-slate-800 ml-2">
                         <button onclick="switchTab('caasa')" id="navCaasaBtn" class="w-full text-left px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition flex items-center">
-                            <i class="fa-solid fa-chart-column mr-2 text-indigo-400"></i>Análisis CAASA
+                            <i class="fa-solid fa-chart-column mr-2 text-indigo-400"></i>Análisis CAASA (Aceros)
                         </button>
                     </div>
                 </div>
@@ -229,9 +229,9 @@
                         <p id="kpiPropiaSub" class="text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-0.5">0 / 0</p>
                     </div>
                     <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-amber-500">
-                        <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Viajes CAASA</p>
+                        <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Viajes ACEROS</p>
                         <h3 id="kpiCaasaViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
-                        <p class="text-[9px] sm:text-[10px] text-amber-400 font-semibold mt-0.5">Operación</p>
+                        <p class="text-[9px] sm:text-[10px] text-amber-400 font-semibold mt-0.5">Operación CAASA</p>
                     </div>
                     <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-rose-500 col-span-2 sm:col-span-1">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Falso Flete</p>
@@ -453,11 +453,11 @@
                     </div>
                 </div>
 
-                <!-- MES A MES -->
+                <!-- MES A MES (Ajustado: solo muestra viajes generales de clientes sin comparar con CAASA) -->
                 <div id="tabMonthlyContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col w-full shadow-2xl">
-                        <h4 class="font-extrabold text-base sm:text-lg text-white mb-4"><i class="fa-solid fa-chart-column text-emerald-400 mr-2"></i>Reporte Comparativo: Mes a Mes</h4>
-                        <div class="relative w-full min-h-[300px]"><canvas id="chartMonthlyComparative"></canvas></div>
+                        <h4 class="font-extrabold text-base sm:text-lg text-white mb-4"><i class="fa-solid fa-calendar-days text-emerald-400 mr-2"></i>Reporte de Evolución: Mes a Mes</h4>
+                        <div class="relative w-full min-h-[350px]"><canvas id="chartMonthlyComparative"></canvas></div>
                     </div>
                 </div>
 
@@ -503,7 +503,7 @@
                             </div>
                         </div>
                         <div class="glass-card rounded-2xl p-4 border-l-4 border-l-amber-500">
-                            <p class="text-[11px] font-bold uppercase text-slate-400">Viajes CAASA</p>
+                            <p class="text-[11px] font-bold uppercase text-slate-400">Viajes ACEROS</p>
                             <div class="flex items-baseline justify-between mt-1">
                                 <div><span id="compCaasaA" class="text-xl font-black text-amber-400">0</span><span class="text-xs text-slate-500"> vs </span><span id="compCaasaB" class="text-xl font-black text-amber-300">0</span></div>
                                 <span id="compCaasaDiffBadge" class="text-xs font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-400">0%</span>
@@ -524,26 +524,37 @@
                     </div>
                 </div>
 
-                <!-- OPERACIONES: CAASA -->
+                <!-- OPERACIONES: ACEROS AREQUIPA (CAASA) - Módulo Exclusivo y Personalizado -->
                 <div id="tabCaasaContent" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="glass-card rounded-2xl p-4 sm:p-6 lg:col-span-2 flex flex-col">
-                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i>Viajes por Programa CAASA</h4>
-                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaProgram"></canvas></div>
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 border-l-4 border-l-indigo-500 shadow-2xl">
+                        <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                            <div>
+                                <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
+                                    <i class="fa-solid fa-industry text-indigo-400 mr-2"></i>Operaciones Personalizadas: Aceros Arequipa (CAASA)
+                                </h4>
+                                <p class="text-[11px] text-slate-400">Análisis detallado de tipos de unidad (Tolvas, Plataformas, Camión), programas e incidencias de Falso Flete.</p>
+                            </div>
                         </div>
-                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
-                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-triangle-exclamation text-rose-400 mr-2"></i>Incidencia Falso Flete (%)</h4>
-                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 lg:col-span-2 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i>Viajes por Programa CAASA</h4>
+                                <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaProgram"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-triangle-exclamation text-rose-400 mr-2"></i>Incidencia Falso Flete (%)</h4>
+                                <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
-                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-truck-ramp-box text-cyan-400 mr-2"></i>Remolques Usados en CAASA</h4>
-                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaTrailers"></canvas></div>
-                        </div>
-                        <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
-                            <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-route text-emerald-400 mr-2"></i>Principales Rutas CAASA</h4>
-                            <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaRoutes"></canvas></div>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-truck-ramp-box text-cyan-400 mr-2"></i>Remolques / Unidades Usadas (Tolva, Plataforma, Camión)</h4>
+                                <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaTrailers"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-route text-emerald-400 mr-2"></i>Principales Rutas Aceros Arequipa</h4>
+                                <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaRoutes"></canvas></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -890,7 +901,7 @@
             renderTable();
         }
 
-        // Lógica del módulo de Análisis de Carga con etiquetas de números blancos, negrita y tamaño 14
+        // Lógica del módulo de Carga
         function renderCargaReport() {
             const clientVal = document.getElementById('cargaClientFilter')?.value || 'ALL';
             const dateStartVal = document.getElementById('cargaDateStart')?.value;
@@ -898,12 +909,10 @@
 
             let dataToUse = filteredClientes;
 
-            // Filtrar por cliente seleccionado en el módulo
             if (clientVal !== 'ALL') {
                 dataToUse = dataToUse.filter(d => d.cliente === clientVal);
             }
 
-            // Filtrar por rango de fechas (diario / rango)
             if (dateStartVal) {
                 const startD = new Date(dateStartVal + 'T00:00:00');
                 dataToUse = dataToUse.filter(d => d.date && d.date >= startD);
@@ -913,7 +922,6 @@
                 dataToUse = dataToUse.filter(d => d.date && d.date <= endD);
             }
 
-            // Actualizar KPIs de carga
             const totalCargas = dataToUse.length;
             const propiasCount = dataToUse.filter(d => d.unidad.toLowerCase().includes('propia')).length;
             const tercerosCount = dataToUse.filter(d => d.unidad.toLowerCase().includes('tercero')).length;
@@ -922,7 +930,6 @@
             document.getElementById('cargaKpiPropias').innerText = propiasCount.toLocaleString();
             document.getElementById('cargaKpiTerceros').innerText = tercerosCount.toLocaleString();
 
-            // Preparar datos para el gráfico
             const timelineMap = {};
             dataToUse.forEach(d => {
                 if (!d.date) return;
@@ -952,25 +959,15 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 25 // Espacio extra superior para que no se corten los números altos
-                        }
-                    },
+                    layout: { padding: { top: 25 } },
                     plugins: {
                         legend: { position: 'bottom', labels: { color: '#f1f5f9' } },
                         datalabels: {
-                            display: function(context) {
-                                // Ocultar etiquetas si el valor es 0
-                                return context.dataset.data[context.dataIndex] > 0;
-                            },
+                            display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
                             anchor: 'end',
                             align: 'top',
-                            color: '#ffffff', // Blanco
-                            font: {
-                                size: 14,     // Tamaño 14
-                                weight: 'bold' // Negrita
-                            }
+                            color: '#ffffff',
+                            font: { size: 14, weight: 'bold' }
                         }
                     },
                     scales: {
@@ -1290,7 +1287,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(trailers),
-                    datasets: [{ label: 'Remolques CAASA', data: Object.values(trailers), backgroundColor: '#00f2fe', borderRadius: 6 }]
+                    datasets: [{ label: 'Remolques/Unidades CAASA', data: Object.values(trailers), backgroundColor: '#00f2fe', borderRadius: 6 }]
                 },
                 options: {
                     plugins: { legend: { display: false }, datalabels: { display: false } }
@@ -1313,30 +1310,47 @@
             });
         }
 
+        // Función ajustada para el reporte 'Mes a Mes': Muestra solo los viajes de clientes sin comparar con DATA CAASA
         function renderMonthlyTab() {
             const monthsObj = {};
             const monthLabelMap = {};
             
-            filteredClientes.forEach(d => { if(d.monthKey && d.monthKey !== '9999-99') { monthsObj[d.monthKey] = true; monthLabelMap[d.monthKey] = d.monthYear; } });
-            filteredCaasa.forEach(d => { if(d.monthKey && d.monthKey !== '9999-99') { monthsObj[d.monthKey] = true; monthLabelMap[d.monthKey] = d.monthYear; } });
+            filteredClientes.forEach(d => { 
+                if(d.monthKey && d.monthKey !== '9999-99') { 
+                    monthsObj[d.monthKey] = true; 
+                    monthLabelMap[d.monthKey] = d.monthYear; 
+                } 
+            });
             
             const sortedKeys = Object.keys(monthsObj).sort();
             const months = sortedKeys.map(k => monthLabelMap[k]);
-
             const genCounts = sortedKeys.map(k => filteredClientes.filter(d => d.monthKey === k).length);
-            const caasaCounts = sortedKeys.map(k => filteredCaasa.filter(d => d.monthKey === k).length);
 
             createChart('chartMonthlyComparative', {
                 type: 'bar',
                 data: {
                     labels: months,
                     datasets: [
-                        { label: 'DATA CLIENTES', data: genCounts, backgroundColor: '#00f2fe', borderRadius: 6 },
-                        { label: 'DATA CAASA', data: caasaCounts, backgroundColor: '#9d4edd', borderRadius: 6 }
+                        { label: 'Viajes Totales Clientes', data: genCounts, backgroundColor: '#00f2fe', borderRadius: 6 }
                     ]
                 },
                 options: {
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: { padding: { top: 25 } },
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#f1f5f9' } },
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'top',
+                            color: '#ffffff',
+                            font: { size: 13, weight: 'bold' }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { ticks: { color: '#94a3b8', precision: 0 }, grid: { color: '#1e293b' } }
+                    }
                 }
             });
         }
