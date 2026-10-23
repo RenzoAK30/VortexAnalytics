@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vortex Logistics TMS & Dispatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- PANTALLA DE LOGIN -->
+    <div id="login-screen" class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 p-8 rounded-xl shadow-2xl w-full max-w-md">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-extrabold text-blue-400 tracking-wider">VORTEX LOGISTICS</h1>
+                <p class="text-slate-400 text-sm mt-2">Sistema de Gestión y Programación de Flota</p>
+            </div>
+            <form id="login-form" class="space-y-5">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Usuario</label>
+                    <input type="text" id="usuario-input" required placeholder="Ej. RCARRANZA" 
+                           class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 focus:border-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Clave de Acceso</label>
+                    <input type="password" id="clave-input" required placeholder="••••••••" 
+                           class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-3 text-slate-100 focus:border-blue-500 focus:outline-none">
+                </div>
+                <button type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition-colors shadow-lg">
+                    Iniciar Sesión
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-xs text-slate-500">Superusuario: RCARRANZA / 3012031131</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- APLICACIÓN PRINCIPAL -->
+    <div id="app-screen" class="hidden flex-grow flex flex-col relative overflow-hidden">
+        <!-- Header -->
+        <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex justify-between items-center shadow-md">
+            <div class="flex items-center space-x-4">
+                <h2 class="text-xl font-bold text-blue-400">Vortex Logistics <span class="text-xs bg-blue-900 text-blue-200 px-2 py-0.5 rounded ml-2">TMS Cloud</span></h2>
+                <span id="user-badge" class="text-xs bg-slate-700 text-slate-300 px-3 py-1 rounded-full border border-slate-600 font-medium"></span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button id="btn-admin-panel" class="hidden bg-purple-600 hover:bg-purple-500 text-xs text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow">
+                    ⚙️ Panel Admin & CRUD
+                </button>
+                <button id="btn-toggle-flota" class="bg-blue-600 hover:bg-blue-500 text-xs text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow">
+                    🚛 Flota Disponible (Flotante)
+                </button>
+                <button id="btn-logout" class="bg-red-600 hover:bg-red-500 text-xs text-white font-semibold px-4 py-2 rounded-lg transition-colors shadow">
+                    Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace (Calendario Completo) -->
+        <main class="flex-grow p-6 flex flex-col relative">
+            <section class="bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-col h-[calc(100vh-120px)] shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-slate-200">Programación Semanal de Viajes (Calendario Interactivo)</h3>
+                    <div class="flex space-x-2 text-xs">
+                        <span class="px-2 py-1 bg-amber-900/50 text-amber-300 rounded border border-amber-700">Carga</span>
+                        <span class="px-2 py-1 bg-blue-900/50 text-blue-300 rounded border border-blue-700">Tránsito</span>
+                        <span class="px-2 py-1 bg-purple-900/50 text-purple-300 rounded border border-purple-700">Descargando</span>
+                        <span class="px-2 py-1 bg-emerald-900/50 text-emerald-300 rounded border border-emerald-700">Descargó</span>
+                    </div>
+                </div>
+                <div class="flex-grow overflow-x-auto overflow-y-auto border border-slate-700 rounded-lg">
+                    <table class="w-full border-collapse text-left text-sm">
+                        <thead class="bg-slate-900 text-slate-400 uppercase text-xs sticky top-0 z-10">
+                            <tr>
+                                <th class="p-3 border-b border-slate-700">Unidad / Conductor Base</th>
+                                <th class="p-3 border-b border-slate-700">Lunes</th>
+                                <th class="p-3 border-b border-slate-700">Martes</th>
+                                <th class="p-3 border-b border-slate-700">Miércoles</th>
+                                <th class="p-3 border-b border-slate-700">Jueves</th>
+                                <th class="p-3 border-b border-slate-700">Viernes</th>
+                                <th class="p-3 border-b border-slate-700">Sábado</th>
+                                <th class="p-3 border-b border-slate-700">Domingo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gantt-tbody" class="divide-y divide-slate-700">
+                            <!-- Filas dinámicas -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- PANEL FLOTANTE DE FLOTA DISPONIBLE -->
+    <div id="flota-flotante" class="hidden absolute top-20 right-6 w-96 bg-slate-800 border border-slate-600 rounded-xl p-4 shadow-2xl z-40 flex flex-col h-[calc(100vh-140px)]">
+        <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-700">
+            <h3 class="text-sm uppercase tracking-wider font-bold text-blue-400">Flota Disponible (Arrastrable)</h3>
+            <button id="cerrar-flotante" class="text-slate-400 hover:text-white font-bold text-sm px-2">✕</button>
+        </div>
+        <div class="mb-3">
+            <input type="text" id="buscar-unidad" placeholder="Filtrar conductor o placa..." 
+                   class="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-blue-500">
+        </div>
+        <div id="lista-unidades-disponibles" class="flex-grow overflow-y-auto space-y-3 pr-1">
+            <!-- Dinámico -->
+        </div>
+    </div>
+
+    <!-- MODAL DE ADMINISTRACIÓN Y CRUD (EXCLUSIVO ADMIN) -->
+    <div id="admin-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 rounded-xl w-full max-w-5xl p-6 shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-700">
+                <h3 class="text-lg font-bold text-purple-400">Panel de Administración y CRUD de Flota (Jefe de Programación)</h3>
+                <button id="cerrar-admin-modal" class="text-slate-400 hover:text-white font-bold px-3 py-1 text-lg">✕</button>
+            </div>
+            
+            <!-- Pestañas de Navegación del Panel Admin -->
+            <div class="flex space-x-2 border-b border-slate-700 pb-3 mb-4">
+                <button onclick="cambiarTabAdmin('unidades')" id="tab-btn-unidades" class="px-4 py-2 bg-purple-600 text-white rounded-lg text-xs font-semibold shadow">CRUD Unidades</button>
+                <button onclick="cambiarTabAdmin('conductores')" id="tab-btn-conductores" class="px-4 py-2 bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-600">CRUD Conductores</button>
+                <button onclick="cambiarTabAdmin('enganches')" id="tab-btn-enganches" class="px-4 py-2 bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold hover:bg-slate-600">Asignar / Enganchar Unidades</button>
+            </div>
+
+            <div class="flex-grow overflow-y-auto pr-2 space-y-4">
+                
+                <!-- SECCIÓN 1: CRUD UNIDADES -->
+                <div id="seccion-unidades" class="admin-section space-y-4">
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+                        <h4 class="font-semibold text-slate-200 mb-3 text-sm" id="titulo-form-unidad">Añadir Nueva Unidad</h4>
+                        <form id="form-unidad" class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                            <input type="text" id="uni-codigo" placeholder="Código (ej. TR-001)" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                            <input type="text" id="uni-placa" placeholder="Placa (ej. ASK-917)" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                            <select id="uni-tipo" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                                <option value="">Seleccionar Tipo...</option>
+                                <option value="BOMBONA">BOMBONA</option>
+                                <option value="CORTINERA">CORTINERA</option>
+                                <option value="CORTINA DN">CORTINA DN</option>
+                                <option value="CAMA BAJA">CAMA BAJA</option>
+                                <option value="CAMION FURGON">CAMION FURGON</option>
+                                <option value="CISTERNA">CISTERNA</option>
+                                <option value="CAMION PLATAFORMA">CAMION PLATAFORMA</option>
+                                <option value="FURGON">FURGON</option>
+                                <option value="PLATAFORMA">PLATAFORMA</option>
+                                <option value="TOLVA">TOLVA</option>
+                                <option value="TRACTO">TRACTO</option>
+                            </select>
+                            <input type="text" id="uni-marca" placeholder="Marca" class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                            <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white rounded text-xs font-semibold py-2">Guardar Unidad</button>
+                        </form>
+                    </div>
+                    <div class="border border-slate-700 rounded-lg overflow-hidden">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400">
+                                <tr>
+                                    <th class="p-3">Código</th>
+                                    <th class="p-3">Placa</th>
+                                    <th class="p-3">Tipo</th>
+                                    <th class="p-3">Marca</th>
+                                    <th class="p-3 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-crud-unidades" class="divide-y divide-slate-700 bg-slate-800/50"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 2: CRUD CONDUCTORES -->
+                <div id="seccion-conductores" class="admin-section hidden space-y-4">
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+                        <h4 class="font-semibold text-slate-200 mb-3 text-sm" id="titulo-form-conductor">Añadir Nuevo Conductor</h4>
+                        <form id="form-conductor" class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                            <input type="text" id="cond-dni" placeholder="DNI (Único)" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                            <input type="text" id="cond-nombre" placeholder="Nombre Completo" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                            <input type="text" id="cond-licencia" placeholder="Nº Licencia" class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                            <input type="text" id="cond-telefono" placeholder="Teléfono" class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                            <button type="submit" class="bg-purple-600 hover:bg-purple-500 text-white rounded text-xs font-semibold py-2">Guardar Conductor</button>
+                        </form>
+                    </div>
+                    <div class="border border-slate-700 rounded-lg overflow-hidden">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400">
+                                <tr>
+                                    <th class="p-3">DNI</th>
+                                    <th class="p-3">Conductor</th>
+                                    <th class="p-3">Licencia</th>
+                                    <th class="p-3">Teléfono</th>
+                                    <th class="p-3 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-crud-conductores" class="divide-y divide-slate-700 bg-slate-800/50"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 3: ASIGNACIÓN / ENGANCHE -->
+                <div id="seccion-enganches" class="admin-section hidden space-y-4">
+                    <div class="bg-slate-900 p-4 rounded-xl border border-slate-700">
+                        <h4 class="font-semibold text-slate-200 mb-3 text-sm">Vincular Conductor + Tracto + Carreta (Enganche Base)</h4>
+                        <form id="form-enganche" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                            <select id="eng-conductor" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                                <option value="">Seleccionar Conductor...</option>
+                            </select>
+                            <select id="eng-tracto" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                                <option value="">Seleccionar Tracto...</option>
+                            </select>
+                            <select id="eng-carreta" required class="bg-slate-800 border border-slate-700 rounded p-2 text-xs text-slate-200">
+                                <option value="">Seleccionar Carreta/Remolque...</option>
+                            </select>
+                            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white rounded text-xs font-semibold py-2">Establecer Enganche</button>
+                        </form>
+                    </div>
+                    <div class="border border-slate-700 rounded-lg overflow-hidden">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400">
+                                <tr>
+                                    <th class="p-3">Conductor</th>
+                                    <th class="p-3">Tracto (Placa)</th>
+                                    <th class="p-3">Carreta (Placa / Tipo)</th>
+                                    <th class="p-3 text-right">Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-crud-enganches" class="divide-y divide-slate-700 bg-slate-800/50"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

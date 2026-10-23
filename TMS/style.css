@@ -1,0 +1,45 @@
+body {
+    background-color: #0f172a;
+    color: #f8fafc;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+.draggable-card {
+    cursor: grab;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.draggable-card:active {
+    cursor: grabbing;
+}
+
+.draggable-card.dragging {
+    opacity: 0.4;
+    transform: scale(0.98);
+}
+
+td.droppable-cell {
+    transition: background-color 0.2s ease;
+}
+
+td.droppable-cell.drag-over {
+    background-color: rgba(59, 130, 246, 0.15);
+    border: 2px dashed #3b82f6;
+}
