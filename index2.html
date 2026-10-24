@@ -165,8 +165,8 @@
             </div>
 
             <div id="dashboardApp" class="hidden space-y-6">
-                <!-- Filtros Globales -->
-                <section class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
+                <!-- Filtros Globales (Se ocultan automáticamente en la pestaña CAASA) -->
+                <section id="globalFiltersSection" class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
                     <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2.5">
                         <div class="flex items-center space-x-2">
                             <i class="fa-solid fa-sliders text-cyan-400 text-base"></i>
@@ -211,8 +211,8 @@
                     </div>
                 </section>
 
-                <!-- KPIs -->
-                <section class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+                <!-- KPIs (Se ocultan automáticamente en la pestaña CAASA) -->
+                <section id="globalKpisSection" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                     <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-cyan-400">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Total Viajes</p>
                         <h3 id="kpiTotalViajes" class="text-xl sm:text-2xl font-black text-white mt-0.5">0</h3>
@@ -536,7 +536,7 @@
                     </div>
                 </div>
 
-                <!-- OPERACIONES: ACEROS AREQUIPA (CAASA) -->
+                <!-- OPERACIONES: ACEROS AREQUIPA (CAASA) - FILTROS EN CASCADA -->
                 <div id="tabCaasaContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 border-l-4 border-l-indigo-500 shadow-2xl space-y-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
@@ -544,28 +544,40 @@
                                 <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
                                     <i class="fa-solid fa-industry text-indigo-400 mr-2"></i>Operaciones Aceros Arequipa (CAASA) - Análisis de Pesos y Estiba
                                 </h4>
-                                <p class="text-[11px] text-slate-400">Control de tonelaje, costo de estiba (Camiones S/25-30, Repartos S/35) y ranking por conductor.</p>
+                                <p class="text-[11px] text-slate-400">Control de tonelaje, costo de estiba (enteros sin decimales) y ranking por conductor con filtros en cascada.</p>
                             </div>
                         </div>
 
-                        <!-- FILTROS INTERNOS CAASA -->
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                        <!-- FILTROS EN CASCADA ESCALABLES -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Mes</label>
-                                <select id="caasaMonthFilter" onchange="renderCaasaTab()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">1. Filtrar por Mes</label>
+                                <select id="caasaMonthFilter" onchange="onCaasaCascadingChange('month')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
                                     <option value="ALL">Todos los Meses</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Tracto</label>
-                                <select id="caasaTractoFilter" onchange="renderCaasaTab()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
-                                    <option value="ALL">Todos los Tractos</option>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">2. Tipo Remolque</label>
+                                <select id="caasaTrailerFilter" onchange="onCaasaCascadingChange('trailer')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                    <option value="ALL">Todos</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Conductor</label>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">3. Tipo de Programa</label>
+                                <select id="caasaProgramFilter" onchange="onCaasaCascadingChange('program')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                    <option value="ALL">Todos</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">4. Filtrar por Tracto</label>
+                                <select id="caasaTractoFilter" onchange="onCaasaCascadingChange('tracto')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                    <option value="ALL">Todos</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">5. Conductor / Chofer</label>
                                 <select id="caasaChoferFilter" onchange="renderCaasaTab()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
-                                    <option value="ALL">Todos los Conductores</option>
+                                    <option value="ALL">Todos</option>
                                 </select>
                             </div>
                         </div>
@@ -579,8 +591,8 @@
                             </div>
                             <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 border-l-4 border-l-emerald-400">
                                 <p class="text-[10px] font-bold uppercase text-slate-400">Costo Total de Estiba</p>
-                                <h3 id="caasaKpiEstiba" class="text-2xl font-black text-emerald-400 mt-1">S/ 0.00</h3>
-                                <p class="text-[10px] text-slate-500 mt-0.5">Calculado según tipo y ruta</p>
+                                <h3 id="caasaKpiEstiba" class="text-2xl font-black text-emerald-400 mt-1">S/ 0</h3>
+                                <p class="text-[10px] text-slate-500 mt-0.5">Calculado en números enteros</p>
                             </div>
                             <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 border-l-4 border-l-purple-400">
                                 <p class="text-[10px] font-bold uppercase text-slate-400">Promedio Peso por Viaje</p>
@@ -771,26 +783,23 @@
             return `${months[date.getMonth()]} ${date.getFullYear()}`;
         }
 
-        // LÓGICA CORREGIDA DE CÁLCULO DE COSTO DE ESTIBA CAASA
+        // CÁLCULO DE ESTIBA CON VALORES ENTEROS (SIN DECIMALES)
         function calculateEstibaCost(peso, trailer, programa, ruta) {
             if (!peso || peso <= 0) return 0;
             const tUpper = (trailer || '').trim().toUpperCase();
             const pUpper = (programa || '').trim().toUpperCase();
             const rUpper = (ruta || '').trim().toUpperCase();
 
-            // 1. CAMIONES
+            let result = 0;
             if (tUpper === 'CAMIÓN' || tUpper === 'CAMION') {
-                if (rUpper.includes('PIURA')) return peso * 30;
-                if (rUpper.includes('TRUJILLO')) return peso * 25;
-                return peso * 25; // Por defecto Trujillo si no especifica
+                if (rUpper.includes('PIURA')) result = peso * 30;
+                else if (rUpper.includes('TRUJILLO')) result = peso * 25;
+                else result = peso * 25;
+            } else if (tUpper === 'PLATAFORMA' && pUpper.includes('REPARTO')) {
+                result = peso * 35;
             }
 
-            // 2. PLATAFORMAS + REPARTO (exclusivo para Plataforma)
-            if (tUpper === 'PLATAFORMA' && pUpper.includes('REPARTO')) {
-                return peso * 35;
-            }
-
-            return 0;
+            return Math.round(result);
         }
 
         function handleFileUpload(event) {
@@ -879,6 +888,7 @@
             document.getElementById('dashboardApp').classList.remove('hidden');
             populateFilterDropdowns();
             applyFilters();
+            initCaasaCascadingFilters();
             switchTab('general');
         }
 
@@ -888,7 +898,6 @@
             const trailers = [...new Set([...globalDataClientes.map(d => d.trailer), ...globalDataCaasa.map(d => d.trailer)])].filter(Boolean);
             const choferes = [...new Set([...globalDataClientes.map(d => d.chofer), ...globalDataCaasa.map(d => d.chofer)])].filter(Boolean);
             const programadores = [...new Set(globalDataClientes.map(d => d.programador))].filter(Boolean);
-            const tractosCaasa = [...new Set(globalDataCaasa.map(d => d.tracto))].filter(Boolean);
 
             const monthObj = {};
             globalDataClientes.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
@@ -907,10 +916,6 @@
             fillSelect('singleDriverSelect', choferes, '-- Seleccionar Conductor --');
             fillSelect('selectProgramador', programadores, '-- Seleccionar Programador --');
 
-            fillSelect('caasaMonthFilter', sortedMonths, 'Todos los Meses');
-            fillSelect('caasaTractoFilter', tractosCaasa, 'Todos los Tractos');
-            fillSelect('caasaChoferFilter', choferes, 'Todos los Conductores');
-
             const selA = document.getElementById('compMonthA');
             const selB = document.getElementById('compMonthB');
             if (selA && selB) {
@@ -923,10 +928,75 @@
             }
         }
 
+        // CASCADING FILTERS FOR CAASA
+        function initCaasaCascadingFilters() {
+            const monthObj = {};
+            globalDataCaasa.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
+            const sortedMonths = Object.keys(monthObj).sort().map(k => monthObj[k]);
+            
+            fillSelect('caasaMonthFilter', sortedMonths, 'Todos los Meses');
+            updateCaasaCascadingOptions('month');
+        }
+
+        function onCaasaCascadingChange(level) {
+            if (level === 'month') {
+                updateCaasaCascadingOptions('trailer');
+            } else if (level === 'trailer') {
+                updateCaasaCascadingOptions('program');
+            } else if (level === 'program') {
+                updateCaasaCascadingOptions('tracto');
+            } else if (level === 'tracto') {
+                updateCaasaCascadingOptions('chofer');
+            }
+            renderCaasaTab();
+        }
+
+        function updateCaasaCascadingOptions(fromLevel) {
+            const mVal = document.getElementById('caasaMonthFilter')?.value || 'ALL';
+            const tVal = document.getElementById('caasaTrailerFilter')?.value || 'ALL';
+            const pVal = document.getElementById('caasaProgramFilter')?.value || 'ALL';
+            const trVal = document.getElementById('caasaTractoFilter')?.value || 'ALL';
+
+            let base = globalDataCaasa;
+
+            if (mVal !== 'ALL') base = base.filter(d => d.monthYear === mVal);
+
+            if (fromLevel === 'trailer' || fromLevel === 'program' || fromLevel === 'tracto' || fromLevel === 'chofer') {
+                const availableTrailers = [...new Set(base.map(d => d.trailer))].filter(Boolean);
+                fillSelect('caasaTrailerFilter', availableTrailers, 'Todos');
+                if (!availableTrailers.includes(tVal)) document.getElementById('caasaTrailerFilter').value = 'ALL';
+            }
+
+            if (tVal !== 'ALL') base = base.filter(d => d.trailer === tVal);
+
+            if (fromLevel === 'program' || fromLevel === 'tracto' || fromLevel === 'chofer') {
+                const availablePrograms = [...new Set(base.map(d => d.programa))].filter(Boolean);
+                fillSelect('caasaProgramFilter', availablePrograms, 'Todos');
+                if (!availablePrograms.includes(pVal)) document.getElementById('caasaProgramFilter').value = 'ALL';
+            }
+
+            if (pVal !== 'ALL') base = base.filter(d => d.programa === pVal);
+
+            if (fromLevel === 'tracto' || fromLevel === 'chofer') {
+                const availableTractos = [...new Set(base.map(d => d.tracto))].filter(Boolean);
+                fillSelect('caasaTractoFilter', availableTractos, 'Todos');
+                if (!availableTractos.includes(trVal)) document.getElementById('caasaTractoFilter').value = 'ALL';
+            }
+
+            if (trVal !== 'ALL') base = base.filter(d => d.tracto === trVal);
+
+            const availableChoferes = [...new Set(base.map(d => d.chofer))].filter(Boolean);
+            const currentChofer = document.getElementById('caasaChoferFilter')?.value;
+            fillSelect('caasaChoferFilter', availableChoferes, 'Todos');
+            if (availableChoferes.includes(currentChofer)) {
+                document.getElementById('caasaChoferFilter').value = currentChofer;
+            }
+        }
+
         function fillSelect(id, items, defaultText) {
             const el = document.getElementById(id);
             if (!el) return;
-            el.innerHTML = `<option value="${id.includes('caasa') || id.includes('Filter') ? 'ALL' : ''}">${defaultText}</option>`;
+            el.innerHTML = `<option value="ALL">${defaultText}</option>`;
             items.forEach(i => { el.innerHTML += `<option value="${i}">${i}</option>`; });
         }
 
@@ -998,6 +1068,16 @@
                 activeBtn.classList.remove('text-slate-400');
             }
 
+            const globalFilters = document.getElementById('globalFiltersSection');
+            const globalKpis = document.getElementById('globalKpisSection');
+            if (tab === 'caasa') {
+                if (globalFilters) globalFilters.classList.add('hidden');
+                if (globalKpis) globalKpis.classList.add('hidden');
+            } else {
+                if (globalFilters) globalFilters.classList.remove('hidden');
+                if (globalKpis) globalKpis.classList.remove('hidden');
+            }
+
             document.getElementById('sidebar')?.classList.add('hidden');
             renderActiveTabContent();
         }
@@ -1029,21 +1109,25 @@
 
         function renderCaasaTab() {
             const mFilter = document.getElementById('caasaMonthFilter')?.value || 'ALL';
-            const tFilter = document.getElementById('caasaTractoFilter')?.value || 'ALL';
+            const tFilter = document.getElementById('caasaTrailerFilter')?.value || 'ALL';
+            const pFilter = document.getElementById('caasaProgramFilter')?.value || 'ALL';
+            const trFilter = document.getElementById('caasaTractoFilter')?.value || 'ALL';
             const cFilter = document.getElementById('caasaChoferFilter')?.value || 'ALL';
 
-            let caasaData = filteredCaasa;
+            let caasaData = globalDataCaasa;
             if (mFilter !== 'ALL') caasaData = caasaData.filter(d => d.monthYear === mFilter);
-            if (tFilter !== 'ALL') caasaData = caasaData.filter(d => d.tracto === tFilter);
+            if (tFilter !== 'ALL') caasaData = caasaData.filter(d => d.trailer === tFilter);
+            if (pFilter !== 'ALL') caasaData = caasaData.filter(d => d.programa === pFilter);
+            if (trFilter !== 'ALL') caasaData = caasaData.filter(d => d.tracto === trFilter);
             if (cFilter !== 'ALL') caasaData = caasaData.filter(d => d.chofer === cFilter);
 
-            // KPIs
+            // KPIs (Enteros para costo de estiba)
             const totalPeso = caasaData.reduce((sum, d) => sum + (d.peso || 0), 0);
-            const totalEstiba = caasaData.reduce((sum, d) => sum + (d.costoEstiba || 0), 0);
+            const totalEstiba = Math.round(caasaData.reduce((sum, d) => sum + (d.costoEstiba || 0), 0));
             const promPeso = caasaData.length > 0 ? (totalPeso / caasaData.length) : 0;
 
             document.getElementById('caasaKpiPeso').innerText = `${totalPeso.toLocaleString('es-PE', {maximumFractionDigits: 1})} TN`;
-            document.getElementById('caasaKpiEstiba').innerText = `S/ ${totalEstiba.toLocaleString('es-PE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('caasaKpiEstiba').innerText = `S/ ${totalEstiba.toLocaleString('es-PE')}`;
             document.getElementById('caasaKpiPromedioPeso').innerText = `${promPeso.toFixed(1)} TN`;
 
             // 1. Pesos por Tipo de Remolque
@@ -1065,7 +1149,7 @@
                 }
             });
 
-            // 2. Evolución Mensual de Pesos y Estiba
+            // 2. Evolución Mensual de Pesos y Estiba (Enteros)
             const monthMap = {};
             const monthLabelMap = {};
             caasaData.forEach(d => {
@@ -1085,7 +1169,7 @@
                     labels: monthLabels,
                     datasets: [
                         { label: 'Peso (TN)', data: sortedMonthKeys.map(k => monthMap[k].peso), backgroundColor: '#9d4edd', borderRadius: 6, yAxisID: 'y' },
-                        { label: 'Estiba (S/)', data: sortedMonthKeys.map(k => monthMap[k].estiba), type: 'line', borderColor: '#10b981', backgroundColor: '#10b981', borderWidth: 3, yAxisID: 'y1' }
+                        { label: 'Estiba (S/)', data: sortedMonthKeys.map(k => Math.round(monthMap[k].estiba)), type: 'line', borderColor: '#10b981', backgroundColor: '#10b981', borderWidth: 3, yAxisID: 'y1' }
                     ]
                 },
                 options: {
@@ -1128,7 +1212,7 @@
                 type: 'bar',
                 data: {
                     labels: sortedChoferesEstiba.map(c => c[0]),
-                    datasets: [{ label: 'Costo Estiba (S/)', data: sortedChoferesEstiba.map(c => c[1].estiba), backgroundColor: '#10b981', borderRadius: 6 }]
+                    datasets: [{ label: 'Costo Estiba (S/)', data: sortedChoferesEstiba.map(c => Math.round(c[1].estiba)), backgroundColor: '#10b981', borderRadius: 6 }]
                 },
                 options: {
                     indexAxis: 'y',
@@ -1160,7 +1244,7 @@
                 options: { plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } } }
             });
 
-            // Tabla de Estiba por Conductor
+            // Tabla de Estiba por Conductor (Enteros sin decimales)
             const tbody = document.getElementById('caasaEstibaTableBody');
             if (tbody) {
                 tbody.innerHTML = '';
@@ -1174,7 +1258,7 @@
                             <td class="p-3 font-semibold text-white">${cName}</td>
                             <td class="p-3 text-center text-amber-400 font-bold">${data.viajes}</td>
                             <td class="p-3 text-right text-cyan-400 font-bold">${data.peso.toFixed(2)} TN</td>
-                            <td class="p-3 text-right text-emerald-400 font-bold">S/ ${data.estiba.toFixed(2)}</td>
+                            <td class="p-3 text-right text-emerald-400 font-bold">S/ ${Math.round(data.estiba).toLocaleString('es-PE')}</td>
                         </tr>
                     `;
                 });
@@ -1418,7 +1502,6 @@
 
             const progData = filteredClientes.filter(d => d.programador === progName);
 
-            // 1. Evolución Mensual
             const monthMap = {};
             const monthLabelMap = {};
             progData.forEach(d => {
@@ -1457,7 +1540,6 @@
                 }
             });
 
-            // 2. Distribución de Clientes
             const clientMap = {};
             progData.forEach(d => { clientMap[d.cliente] = (clientMap[d.cliente] || 0) + 1; });
             const sortedClients = Object.entries(clientMap).sort((a,b) => b[1] - a[1]).slice(0, 8);
@@ -1488,7 +1570,6 @@
                 }
             });
 
-            // 3. Unidades Propias vs Terceros (%)
             const propia = progData.filter(d => d.unidad.toLowerCase().includes('propia')).length;
             const tercero = progData.filter(d => d.unidad.toLowerCase().includes('tercero')).length;
             createChart('chartProgramadorOwnership', {
@@ -1513,7 +1594,6 @@
                 }
             });
 
-            // 4. Cantidad por Tipo de Unidad / Remolque
             const trailerMap = {};
             progData.forEach(d => { trailerMap[d.trailer] = (trailerMap[d.trailer] || 0) + 1; });
             const sortedTrailers = Object.entries(trailerMap).sort((a,b) => b[1] - a[1]).slice(0, 8);
@@ -1545,7 +1625,6 @@
                 }
             });
 
-            // 5. CONDICIÓN EXCLUSIVA: Gráfico de Rutas (TRUJILLO vs PIURA) solo para Jesus Portilla
             const containerRutas = document.getElementById('containerProgramadorRutas');
             if (progName.trim().toLowerCase() === 'jesus portilla') {
                 containerRutas.classList.remove('hidden');
