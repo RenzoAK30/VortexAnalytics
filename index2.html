@@ -165,7 +165,7 @@
             </div>
 
             <div id="dashboardApp" class="hidden space-y-6">
-                <!-- Filtros Globales (Se ocultan automáticamente en la pestaña CAASA) -->
+                <!-- Filtros Globales (Visibles en todas partes excepto en CAASA) -->
                 <section id="globalFiltersSection" class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border border-slate-800">
                     <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2.5">
                         <div class="flex items-center space-x-2">
@@ -211,7 +211,7 @@
                     </div>
                 </section>
 
-                <!-- KPIs (Se ocultan automáticamente en la pestaña CAASA) -->
+                <!-- KPIs (Visibles en todas partes excepto en CAASA) -->
                 <section id="globalKpisSection" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
                     <div class="glass-card rounded-2xl p-3.5 sm:p-4 border-l-4 border-l-cyan-400">
                         <p class="text-[10px] sm:text-[11px] font-bold uppercase text-slate-400">Total Viajes</p>
@@ -553,7 +553,7 @@
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">1. Filtrar por Mes</label>
                                 <select id="caasaMonthFilter" onchange="onCaasaCascadingChange('month')" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
-                                    <option value="ALL">Todos los Meses</option>
+                                    <option value="ALL">Todos</option>
                                 </select>
                             </div>
                             <div>
@@ -905,16 +905,16 @@
             const sortedKeys = Object.keys(monthObj).sort();
             const sortedMonths = sortedKeys.map(k => monthObj[k]);
 
-            fillSelect('filterMonth', sortedMonths, 'Todos los Meses');
-            fillSelect('filterClient', clients, 'Todos los Clientes');
-            fillSelect('filterUnitType', units, 'Todas (Propia/Tercero)');
-            fillSelect('filterTrailer', trailers, 'Todos los Remolques');
-            fillSelect('filterChofer', choferes, 'Todos los Choferes');
-            fillSelect('driverClientSelect', clients, 'Todos los Clientes');
-            fillSelect('cargaClientFilter', clients, 'Todos los Clientes');
-            fillSelect('compClientFilter', clients, 'Todos los Clientes');
-            fillSelect('singleDriverSelect', choferes, '-- Seleccionar Conductor --');
-            fillSelect('selectProgramador', programadores, '-- Seleccionar Programador --');
+            fillSelect('filterMonth', sortedMonths, 'Todos los Meses', '');
+            fillSelect('filterClient', clients, 'Todos los Clientes', '');
+            fillSelect('filterUnitType', units, 'Todas (Propia/Tercero)', '');
+            fillSelect('filterTrailer', trailers, 'Todos los Remolques', '');
+            fillSelect('filterChofer', choferes, 'Todos los Choferes', '');
+            fillSelect('driverClientSelect', clients, 'Todos los Clientes', 'ALL');
+            fillSelect('cargaClientFilter', clients, 'Todos los Clientes', 'ALL');
+            fillSelect('compClientFilter', clients, 'Todos los Clientes', 'ALL');
+            fillSelect('singleDriverSelect', choferes, '-- Seleccionar Conductor --', '');
+            fillSelect('selectProgramador', programadores, '-- Seleccionar Programador --', '');
 
             const selA = document.getElementById('compMonthA');
             const selB = document.getElementById('compMonthB');
@@ -934,7 +934,7 @@
             globalDataCaasa.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
             const sortedMonths = Object.keys(monthObj).sort().map(k => monthObj[k]);
             
-            fillSelect('caasaMonthFilter', sortedMonths, 'Todos los Meses');
+            fillSelect('caasaMonthFilter', sortedMonths, 'Todos', 'ALL');
             updateCaasaCascadingOptions('month');
         }
 
@@ -962,42 +962,46 @@
             if (mVal !== 'ALL') base = base.filter(d => d.monthYear === mVal);
 
             if (fromLevel === 'trailer' || fromLevel === 'program' || fromLevel === 'tracto' || fromLevel === 'chofer') {
-                const availableTrailers = [...new Set(base.map(d => d.trailer))].filter(Boolean);
-                fillSelect('caasaTrailerFilter', availableTrailers, 'Todos');
+                const availableTrailers = [...new Set(base.map(d => d.trailer))].filter(Boolean).sort();
+                fillSelect('caasaTrailerFilter', availableTrailers, 'Todos', 'ALL');
                 if (!availableTrailers.includes(tVal)) document.getElementById('caasaTrailerFilter').value = 'ALL';
             }
 
             if (tVal !== 'ALL') base = base.filter(d => d.trailer === tVal);
 
             if (fromLevel === 'program' || fromLevel === 'tracto' || fromLevel === 'chofer') {
-                const availablePrograms = [...new Set(base.map(d => d.programa))].filter(Boolean);
-                fillSelect('caasaProgramFilter', availablePrograms, 'Todos');
+                const availablePrograms = [...new Set(base.map(d => d.programa))].filter(Boolean).sort();
+                fillSelect('caasaProgramFilter', availablePrograms, 'Todos', 'ALL');
                 if (!availablePrograms.includes(pVal)) document.getElementById('caasaProgramFilter').value = 'ALL';
             }
 
             if (pVal !== 'ALL') base = base.filter(d => d.programa === pVal);
 
             if (fromLevel === 'tracto' || fromLevel === 'chofer') {
-                const availableTractos = [...new Set(base.map(d => d.tracto))].filter(Boolean);
-                fillSelect('caasaTractoFilter', availableTractos, 'Todos');
+                const availableTractos = [...new Set(base.map(d => d.tracto))].filter(Boolean).sort();
+                fillSelect('caasaTractoFilter', availableTractos, 'Todos', 'ALL');
                 if (!availableTractos.includes(trVal)) document.getElementById('caasaTractoFilter').value = 'ALL';
             }
 
             if (trVal !== 'ALL') base = base.filter(d => d.tracto === trVal);
 
-            const availableChoferes = [...new Set(base.map(d => d.chofer))].filter(Boolean);
+            const availableChoferes = [...new Set(base.map(d => d.chofer))].filter(Boolean).sort();
             const currentChofer = document.getElementById('caasaChoferFilter')?.value;
-            fillSelect('caasaChoferFilter', availableChoferes, 'Todos');
+            fillSelect('caasaChoferFilter', availableChoferes, 'Todos', 'ALL');
             if (availableChoferes.includes(currentChofer)) {
                 document.getElementById('caasaChoferFilter').value = currentChofer;
             }
         }
 
-        function fillSelect(id, items, defaultText) {
+        function fillSelect(id, items, defaultText, defaultValue = '') {
             const el = document.getElementById(id);
             if (!el) return;
-            el.innerHTML = `<option value="ALL">${defaultText}</option>`;
+            const currentVal = el.value;
+            el.innerHTML = `<option value="${defaultValue}">${defaultText}</option>`;
             items.forEach(i => { el.innerHTML += `<option value="${i}">${i}</option>`; });
+            if (currentVal && Array.from(el.options).some(o => o.value === currentVal)) {
+                el.value = currentVal;
+            }
         }
 
         function resetFilters() {
@@ -1121,7 +1125,6 @@
             if (trFilter !== 'ALL') caasaData = caasaData.filter(d => d.tracto === trFilter);
             if (cFilter !== 'ALL') caasaData = caasaData.filter(d => d.chofer === cFilter);
 
-            // KPIs (Enteros para costo de estiba)
             const totalPeso = caasaData.reduce((sum, d) => sum + (d.peso || 0), 0);
             const totalEstiba = Math.round(caasaData.reduce((sum, d) => sum + (d.costoEstiba || 0), 0));
             const promPeso = caasaData.length > 0 ? (totalPeso / caasaData.length) : 0;
@@ -1130,7 +1133,6 @@
             document.getElementById('caasaKpiEstiba').innerText = `S/ ${totalEstiba.toLocaleString('es-PE')}`;
             document.getElementById('caasaKpiPromedioPeso').innerText = `${promPeso.toFixed(1)} TN`;
 
-            // 1. Pesos por Tipo de Remolque
             const pesoRemolqueMap = {};
             caasaData.forEach(d => {
                 pesoRemolqueMap[d.trailer] = (pesoRemolqueMap[d.trailer] || 0) + d.peso;
@@ -1149,7 +1151,6 @@
                 }
             });
 
-            // 2. Evolución Mensual de Pesos y Estiba (Enteros)
             const monthMap = {};
             const monthLabelMap = {};
             caasaData.forEach(d => {
@@ -1182,7 +1183,6 @@
                 }
             });
 
-            // 3. Ranking Choferes por Peso y Estiba
             const choferMap = {};
             caasaData.forEach(d => {
                 if (!choferMap[d.chofer]) choferMap[d.chofer] = { peso: 0, estiba: 0, viajes: 0 };
@@ -1221,7 +1221,6 @@
                 }
             });
 
-            // 4. Gráficos Originales
             const programs = {};
             caasaData.forEach(d => programs[d.programa] = (programs[d.programa] || 0) + 1);
             createChart('chartCaasaProgram', {
@@ -1244,7 +1243,6 @@
                 options: { plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } } }
             });
 
-            // Tabla de Estiba por Conductor (Enteros sin decimales)
             const tbody = document.getElementById('caasaEstibaTableBody');
             if (tbody) {
                 tbody.innerHTML = '';
