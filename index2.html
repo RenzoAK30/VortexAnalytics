@@ -61,7 +61,7 @@
                 <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white text-xl p-2.5 rounded-xl bg-slate-800 border border-slate-700 transition-all flex items-center justify-center">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <img src="logo.png" alt="Logo Vortex" class="w-44 h-14 rounded-2xl object-cover shadow-lg shadow-indigo-500/30">
+                <img src="logo.png" alt="Logo Vortex" class="w-44 h-14 rounded-2xl object-cover shadow-lg shadow-indigo-500/30" onerror="this.src='https://via.placeholder.com/176x56/00f2fe/000000?text=VORTEX+ANALYTICS'">
             </div>
 
             <div class="flex items-center space-x-2">
@@ -383,7 +383,7 @@
                     </div>
                 </div>
 
-                <!-- REPORTE: ANÁLISIS POR PROGRAMADOR (Con gráfico condicional exclusivo para Jesus Portilla) -->
+                <!-- REPORTE: ANÁLISIS POR PROGRAMADOR -->
                 <div id="tabProgramadoresContent" class="hidden space-y-6">
                     <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-4 shadow-2xl border-l-4 border-l-cyan-400">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
@@ -419,7 +419,7 @@
                                 <div class="relative flex-1 min-h-[280px]"><canvas id="chartProgramadorUnits"></canvas></div>
                             </div>
                             
-                            <!-- Gráfico Exclusivo y Condicional para Jesus Portilla -->
+                            <!-- Gráfico Exclusivo para Jesus Portilla -->
                             <div id="containerProgramadorRutas" class="glass-card rounded-xl p-4 flex flex-col lg:col-span-2 hidden">
                                 <h5 class="font-bold text-xs text-slate-300 mb-3"><i class="fa-solid fa-route text-rose-400 mr-2"></i>Comparativa de Rutas por Origen (TRUJILLO vs PIURA)</h5>
                                 <div class="relative flex-1 min-h-[280px]"><canvas id="chartProgramadorRutas"></canvas></div>
@@ -538,17 +538,82 @@
 
                 <!-- OPERACIONES: ACEROS AREQUIPA (CAASA) -->
                 <div id="tabCaasaContent" class="hidden space-y-6">
-                    <div class="glass-card rounded-2xl p-4 sm:p-6 border-l-4 border-l-indigo-500 shadow-2xl">
-                        <div class="flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+                    <div class="glass-card rounded-2xl p-4 sm:p-6 border-l-4 border-l-indigo-500 shadow-2xl space-y-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-800 pb-3">
                             <div>
                                 <h4 class="font-extrabold text-lg sm:text-xl text-white flex items-center">
-                                    <i class="fa-solid fa-industry text-indigo-400 mr-2"></i>Operaciones Personalizadas: Aceros Arequipa (CAASA)
+                                    <i class="fa-solid fa-industry text-indigo-400 mr-2"></i>Operaciones Aceros Arequipa (CAASA) - Análisis de Pesos y Estiba
                                 </h4>
-                                <p class="text-[11px] text-slate-400">Análisis detallado de tipos de unidad (Tolvas, Plataformas, Camión), programas e incidencias de Falso Flete.</p>
+                                <p class="text-[11px] text-slate-400">Control de tonelaje, costo de estiba (Camiones S/25-30, Repartos S/35) y ranking por conductor.</p>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
+                        <!-- FILTROS INTERNOS CAASA -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Mes</label>
+                                <select id="caasaMonthFilter" onchange="renderCaasaTab()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                    <option value="ALL">Todos los Meses</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Tracto</label>
+                                <select id="caasaTractoFilter" onchange="renderCaasaTab()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                    <option value="ALL">Todos los Tractos</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-400 uppercase mb-1">Filtrar por Conductor</label>
+                                <select id="caasaChoferFilter" onchange="renderCaasaTab()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 font-bold">
+                                    <option value="ALL">Todos los Conductores</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- KPIS PESOS Y ESTIBA CAASA -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 border-l-4 border-l-cyan-400">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Peso Total Transportado</p>
+                                <h3 id="caasaKpiPeso" class="text-2xl font-black text-cyan-400 mt-1">0 TN</h3>
+                                <p class="text-[10px] text-slate-500 mt-0.5">Toneladas métricas</p>
+                            </div>
+                            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 border-l-4 border-l-emerald-400">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Costo Total de Estiba</p>
+                                <h3 id="caasaKpiEstiba" class="text-2xl font-black text-emerald-400 mt-1">S/ 0.00</h3>
+                                <p class="text-[10px] text-slate-500 mt-0.5">Calculado según tipo y ruta</p>
+                            </div>
+                            <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-4 border-l-4 border-l-purple-400">
+                                <p class="text-[10px] font-bold uppercase text-slate-400">Promedio Peso por Viaje</p>
+                                <h3 id="caasaKpiPromedioPeso" class="text-2xl font-black text-purple-400 mt-1">0 TN</h3>
+                                <p class="text-[10px] text-slate-500 mt-0.5">TN / viaje realizado</p>
+                            </div>
+                        </div>
+
+                        <!-- GRÁFICOS PESOS Y ESTIBA -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-weight-hanging text-cyan-400 mr-2"></i>Pesos por Tipo de Remolque (TN)</h4>
+                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartCaasaPesoRemolque"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i>Evolución Mensual de Pesos y Estiba</h4>
+                                <div class="relative flex-1 min-h-[260px]"><canvas id="chartCaasaPesoMensual"></canvas></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-trophy text-amber-400 mr-2"></i>Ranking Choferes por Peso Transportado (TN)</h4>
+                                <div class="relative flex-1 min-h-[280px]"><canvas id="chartCaasaRankingConductores"></canvas></div>
+                            </div>
+                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
+                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-hand-holding-dollar text-emerald-400 mr-2"></i>Costo de Estiba por Conductor (S/)</h4>
+                                <div class="relative flex-1 min-h-[280px]"><canvas id="chartCaasaEstibaConductores"></canvas></div>
+                            </div>
+                        </div>
+
+                        <!-- SECCIÓN GRÁFICOS ORIGINALES DE PROGRAMAS Y FALSO FLETE -->
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-4 border-t border-slate-800">
                             <div class="glass-card rounded-2xl p-4 sm:p-6 lg:col-span-2 flex flex-col">
                                 <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-layer-group text-purple-400 mr-2"></i>Viajes por Programa CAASA</h4>
                                 <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaProgram"></canvas></div>
@@ -558,16 +623,26 @@
                                 <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaFalsoFlete"></canvas></div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-4">
-                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
-                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-truck-ramp-box text-cyan-400 mr-2"></i>Remolques / Unidades Usadas (Tolva, Plataforma, Camión)</h4>
-                                <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaTrailers"></canvas></div>
-                            </div>
-                            <div class="glass-card rounded-2xl p-4 sm:p-6 flex flex-col">
-                                <h4 class="font-extrabold text-sm sm:text-base text-white mb-4"><i class="fa-solid fa-route text-emerald-400 mr-2"></i>Principales Rutas Aceros Arequipa</h4>
-                                <div class="relative flex-1 min-h-[220px]"><canvas id="chartCaasaRoutes"></canvas></div>
+
+                        <!-- TABLA DETALLADA DE ESTIBA POR CONDUCTOR -->
+                        <div class="glass-card rounded-2xl p-4 sm:p-6 space-y-3 border border-slate-800">
+                            <h4 class="font-extrabold text-sm sm:text-base text-white"><i class="fa-solid fa-list-check text-cyan-400 mr-2"></i>Resumen de Carga y Estiba por Conductor</h4>
+                            <div class="overflow-x-auto max-h-80 rounded-xl border border-slate-800">
+                                <table class="w-full text-left text-xs text-slate-300">
+                                    <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0 border-b border-slate-800">
+                                        <tr>
+                                            <th class="p-3">#</th>
+                                            <th class="p-3">Conductor / Chofer</th>
+                                            <th class="p-3 text-center">Viajes</th>
+                                            <th class="p-3 text-right">Peso Total (TN)</th>
+                                            <th class="p-3 text-right">Costo Estiba (S/)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="caasaEstibaTableBody" class="divide-y divide-slate-800/60 bg-slate-950/40"></tbody>
+                                </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -696,6 +771,28 @@
             return `${months[date.getMonth()]} ${date.getFullYear()}`;
         }
 
+        // LÓGICA CORREGIDA DE CÁLCULO DE COSTO DE ESTIBA CAASA
+        function calculateEstibaCost(peso, trailer, programa, ruta) {
+            if (!peso || peso <= 0) return 0;
+            const tUpper = (trailer || '').trim().toUpperCase();
+            const pUpper = (programa || '').trim().toUpperCase();
+            const rUpper = (ruta || '').trim().toUpperCase();
+
+            // 1. CAMIONES
+            if (tUpper === 'CAMIÓN' || tUpper === 'CAMION') {
+                if (rUpper.includes('PIURA')) return peso * 30;
+                if (rUpper.includes('TRUJILLO')) return peso * 25;
+                return peso * 25; // Por defecto Trujillo si no especifica
+            }
+
+            // 2. PLATAFORMAS + REPARTO (exclusivo para Plataforma)
+            if (tUpper === 'PLATAFORMA' && pUpper.includes('REPARTO')) {
+                return peso * 35;
+            }
+
+            return 0;
+        }
+
         function handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -745,6 +842,16 @@
                     const rawDate = getRowValue(r, ['F.Inicio', 'F. Inicio', 'FECHA']);
                     const d = parseExcelDate(rawDate);
                     const falsoVal = getRowValue(r, ['FALSO FLETE', 'FALSO_FLETE']).toUpperCase();
+                    
+                    const rawPeso = getRowValue(r, ['PESO', 'PESO (TN)', 'PESO_TN', 'TONELADAS']);
+                    const peso = typeof rawPeso === 'number' ? rawPeso : (parseFloat(String(rawPeso).replace(',', '.')) || 0);
+
+                    const trailer = getRowValue(r, ['Tipo Remolque', 'REMOLQUE']) || 'NO ESPECIFICADO';
+                    const programa = getRowValue(r, ['TIPO DE PROGRAMA', 'PROGRAMA']) || 'OTRO';
+                    const ruta = getRowValue(r, ['RUTA', 'Ruta']) || 'SIN RUTA';
+
+                    const costoEstiba = calculateEstibaCost(peso, trailer, programa, ruta);
+
                     return {
                         origen: 'DATA CAASA',
                         date: d,
@@ -754,10 +861,12 @@
                         tracto: getRowValue(r, ['Tracto', 'PLACA']) || 'SIN PLACA',
                         chofer: getRowValue(r, ['Chofer', 'CONDUCTOR']) || 'SIN CHOFER',
                         dt: getRowValue(r, ['DT']),
-                        trailer: getRowValue(r, ['Tipo Remolque', 'REMOLQUE']) || 'NO ESPECIFICADO',
-                        ruta: getRowValue(r, ['RUTA', 'Ruta']) || 'SIN RUTA',
-                        programa: getRowValue(r, ['TIPO DE PROGRAMA', 'PROGRAMA']) || 'OTRO',
-                        falsoFlete: falsoVal === 'APLICA' ? 'APLICA' : 'NO APLICA'
+                        trailer: trailer,
+                        ruta: ruta,
+                        programa: programa,
+                        falsoFlete: falsoVal === 'APLICA' ? 'APLICA' : 'NO APLICA',
+                        peso: peso,
+                        costoEstiba: costoEstiba
                     };
                 });
             }
@@ -779,6 +888,7 @@
             const trailers = [...new Set([...globalDataClientes.map(d => d.trailer), ...globalDataCaasa.map(d => d.trailer)])].filter(Boolean);
             const choferes = [...new Set([...globalDataClientes.map(d => d.chofer), ...globalDataCaasa.map(d => d.chofer)])].filter(Boolean);
             const programadores = [...new Set(globalDataClientes.map(d => d.programador))].filter(Boolean);
+            const tractosCaasa = [...new Set(globalDataCaasa.map(d => d.tracto))].filter(Boolean);
 
             const monthObj = {};
             globalDataClientes.forEach(d => { if(d.monthKey !== '9999-99' && d.monthYear) monthObj[d.monthKey] = d.monthYear; });
@@ -797,6 +907,10 @@
             fillSelect('singleDriverSelect', choferes, '-- Seleccionar Conductor --');
             fillSelect('selectProgramador', programadores, '-- Seleccionar Programador --');
 
+            fillSelect('caasaMonthFilter', sortedMonths, 'Todos los Meses');
+            fillSelect('caasaTractoFilter', tractosCaasa, 'Todos los Tractos');
+            fillSelect('caasaChoferFilter', choferes, 'Todos los Conductores');
+
             const selA = document.getElementById('compMonthA');
             const selB = document.getElementById('compMonthB');
             if (selA && selB) {
@@ -812,7 +926,7 @@
         function fillSelect(id, items, defaultText) {
             const el = document.getElementById(id);
             if (!el) return;
-            el.innerHTML = `<option value="">${defaultText}</option>`;
+            el.innerHTML = `<option value="${id.includes('caasa') || id.includes('Filter') ? 'ALL' : ''}">${defaultText}</option>`;
             items.forEach(i => { el.innerHTML += `<option value="${i}">${i}</option>`; });
         }
 
@@ -911,6 +1025,160 @@
             if (currentTab === 'monthly') renderMonthlyTab();
             if (currentTab === 'partial') renderPartialComparison();
             renderTable();
+        }
+
+        function renderCaasaTab() {
+            const mFilter = document.getElementById('caasaMonthFilter')?.value || 'ALL';
+            const tFilter = document.getElementById('caasaTractoFilter')?.value || 'ALL';
+            const cFilter = document.getElementById('caasaChoferFilter')?.value || 'ALL';
+
+            let caasaData = filteredCaasa;
+            if (mFilter !== 'ALL') caasaData = caasaData.filter(d => d.monthYear === mFilter);
+            if (tFilter !== 'ALL') caasaData = caasaData.filter(d => d.tracto === tFilter);
+            if (cFilter !== 'ALL') caasaData = caasaData.filter(d => d.chofer === cFilter);
+
+            // KPIs
+            const totalPeso = caasaData.reduce((sum, d) => sum + (d.peso || 0), 0);
+            const totalEstiba = caasaData.reduce((sum, d) => sum + (d.costoEstiba || 0), 0);
+            const promPeso = caasaData.length > 0 ? (totalPeso / caasaData.length) : 0;
+
+            document.getElementById('caasaKpiPeso').innerText = `${totalPeso.toLocaleString('es-PE', {maximumFractionDigits: 1})} TN`;
+            document.getElementById('caasaKpiEstiba').innerText = `S/ ${totalEstiba.toLocaleString('es-PE', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('caasaKpiPromedioPeso').innerText = `${promPeso.toFixed(1)} TN`;
+
+            // 1. Pesos por Tipo de Remolque
+            const pesoRemolqueMap = {};
+            caasaData.forEach(d => {
+                pesoRemolqueMap[d.trailer] = (pesoRemolqueMap[d.trailer] || 0) + d.peso;
+            });
+            const sortedRemolques = Object.entries(pesoRemolqueMap).sort((a,b) => b[1] - a[1]);
+
+            createChart('chartCaasaPesoRemolque', {
+                type: 'bar',
+                data: {
+                    labels: sortedRemolques.map(r => r[0]),
+                    datasets: [{ label: 'Peso Transportado (TN)', data: sortedRemolques.map(r => r[1]), backgroundColor: '#00f2fe', borderRadius: 6 }]
+                },
+                options: {
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'top', color: '#ffffff', font: { weight: 'bold' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' } } }
+                }
+            });
+
+            // 2. Evolución Mensual de Pesos y Estiba
+            const monthMap = {};
+            const monthLabelMap = {};
+            caasaData.forEach(d => {
+                if (d.monthKey && d.monthKey !== '9999-99') {
+                    if (!monthMap[d.monthKey]) monthMap[d.monthKey] = { peso: 0, estiba: 0 };
+                    monthMap[d.monthKey].peso += d.peso;
+                    monthMap[d.monthKey].estiba += d.costoEstiba;
+                    monthLabelMap[d.monthKey] = d.monthYear;
+                }
+            });
+            const sortedMonthKeys = Object.keys(monthMap).sort();
+            const monthLabels = sortedMonthKeys.map(k => monthLabelMap[k]);
+
+            createChart('chartCaasaPesoMensual', {
+                type: 'bar',
+                data: {
+                    labels: monthLabels,
+                    datasets: [
+                        { label: 'Peso (TN)', data: sortedMonthKeys.map(k => monthMap[k].peso), backgroundColor: '#9d4edd', borderRadius: 6, yAxisID: 'y' },
+                        { label: 'Estiba (S/)', data: sortedMonthKeys.map(k => monthMap[k].estiba), type: 'line', borderColor: '#10b981', backgroundColor: '#10b981', borderWidth: 3, yAxisID: 'y1' }
+                    ]
+                },
+                options: {
+                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' } },
+                        y: { position: 'left', ticks: { color: '#94a3b8' }, title: { display: true, text: 'Toneladas (TN)', color: '#9d4edd' } },
+                        y1: { position: 'right', ticks: { color: '#10b981' }, grid: { display: false }, title: { display: true, text: 'Estiba (S/)', color: '#10b981' } }
+                    }
+                }
+            });
+
+            // 3. Ranking Choferes por Peso y Estiba
+            const choferMap = {};
+            caasaData.forEach(d => {
+                if (!choferMap[d.chofer]) choferMap[d.chofer] = { peso: 0, estiba: 0, viajes: 0 };
+                choferMap[d.chofer].peso += d.peso;
+                choferMap[d.chofer].estiba += d.costoEstiba;
+                choferMap[d.chofer].viajes += 1;
+            });
+
+            const sortedChoferesPeso = Object.entries(choferMap).sort((a,b) => b[1].peso - a[1].peso).slice(0, 8);
+
+            createChart('chartCaasaRankingConductores', {
+                type: 'bar',
+                data: {
+                    labels: sortedChoferesPeso.map(c => c[0]),
+                    datasets: [{ label: 'Peso Total (TN)', data: sortedChoferesPeso.map(c => c[1].peso), backgroundColor: '#f59e0b', borderRadius: 6 }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#ffffff', font: { weight: 'bold' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } } } }
+                }
+            });
+
+            const sortedChoferesEstiba = Object.entries(choferMap).sort((a,b) => b[1].estiba - a[1].estiba).slice(0, 8);
+
+            createChart('chartCaasaEstibaConductores', {
+                type: 'bar',
+                data: {
+                    labels: sortedChoferesEstiba.map(c => c[0]),
+                    datasets: [{ label: 'Costo Estiba (S/)', data: sortedChoferesEstiba.map(c => c[1].estiba), backgroundColor: '#10b981', borderRadius: 6 }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false }, datalabels: { anchor: 'end', align: 'right', color: '#ffffff', font: { weight: 'bold' } } },
+                    scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8', font: { size: 9 } } } }
+                }
+            });
+
+            // 4. Gráficos Originales
+            const programs = {};
+            caasaData.forEach(d => programs[d.programa] = (programs[d.programa] || 0) + 1);
+            createChart('chartCaasaProgram', {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(programs),
+                    datasets: [{ label: 'Viajes CAASA', data: Object.values(programs), backgroundColor: '#9d4edd', borderRadius: 6 }]
+                },
+                options: { plugins: { legend: { display: false }, datalabels: { display: false } } }
+            });
+
+            const aplica = caasaData.filter(d => d.falsoFlete === 'APLICA').length;
+            const noAplica = caasaData.length - aplica;
+            createChart('chartCaasaFalsoFlete', {
+                type: 'doughnut',
+                data: {
+                    labels: ['Aplica', 'No Aplica'],
+                    datasets: [{ data: [aplica, noAplica], backgroundColor: ['#f43f5e', '#0284c7'], borderWidth: 0 }]
+                },
+                options: { plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } } }
+            });
+
+            // Tabla de Estiba por Conductor
+            const tbody = document.getElementById('caasaEstibaTableBody');
+            if (tbody) {
+                tbody.innerHTML = '';
+                const sortedAllChoferes = Object.entries(choferMap).sort((a,b) => b[1].peso - a[1].peso);
+                sortedAllChoferes.forEach((item, idx) => {
+                    const cName = item[0];
+                    const data = item[1];
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-slate-900/60 transition">
+                            <td class="p-3 font-mono text-slate-500">${idx + 1}</td>
+                            <td class="p-3 font-semibold text-white">${cName}</td>
+                            <td class="p-3 text-center text-amber-400 font-bold">${data.viajes}</td>
+                            <td class="p-3 text-right text-cyan-400 font-bold">${data.peso.toFixed(2)} TN</td>
+                            <td class="p-3 text-right text-emerald-400 font-bold">S/ ${data.estiba.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+            }
         }
 
         function renderCargaReport() {
@@ -1144,7 +1412,6 @@
             });
         }
 
-        // Lógica del reporte de Programador con condición exclusiva para "Jesus Portilla"
         function renderProgramadorReport() {
             const progName = document.getElementById('selectProgramador')?.value;
             if (!progName) return;
@@ -1388,62 +1655,6 @@
             const query = document.getElementById('driverSearchInput').value.toLowerCase();
             document.querySelectorAll('#driverTableBody tr').forEach(row => {
                 row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
-            });
-        }
-
-        function renderCaasaTab() {
-            const programs = {};
-            filteredCaasa.forEach(d => programs[d.programa] = (programs[d.programa] || 0) + 1);
-            createChart('chartCaasaProgram', {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(programs),
-                    datasets: [{ label: 'Viajes CAASA', data: Object.values(programs), backgroundColor: '#9d4edd', borderRadius: 6 }]
-                },
-                options: {
-                    plugins: { legend: { display: false }, datalabels: { display: false } }
-                }
-            });
-
-            const aplica = filteredCaasa.filter(d => d.falsoFlete === 'APLICA').length;
-            const noAplica = filteredCaasa.length - aplica;
-            createChart('chartCaasaFalsoFlete', {
-                type: 'doughnut',
-                data: {
-                    labels: ['Aplica', 'No Aplica'],
-                    datasets: [{ data: [aplica, noAplica], backgroundColor: ['#f43f5e', '#0284c7'], borderWidth: 0 }]
-                },
-                options: {
-                    plugins: { legend: { labels: { color: '#f1f5f9' } }, datalabels: { display: false } }
-                }
-            });
-
-            const trailers = {};
-            filteredCaasa.forEach(d => trailers[d.trailer] = (trailers[d.trailer] || 0) + 1);
-            createChart('chartCaasaTrailers', {
-                type: 'bar',
-                data: {
-                    labels: Object.keys(trailers),
-                    datasets: [{ label: 'Remolques/Unidades CAASA', data: Object.values(trailers), backgroundColor: '#00f2fe', borderRadius: 6 }]
-                },
-                options: {
-                    plugins: { legend: { display: false }, datalabels: { display: false } }
-                }
-            });
-
-            const routes = {};
-            filteredCaasa.forEach(d => routes[d.ruta] = (routes[d.ruta] || 0) + 1);
-            const topRoutes = Object.entries(routes).sort((a,b)=>b[1]-a[1]).slice(0, 5);
-            createChart('chartCaasaRoutes', {
-                type: 'bar',
-                data: {
-                    labels: topRoutes.map(r => r[0]),
-                    datasets: [{ label: 'Rutas CAASA', data: topRoutes.map(r => r[1]), backgroundColor: '#10b981', borderRadius: 6 }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    plugins: { legend: { display: false }, datalabels: { display: false } }
-                }
             });
         }
 
