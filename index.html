@@ -27,6 +27,8 @@
             }
         }
     </script>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- SheetJS (xlsx) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- Chart.js and DataLabels -->
@@ -151,9 +153,9 @@
                         <i class="fa-solid fa-spinner fa-spin"></i>
                     </div>
                     <div>
-                        <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Cargando 'VIAJES 2026.xlsx'...</h2>
+                        <h2 id="loadingTitle" class="text-xl sm:text-3xl font-black text-white tracking-tight">Sincronizando con Supabase...</h2>
                         <p id="loadingText" class="text-slate-400 text-xs sm:text-sm mt-2">
-                            Preparando entorno optimizado.
+                            Obteniendo todos los registros actualizados...
                         </p>
                     </div>
                     <div class="pt-2 flex flex-col sm:flex-row justify-center items-center gap-3">
@@ -607,6 +609,13 @@
         Chart.defaults.responsive = true;
         Chart.defaults.maintainAspectRatio = false;
         
+        // ==========================================
+        // CONFIGURACIÓN Y CARGA DESDE SUPABASE
+        // ==========================================
+        const SUPABASE_URL = 'https://medgjttpoxpnhawkwfln.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lZGdqdHRwb3hwbmhhd2t3ZmxuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1ODc1MzAsImV4cCI6MjEwODE2MzUzMH0.xax6XWGjjPdjwG4Kn7vwO69EkBgSlCkV6U_SjeQjT74';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
         let globalDataClientes = [];
         let globalDataCaasa = [];
         let filteredClientes = [];
@@ -614,39 +623,35 @@
         let charts = {};
         let currentTab = 'general';
 
-        /*const EXCEL_URL = './VIAJES_2026.xlsx';*/
-		let globalDataClientes = [];
-        let globalDataCaasa = [];
-        let filteredClientes = [];
-        let filteredCaasa = [];
-        let charts = {};
-        let currentTab = 'general';
-
-        // ==========================================
-        // CARGA DE DATOS DESDE SUPABASE
-        // ==========================================
+        // Descarga todos los registros paginando de 1000 en 1000 (supera el límite por defecto de Supabase)
+        async function fetchAllRows(tableName) {
+            let allRows = [];
+            let from = 0;
+            const step = 1000;
+            while (true) {
+                const { data, error } = await supabaseClient
+                    .from(tableName)
+                    .select('*')
+                    .range(from, from + step - 1);
+                if (error) throw error;
+                if (!data || data.length === 0) break;
+                allRows = allRows.concat(data);
+                if (data.length < step) break;
+                from += step;
+            }
+            return allRows;
+        }
 
         async function cargarDatosDesdeSupabase() {
             try {
-                // Actualizar título de carga en pantalla
                 document.getElementById('loadingTitle').innerText = 'Sincronizando con Supabase...';
-                document.getElementById('loadingText').innerText = 'Obteniendo los registros actualizados...';
+                document.getElementById('loadingText').innerText = 'Obteniendo todos los registros actualizados...';
 
-                // 1. Consultar tabla data_clientes
-                const { data: clientesData, error: errCli } = await supabaseClient
-                    .from('data_clientes')
-                    .select('*');
-                    
-                if (errCli) throw errCli;
+                const [clientesData, caasaData] = await Promise.all([
+                    fetchAllRows('data_clientes'),
+                    fetchAllRows('data_caasa')
+                ]);
 
-                // 2. Consultar tabla data_caasa
-                const { data: caasaData, error: errCaasa } = await supabaseClient
-                    .from('data_caasa')
-                    .select('*');
-                    
-                if (errCaasa) throw errCaasa;
-
-                // 3. Mapear al formato que tus gráficos y tablas ya utilizan
                 globalDataClientes = clientesData.map(r => {
                     const d = r.fecha ? new Date(r.fecha + 'T00:00:00') : null;
                     return {
@@ -688,38 +693,17 @@
                     };
                 });
 
-                // 4. Inicializar el dashboard con los datos listos
                 onDataLoaded();
 
             } catch (error) {
                 console.error('Error al cargar datos desde Supabase:', error);
                 document.getElementById('loadingTitle').innerText = 'Error de Conexión';
-                document.getElementById('loadingText').innerText = 'No se pudo conectar con Supabase. Verifica tu conexión.';
+                document.getElementById('loadingText').innerText = 'No se pudo conectar con Supabase. Revisa la consola (F12).';
             }
         }
 
-        // Ejecutar al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
             cargarDatosDesdeSupabase();
-        });
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (EXCEL_URL) {
-                fetch(EXCEL_URL)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Archivo no disponible');
-                        return response.arrayBuffer();
-                    })
-                    .then(data => {
-                        const workbook = XLSX.read(new Uint8Array(data), { type: 'array', cellDates: true });
-                        processWorkbook(workbook);
-                    })
-                    .catch(error => {
-                        console.warn('Carga automática omitida.', error);
-                        document.getElementById('loadingTitle').innerText = 'Seleccionar Archivo';
-                        document.getElementById('loadingText').innerText = 'Por favor, selecciona tu archivo Excel manualmente.';
-                    });
-            }
         });
 
         function toggleSidebar() {
